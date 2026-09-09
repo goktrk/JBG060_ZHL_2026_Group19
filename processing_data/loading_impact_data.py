@@ -141,8 +141,8 @@ def download_OSM_network(name: str) -> MultiDiGraph:
 
     Here, we provide an example how to do so for the city Malakal, extracting the "drive" network.
     """
-    output_dir = f'./raw_data/OSM/{name}'
-    os.makedirs(output_dir, exist_ok=True)
+    output_dir = Path(f'./raw_data/OSM/{name}')
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     G = ox.graph_from_place(name, network_type='drive')
 
@@ -150,8 +150,8 @@ def download_OSM_network(name: str) -> MultiDiGraph:
     nodes, edges = ox.graph_to_gdfs(G)
 
     # Save file
-    nodes.to_file(output_dir + './nodes.shp')
-    edges.to_file(output_dir + './edges.shp')
+    nodes.to_file(output_dir / 'nodes.shp')
+    edges.to_file(output_dir / 'edges.shp')
     print(f"Graph files saved in {output_dir}")
 
     ox.plot_graph(G)
