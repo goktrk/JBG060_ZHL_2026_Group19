@@ -1,0 +1,60 @@
+# Project configuration: every threshold and parameter lives here.
+# Values marked TODO are placeholders the team still has to decide or check.
+
+paths:
+  raw: raw_data
+  interim: data/interim          # aligned grids, clipped layers (gitignored)
+  processed: data/processed      # outputs the dashboard reads
+  figures: figures
+
+  admin2: raw_data/Administrative boundaries/ssd_admin2.geojson
+  facilities: raw_data/health facilities/Sub-Saharan_public_health_facilities.geojson
+  population: raw_data/worldpop/ssd_pop_{year}_CN_100m_R2025A_v1.tif
+  flood_recurring: raw_data/flood_masks/compact_recurring   # flood_events_{tile}_{year}.parquet
+  flood_unusual: raw_data/flood_masks/compact_unusual
+  friction_walking: raw_data/map_friction_maps/2020_walking_only_friction_surface.geotiff         # TODO: not downloaded yet (Malaria Atlas Project)
+  friction_motorised: raw_data/map_friction_maps/2020_motorized_friction_surface.geotiff       # TODO: not downloaded yet
+
+  static_stack: data/interim/static_250m.tif
+  flood_monthly: data/interim/flood/flood_{year}_{month:02d}.tif
+
+grid:
+  crs: "ESRI:102022"             # Africa Albers Equal Area. TODO: confirm vs UTM 36N
+  cell_size_m: 250               # flood mask native resolution
+  snap_m: 1000                   # origin/extent are multiples of this, so 1 km = exact 4x4 blocks
+  buffer_km: 50                  # TODO: margin around South Sudan so border paths are not cut
+
+population:
+  year: 2020                     # TODO: confirm; files exist for 2015-2025
+
+flood:
+  first_year: 2003               # 2000-2002 are Terra-only, excluded
+  last_year: 2025
+  tiles: [h20v08, h21v08]        # cover 0-10N only; h20v07/h21v07 needed for the north
+  min_days_flooded: 3            # TODO: days flagged in a month for a cell to count as flooded
+  permanent_water_month_share: 0.80   # cell is permanent water if flooded in more than this share of months
+  flooded_cell_passable: false   # false = blocked; TODO: decide blocked vs slowed
+  season_months: [7, 8, 9, 10, 11]   # TODO: flood season used in recurrence
+
+travel:
+  modes: [walking, motorised, slow]
+  slow_traveller_factor: 1.5     # walking travel cost x this (1.5 or 2)
+  time_thresholds_min: [60, 120]
+  max_time_min: 120              # cutoff for "reachable"
+
+facilities:
+  country: South Sudan
+  flood_buffer_m: 0              # 0 = facility's own cell only
+  cutoff_drop_share: 0.5         # TODO: drop in population reachable within 2 h that counts as cut off
+  manual_off: []                 # facility IDs switched off by hand
+
+recurrence:
+  access_loss_threshold: 0.10    # TODO: share of county population losing access
+
+lag:
+  max_lag_months: 6
+
+siting:
+  candidate_spacing_km: 5
+  max_flooded_year_share: 0.10   # TODO: candidate cells flooded in at most this share of years
+  max_sites: 20                  # TODO
