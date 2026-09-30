@@ -1,0 +1,79 @@
+adm1_name,adm2_name,adm2_pcode,facilities,no_flood_data,ever_flooded,recurrent,median_flood_years,pct_ever,pct_recurrent
+Upper Nile,Ulang,SS0712,8,0,8,5,10.0,100.0,62.5
+Upper Nile,Panyikang,SS0710,9,0,9,4,5.0,100.0,44.4
+Jonglei,Canal/Pigi,SS0304,8,0,6,3,5.0,75.0,37.5
+Upper Nile,Fashoda,SS0702,12,3,9,3,3.0,100.0,33.3
+Lakes,Awerial,SS0401,14,0,4,4,0.0,28.6,28.6
+Warrap,Twic,SS0806,25,0,14,5,2.0,56.0,20.0
+Unity,Guit,SS0602,11,0,10,2,5.0,90.9,18.2
+Upper Nile,Luakpiny/Nasir,SS0704,17,0,13,3,2.0,76.5,17.6
+Jonglei,Akobo,SS0301,14,0,10,2,2.0,71.4,14.3
+Jonglei,Twic East,SS0310,14,0,14,2,5.0,100.0,14.3
+Unity,Mayendit,SS0605,17,0,14,2,2.0,82.4,11.8
+Upper Nile,Baliet,SS0701,9,0,4,1,0.0,44.4,11.1
+Jonglei,Ayod,SS0302,21,0,15,2,2.0,71.4,9.5
+Unity,Koch,SS0603,12,0,4,1,0.0,33.3,8.3
+Unity,Mayom,SS0606,12,0,7,1,1.5,58.3,8.3
+Warrap,Tonj South,SS0805,12,0,6,1,1.5,50.0,8.3
+Upper Nile,Malakal,SS0707,14,0,11,1,4.0,78.6,7.1
+Jonglei,Pibor,SS0308,15,0,9,1,1.0,60.0,6.7
+Northern Bahr el Ghazal,Aweil West,SS0505,32,0,16,2,0.5,50.0,6.2
+Jonglei,Fangak,SS0306,16,0,15,1,4.0,93.8,6.2
+Lakes,Yirol East,SS0407,16,0,2,1,0.0,12.5,6.2
+Northern Bahr el Ghazal,Aweil Centre,SS0501,16,0,3,1,0.0,18.8,6.2
+Unity,Rubkona,SS0609,16,0,13,1,5.0,81.2,6.2
+Jonglei,Bor South,SS0303,35,0,16,2,0.0,45.7,5.7
+Northern Bahr el Ghazal,Aweil East,SS0502,40,0,8,2,0.0,20.0,5.0
+Western Bahr el Ghazal,Jur River,SS0901,41,0,8,2,0.0,19.5,4.9
+Central Equatoria,Juba,SS0101,131,0,36,6,0.0,27.5,4.6
+Warrap,Gogrial East,SS0801,22,0,5,1,0.0,22.7,4.5
+Western Bahr el Ghazal,Wau,SS0903,50,0,7,2,0.0,14.0,4.0
+Warrap,Gogrial West,SS0802,28,0,10,1,0.0,35.7,3.6
+Central Equatoria,Terekeka,SS0105,57,0,18,2,0.0,31.6,3.5
+Central Equatoria,Kajo-keji,SS0102,56,0,1,0,0.0,1.8,0.0
+Central Equatoria,Lainya,SS0103,43,0,2,0,0.0,4.7,0.0
+Central Equatoria,Morobo,SS0104,18,0,3,0,0.0,16.7,0.0
+Central Equatoria,Yei,SS0106,45,0,11,0,0.0,24.4,0.0
+Eastern Equatoria,Budi,SS0201,27,0,3,0,0.0,11.1,0.0
+Eastern Equatoria,Ikotos,SS0202,36,0,4,0,0.0,11.1,0.0
+Eastern Equatoria,Kapoeta East,SS0203,22,0,12,0,1.0,54.5,0.0
+Eastern Equatoria,Kapoeta North,SS0204,14,0,10,0,1.0,71.4,0.0
+Eastern Equatoria,Kapoeta South,SS0205,8,0,5,0,1.5,62.5,0.0
+Eastern Equatoria,Lafon,SS0206,48,0,17,0,0.0,35.4,0.0
+Eastern Equatoria,Magwi,SS0207,57,0,17,0,0.0,29.8,0.0
+Eastern Equatoria,Torit,SS0208,50,0,12,0,0.0,24.0,0.0
+Jonglei,Duk,SS0305,15,0,4,0,0.0,26.7,0.0
+Jonglei,Nyirol,SS0307,4,0,1,0,0.0,25.0,0.0
+Jonglei,Pochalla,SS0309,5,0,2,0,0.0,40.0,0.0
+Jonglei,Uror,SS0311,10,0,7,0,1.5,70.0,0.0
+Lakes,Cueibet,SS0402,14,0,3,0,0.0,21.4,0.0
+Lakes,Rumbek Centre,SS0403,18,0,2,0,0.0,11.1,0.0
+Lakes,Rumbek East,SS0404,23,0,4,0,0.0,17.4,0.0
+Lakes,Rumbek North,SS0405,4,0,1,0,0.0,25.0,0.0
+Lakes,Wulu,SS0406,13,0,1,0,0.0,7.7,0.0
+Lakes,Yirol West,SS0408,16,0,3,0,0.0,18.8,0.0
+Northern Bahr el Ghazal,Aweil North,SS0503,30,0,6,0,0.0,20.0,0.0
+Northern Bahr el Ghazal,Aweil South,SS0504,7,0,1,0,0.0,14.3,0.0
+Unity,Abiemnhom,SS0601,4,0,2,0,0.5,50.0,0.0
+Unity,Leer,SS0604,9,0,2,0,0.0,22.2,0.0
+Unity,Panyijiar,SS0607,32,0,25,0,2.5,78.1,0.0
+Unity,Pariang,SS0608,6,1,1,0,0.0,20.0,0.0
+Upper Nile,Longochuk,SS0703,9,0,2,0,0.0,22.2,0.0
+Upper Nile,Maban,SS0705,13,4,1,0,0.0,11.1,0.0
+Upper Nile,Maiwut,SS0706,10,0,1,0,0.0,10.0,0.0
+Warrap,Tonj East,SS0803,12,0,2,0,0.0,16.7,0.0
+Warrap,Tonj North,SS0804,25,0,2,0,0.0,8.0,0.0
+Western Bahr el Ghazal,Raja,SS0902,24,0,1,0,0.0,4.2,0.0
+Western Equatoria,Ezo,SS1001,27,0,1,0,0.0,3.7,0.0
+Western Equatoria,Ibba,SS1002,10,0,1,0,0.0,10.0,0.0
+Western Equatoria,Maridi,SS1003,32,0,4,0,0.0,12.5,0.0
+Western Equatoria,Mundri East,SS1004,23,0,3,0,0.0,13.0,0.0
+Western Equatoria,Mundri West,SS1005,18,0,1,0,0.0,5.6,0.0
+Western Equatoria,Mvolo,SS1006,12,0,1,0,0.0,8.3,0.0
+Western Equatoria,Nagero,SS1007,5,0,0,0,0.0,0.0,0.0
+Western Equatoria,Nzara,SS1008,18,0,1,0,0.0,5.6,0.0
+Western Equatoria,Tambura,SS1009,26,0,0,0,0.0,0.0,0.0
+Western Equatoria,Yambio,SS1010,50,0,1,0,0.0,2.0,0.0
+Upper Nile,Manyo,SS0708,13,13,0,0,,,
+Upper Nile,Melut,SS0709,9,9,0,0,,,
+Upper Nile,Renk,SS0711,19,19,0,0,,,

@@ -1,6 +1,8 @@
 processing_data/evapotranspiration
 raw_data/flood_masks/compact_recurring/*_meta.json
 raw_data/flood_masks/compact_unusual/*_meta.json
+CLAUDE.MD
+desktop.ini
 
 .venv
 *.pyc
