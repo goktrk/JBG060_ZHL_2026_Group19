@@ -1,0 +1,80 @@
+adm2_name,adm2_pcode,adm1_name,cells,median_kmh_walking,median_kmh_motorised,pct_cells_no_road
+Renk,SS0711,Upper Nile,11949,4.08,4.04,73.5
+Kapoeta East,SS0203,Eastern Equatoria,34709,4.15,4.16,92.7
+Morobo,SS0104,Central Equatoria,1538,4.29,4.27,68.4
+Budi,SS0201,Eastern Equatoria,6727,4.31,4.31,89.6
+Ikotos,SS0202,Eastern Equatoria,4120,4.31,4.3,85.2
+Kajo-keji,SS0102,Central Equatoria,2954,4.31,4.31,68.8
+Kapoeta South,SS0205,Eastern Equatoria,1407,4.34,4.34,84.9
+Magwi,SS0207,Eastern Equatoria,6100,4.37,4.37,81.7
+Lainya,SS0103,Central Equatoria,4098,4.4,4.4,87.7
+Yei,SS0106,Central Equatoria,7891,4.43,4.43,86.9
+Torit,SS0208,Eastern Equatoria,6844,4.48,4.48,88.6
+Maridi,SS1003,Western Equatoria,9018,4.48,4.48,93.5
+Tambura,SS1009,Western Equatoria,14637,4.48,4.48,94.3
+Ezo,SS1001,Western Equatoria,9497,4.5,4.5,93.3
+Raja,SS0902,Western Bahr el Ghazal,73359,4.51,4.51,94.1
+Mundri West,SS1005,Western Equatoria,6898,4.51,4.51,92.2
+Yambio,SS1010,Western Equatoria,10322,4.51,4.51,93.1
+Ibba,SS1002,Western Equatoria,11287,4.51,4.51,96.4
+Nagero,SS1007,Western Equatoria,10816,4.52,4.52,97.1
+Nzara,SS1008,Western Equatoria,7577,4.52,4.52,94.5
+Juba,SS0101,Central Equatoria,21562,4.54,4.54,85.4
+Mundri East,SS1004,Western Equatoria,5962,4.56,4.56,92.8
+Wau,SS0903,Western Bahr el Ghazal,22656,4.56,4.56,94.8
+Wulu,SS0406,Lakes,13941,4.59,4.59,97.8
+Mvolo,SS1006,Western Equatoria,6711,4.6,4.6,94.5
+Aweil Centre,SS0501,Northern Bahr el Ghazal,13182,4.61,4.61,92.4
+Jur River,SS0901,Western Bahr el Ghazal,11855,4.61,4.61,88.3
+Aweil West,SS0505,Northern Bahr el Ghazal,5927,4.65,4.66,78.2
+Tonj South,SS0805,Warrap,8755,4.65,4.65,94.3
+Lafon,SS0206,Eastern Equatoria,19074,4.69,4.69,97.8
+Kapoeta North,SS0204,Eastern Equatoria,6742,4.7,4.7,96.1
+Terekeka,SS0105,Central Equatoria,12547,4.7,4.7,83.3
+Aweil North,SS0503,Northern Bahr el Ghazal,7522,4.7,4.7,82.2
+Yirol West,SS0408,Lakes,5706,4.72,4.72,79.9
+Pochalla,SS0309,Jonglei,9743,4.73,4.73,94.7
+Maiwut,SS0706,Upper Nile,4376,4.73,4.73,92.1
+Maban,SS0705,Upper Nile,14029,4.73,4.73,84.4
+Rumbek East,SS0404,Lakes,4205,4.73,4.73,80.1
+Cueibet,SS0402,Lakes,5735,4.73,4.73,96.0
+Bor South,SS0303,Jonglei,16451,4.73,4.73,87.8
+Awerial,SS0401,Lakes,5326,4.73,4.73,66.9
+Pibor,SS0308,Jonglei,38894,4.73,4.73,91.1
+Uror,SS0311,Jonglei,14364,4.74,4.74,93.8
+Yirol East,SS0407,Lakes,6562,4.74,4.74,79.2
+Gogrial East,SS0801,Warrap,5228,4.74,4.74,90.3
+Aweil South,SS0504,Northern Bahr el Ghazal,2338,4.74,4.74,63.4
+Panyijiar,SS0607,Unity,6282,4.74,4.74,85.4
+Pariang,SS0608,Unity,10634,4.74,4.74,82.7
+Tonj East,SS0803,Warrap,5222,4.74,4.74,91.7
+Gogrial West,SS0802,Warrap,5213,4.74,4.74,81.1
+Tonj North,SS0804,Warrap,13271,4.74,4.74,90.5
+Rumbek North,SS0405,Lakes,4836,4.74,4.74,94.7
+Nyirol,SS0307,Jonglei,8356,4.74,4.74,92.3
+Duk,SS0305,Jonglei,8124,4.74,4.74,90.7
+Twic East,SS0310,Jonglei,7005,4.74,4.74,86.5
+Rumbek Centre,SS0403,Lakes,4548,4.74,4.74,88.6
+Longochuk,SS0703,Upper Nile,8211,4.74,4.74,90.5
+Luakpiny/Nasir,SS0704,Upper Nile,6130,4.74,4.74,88.0
+Ulang,SS0712,Upper Nile,5716,4.74,4.74,89.0
+Panyikang,SS0710,Upper Nile,6057,4.74,4.74,89.1
+Aweil East,SS0502,Northern Bahr el Ghazal,7546,4.74,4.74,70.5
+Akobo,SS0301,Jonglei,10668,4.74,4.74,92.8
+Ayod,SS0302,Jonglei,15888,4.74,4.74,93.3
+Canal/Pigi,SS0304,Jonglei,5260,4.74,4.74,89.5
+Abyei Region,SS0001,Abyei Region,12454,4.74,4.74,82.4
+Twic,SS0806,Warrap,4687,4.74,4.74,87.2
+Fashoda,SS0702,Upper Nile,4271,4.75,4.75,79.4
+Melut,SS0709,Upper Nile,8256,4.75,4.75,76.7
+Mayom,SS0606,Unity,5047,4.75,4.75,78.3
+Malakal,SS0707,Upper Nile,892,4.75,4.75,49.9
+Manyo,SS0708,Upper Nile,7986,4.75,4.75,77.0
+Baliet,SS0701,Upper Nile,13843,4.75,4.75,92.1
+Guit,SS0602,Unity,4095,4.75,4.75,75.6
+Abiemnhom,SS0601,Unity,2858,4.75,4.75,83.4
+Koch,SS0603,Unity,5196,4.75,4.75,79.8
+Leer,SS0604,Unity,1902,4.75,4.75,77.2
+Fangak,SS0306,Jonglei,9069,4.75,4.75,86.4
+Mayendit,SS0605,Unity,3626,4.75,4.75,78.7
+Rubkona,SS0609,Unity,4228,4.75,4.75,81.1
