@@ -5,6 +5,7 @@ Every array returned here is on the same analysis grid, so they line up cell for
 
     static = load_static()                          # dict of 2D arrays
     months, flood = load_flood("2020-07", "2020-11")   # 5 months, flood.shape = (5, rows, cols)
+    months, unusual = load_flood("2020-07", "2020-11", kind="unusual")
 """
 from collections.abc import Iterator
 
@@ -13,7 +14,7 @@ import numpy as np
 import pandas as pd
 import rasterio
 
-from data_preparation.build_flood_monthly import NO_DATA
+from data_preparation.build_flood_monthly import BANDS, NO_DATA
 from data_preparation.grid import data_path, load_config
 
 
@@ -33,7 +34,15 @@ def load_static(cfg: dict | None = None) -> dict[str, np.ndarray]:
     return layers
 
 
-def iter_flood(start, end=None, cfg: dict | None = None) -> Iterator[tuple[pd.Period, np.ndarray]]:
+def load_permanent_water(cfg: dict | None = None) -> np.ndarray:
+    """Boolean 2D array, True where the cell is permanent water (rivers, lakes; see build_permanent_water)."""
+    cfg = cfg or load_config()
+    with rasterio.open(data_path(cfg, "permanent_water")) as src:
+        return src.read(1).astype(bool)
+
+
+def iter_flood(start, end=None, cfg: dict | None = None,
+               kind: str = "all") -> Iterator[tuple[pd.Period, np.ndarray]]:
     """
     Yield (month, days_flooded) for every month from `start` to `end`, both included.
 
@@ -43,24 +52,29 @@ def iter_flood(start, end=None, cfg: dict | None = None) -> Iterator[tuple[pd.Pe
 
     days_flooded is uint8: the number of days in the month the cell was flagged as flooded (0-31),
     or 255 (NO_DATA) where there is no flood data, which does not mean "not flooded".
+
+    `kind` picks which flooding is counted: "all" (default), "recurring" (inside the area that
+    normally floods in that calendar month) or "unusual" (outside it).
     """
+    if kind not in BANDS:
+        raise ValueError(f"kind must be one of {BANDS}, not {kind!r}")
     cfg = cfg or load_config()
     for month in pd.period_range(start, end or start, freq="M"):
         path = data_path(cfg, "flood_monthly", year=month.year, month=month.month)
         if not path.exists():
             raise FileNotFoundError(f"no flood file for {month}: {path}")
         with rasterio.open(path) as src:
-            yield month, src.read(1)
+            yield month, src.read(BANDS.index(kind) + 1)
 
 
-def load_flood(start, end=None, cfg: dict | None = None) -> tuple[pd.PeriodIndex, np.ndarray]:
+def load_flood(start, end=None, cfg: dict | None = None, kind: str = "all") -> tuple[pd.PeriodIndex, np.ndarray]:
     """
     Load all months from `start` to `end` at once, see iter_flood for the arguments and values.
 
     Returns the months and one array of shape (n_months, rows, cols); flood[i] belongs to months[i].
     Each month takes about 24 MB, so load a few years at most this way.
     """
-    months, arrays = zip(*iter_flood(start, end, cfg))
+    months, arrays = zip(*iter_flood(start, end, cfg, kind))
     return pd.PeriodIndex(months), np.stack(arrays)
 
 

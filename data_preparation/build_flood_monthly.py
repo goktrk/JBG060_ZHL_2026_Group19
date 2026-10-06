@@ -1,9 +1,15 @@
 """
 Build one flood GeoTIFF per month on the analysis grid.
 
-Each cell holds the number of days in that month on which it was flagged as flooded
-(recurring or unusual), 0-31. The value 255 means "no flood data here" (outside the
-MODIS tiles we have), which is not the same as "not flooded".
+Each file has three bands, each holding a number of days in that month (0-31):
+
+    band 1  all        days the cell was flagged as flooded, recurring or unusual
+    band 2  recurring  days flagged as recurring flood (inside the area that normally floods this month)
+    band 3  unusual    days flagged as unusual flood (outside that area)
+
+Bands 2 and 3 can add up to more than band 1 when a cell contains two source pixels with different
+labels on the same day. The labels are NASA's (see EDA/eda_flood_masks.ipynb). The value 255 means
+"no flood data here" (outside the MODIS tiles we have), which is not the same as "not flooded".
 
 It also writes flood_months.csv: per month, the number of days on which the archive has no record
 at all (data gaps, see EDA/hydro_flood_eda.ipynb). Months with many missing days undercount
@@ -19,6 +25,7 @@ from data_preparation.grid import (Grid, cell_centres_lonlat, data_path, in_grid
                                    lonlat_to_rowcol, make_grid, raster_profile)
 
 NO_DATA = 255
+BANDS = ["all", "recurring", "unusual"]
 
 
 def tile_bounds(tile: str) -> tuple[float, float, float, float]:
@@ -40,7 +47,7 @@ def coverage_mask(cfg: dict, grid: Grid) -> np.ndarray:
 
 def load_year(cfg: dict, grid: Grid, year: int) -> tuple[pd.DataFrame, pd.DatetimeIndex]:
     """
-    All flood records of one year as (month, day, cell), where cell = row * width + col,
+    All flood records of one year as (month, day, cell, unusual), where cell = row * width + col,
     and the days on which the archive has any record at all (anywhere on the tiles).
     """
     parts, seen = [], []
@@ -56,6 +63,7 @@ def load_year(cfg: dict, grid: Grid, year: int) -> tuple[pd.DataFrame, pd.Dateti
                 "month": dates.dt.month.to_numpy()[keep],
                 "day": dates.dt.day.to_numpy()[keep],
                 "cell": (row * grid.width + col)[keep],
+                "unusual": kind == "flood_unusual",
             }))
     return pd.concat(parts, ignore_index=True), pd.DatetimeIndex(np.concatenate(seen)).unique()
 
@@ -68,8 +76,16 @@ def missing_days(year: int, seen: pd.DatetimeIndex) -> pd.DataFrame:
 
 
 def days_flooded_per_month(records: pd.DataFrame) -> pd.DataFrame:
-    """Number of distinct flooded days per (month, cell). A cell hit twice on one day counts once."""
-    return records.drop_duplicates().groupby(["month", "cell"]).size().rename("days").reset_index()
+    """
+    Number of distinct flooded days per (month, cell): in total, as recurring, and as unusual.
+    A cell hit twice on one day counts once.
+    """
+    records = records.drop_duplicates()
+    total = records[["month", "day", "cell"]].drop_duplicates().groupby(["month", "cell"]).size().rename("all")
+    by_label = (records.groupby(["month", "cell", "unusual"]).size().unstack(fill_value=0)
+                .reindex(columns=[False, True], fill_value=0))
+    by_label.columns = ["recurring", "unusual"]
+    return by_label.join(total).reset_index()
 
 
 def main():
@@ -78,7 +94,7 @@ def main():
     covered = coverage_mask(cfg, grid)
     print(f"grid: {grid.width} x {grid.height} cells; {covered.mean():.1%} of cells have flood coverage")
     data_path(cfg, "flood_monthly", year=0, month=0).parent.mkdir(parents=True, exist_ok=True)
-    profile = raster_profile(grid, 1, "uint8", NO_DATA)
+    profile = raster_profile(grid, len(BANDS), "uint8", NO_DATA)
 
     quality = []
     for year in range(cfg["flood"]["first_year"], cfg["flood"]["last_year"] + 1):
@@ -91,11 +107,13 @@ def main():
             if this_month.empty:
                 skipped.append(month)
                 continue
-            days = np.zeros(grid.shape, dtype="uint8")
-            days.ravel()[this_month["cell"].to_numpy()] = this_month["days"].to_numpy()
-            days[~covered] = NO_DATA
             with rasterio.open(data_path(cfg, "flood_monthly", year=year, month=month), "w", **profile) as dst:
-                dst.write(days, 1)
+                for band, name in enumerate(BANDS, start=1):
+                    days = np.zeros(grid.shape, dtype="uint8")
+                    days.ravel()[this_month["cell"].to_numpy()] = this_month[name].to_numpy()
+                    days[~covered] = NO_DATA
+                    dst.write(days, band)
+                    dst.set_band_description(band, name)
             written += 1
         note = f"; no records, not written: months {skipped}" if skipped else ""
         print(f"{year}: {len(records):,} records, {len(counts):,} flooded cell-months, {written} files{note}")

@@ -14,6 +14,7 @@ paths:
   flood_unusual: raw_data/flood_masks/compact_unusual
   friction_walking: raw_data/map_friction_maps/2020_walking_only_friction_surface.geotiff   # Malaria Atlas Project, global
   friction_motorised: raw_data/map_friction_maps/2020_motorized_friction_surface.geotiff
+  jrc_water: raw_data/JRC_surface_water_data      # JRC Global Surface Water, occurrence_*.tif tiles (v1.5, 1984-2024)
 
   static_stack: data/interim/static_250m.tif
   flood_monthly: data/interim/flood/flood_{year}_{month:02d}.tif
@@ -38,9 +39,13 @@ flood:
   tiles: [h20v08, h21v08]        # cover 0-10N only; h20v07/h21v07 needed for the north
   flag_min_missing_days: 3       # months with this many days without any record are flagged (undercounted)
   min_days_flooded: 3            # TODO: days flagged in a month for a cell to count as flooded
-  permanent_water_month_share: 0.80   # cell is permanent water if flooded in more than this share of months
   flooded_cell_passable: false   # false = blocked; TODO: decide blocked vs slowed
   season_months: [7, 8, 9, 10, 11]   # TODO: flood season used in recurrence
+
+permanent_water:
+  min_occurrence: 75             # a 30 m pixel is permanent water if water in at least this % of observations
+  keep_populated_cells_open: true   # cells where people live are never blocked (they have land; riverside towns have crossings)
+  close_gaps: true               # close 1-2 cell breaks and corner-only contacts so rivers stay continuous
 
 travel:
   modes: [walking, motorised, slow]

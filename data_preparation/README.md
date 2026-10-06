@@ -27,18 +27,20 @@ the grid definition when you need real-world coordinates:
 Run from the repository root. Outputs go to `data/interim/` (not in git, so everyone builds them once).
 
 ```
-python -m data_preparation.build_static          # ~30 s
-python -m data_preparation.build_facilities      # ~5 s
-python -m data_preparation.build_flood_monthly   # ~6 min
+python -m data_preparation.build_static            # ~30 s
+python -m data_preparation.build_permanent_water   # ~15 s, needs build_static first
+python -m data_preparation.build_facilities        # ~5 s
+python -m data_preparation.build_flood_monthly     # ~6 min
 ```
 
 | File | Content |
 |---|---|
 | `static_250m.tif` | 4 bands: population, walking travel cost, motorised travel cost, county id |
+| `permanent_water_250m.tif` | 1 where the cell is permanent water (rivers, lakes), from JRC Global Surface Water |
 | `counties.csv` | `county_id` to county name and pcode |
 | `facilities.parquet` | One row per health facility (after cleaning), with its `row`, `col` and county |
 | `facilities_removed.csv` | Every facility dropped during cleaning, with the reason |
-| `flood/flood_YYYY_MM.tif` | One file per month, 2003-01 to 2025-12: days flagged as flooded |
+| `flood/flood_YYYY_MM.tif` | One file per month, 2003-01 to 2025-12: days flagged as flooded, in total and split into recurring and unusual (3 bands) |
 | `flood_months.csv` | Per month: days without any flood record (data gaps), and whether the month is flagged |
 
 The `.tif` files open directly in QGIS if you want to look at them.
@@ -71,12 +73,14 @@ are excluded from the flood record (Terra satellite only, heavily undercounted).
 ```python
 import numpy as np
 from data_preparation.grid import load_config, make_grid
-from data_preparation.loading import load_static, load_flood, iter_flood, load_flood_months, load_facilities
+from data_preparation.loading import (load_static, load_permanent_water, load_flood, iter_flood,
+                                     load_flood_months, load_facilities)
 from data_preparation.build_flood_monthly import NO_DATA
 
 cfg = load_config()
 grid = make_grid(cfg)
 static = load_static(cfg)          # dict of 2D arrays
+water = load_permanent_water(cfg)  # 2D boolean array, True = permanent water
 facilities = load_facilities(cfg)  # GeoDataFrame
 ```
 
@@ -92,12 +96,25 @@ Flood data is loaded by date range (both ends included):
 ```python
 months, flood = load_flood("2020-07", "2020-11")   # flood.shape = (5, 4500, 5308)
 months, flood = load_flood("2020-11")              # a single month, flood.shape = (1, 4500, 5308)
+months, unusual = load_flood("2020-11", kind="unusual")   # only unusual flooding
 
 for month, days in iter_flood("2003-01", "2025-12"):   # one month at a time, for long periods
     ...
 ```
 
 Each flood array holds the **number of days in that month the cell was flagged as flooded** (0-31).
+`kind` picks which flooding is counted, using NASA's labels:
+
+| `kind` | Counts | Meaning |
+|---|---|---|
+| `"all"` (default) | every flooded day | |
+| `"recurring"` | days labelled recurring | the cell is inside the area that normally floods in this calendar month |
+| `"unusual"` | days labelled unusual | the cell is outside that area |
+
+The label describes the place and month, not the size of the flood, so recurring flooding can't
+grow over the years and all growth after 2020 shows up as unusual. Use `"all"` for trends; see
+`EDA/eda_flood_masks.ipynb`. Recurring and unusual days can add up to more than the total when a
+cell contains two source pixels with different labels on the same day.
 The value 255 (`NO_DATA`) means there is no flood data for that cell. That is not the same as
 "not flooded", so always handle it separately.
 
@@ -115,16 +132,18 @@ flooded = (days >= cfg["flood"]["min_days_flooded"]) & (days != NO_DATA)
 no_data = days == NO_DATA
 ```
 
-**Travel cost for a flood scenario.** Copy the static layer and block the flooded cells. Multiply
-by the cell size to get the minutes needed to cross a cell.
+**Travel cost for a flood scenario.** Copy the static layer and block permanent water and the
+flooded cells. Multiply by the cell size to get the minutes needed to cross a cell.
 
 ```python
 friction = static["friction_walking"].copy()
+friction[water] = np.inf                    # rivers and lakes cannot be crossed, in every scenario
 friction[flooded] = np.inf                  # flooded cells cannot be crossed
 minutes_per_cell = friction * grid.cell_size   # 3 to 60 minutes per 250 m when walking
 ```
 
-The baseline (no flood) is the same without the second line. The slow-traveller variant multiplies
+The baseline (no flood) is the same without the `flooded` line; permanent water is blocked in the
+baseline too, so it never counts as flood impact. The slow-traveller variant multiplies
 the walking friction by `cfg["travel"]["slow_traveller_factor"]`.
 
 **Facilities on the grid.** The facility table already has the cell of each facility.
@@ -150,14 +169,26 @@ pop_flooded_per_county = np.bincount(static["county_id"].ravel(),
 - **No flood data north of 10N.** About 6% of South Sudan (Renk, Manyo and parts of 7 other
   counties) has the value 255 in every flood file. 49 facilities are affected; they have
   `has_flood_data = False`. Report these as "no data", never as "not flooded".
-- **Permanent water is not included yet, and nothing else blocks it.** Rivers and the permanent part
-  of the Sudd are not in the flood files (the NASA product removes known open water before labelling
-  floods), and the travel-cost layers let people walk across the White Nile at almost normal speed
-  (see `EDA/eda_friction.ipynb`). The JRC Global Surface Water layer is still to be added; until
-  then, travel times across rivers are too short.
-- **Recurring and unusual floods are merged.** A day counts if either class flagged the cell. NASA's
-  split is a fixed lookup per place and calendar month, not a property of each flood; see
-  `EDA/eda_flood_masks.ipynb` before using it.
+- **Permanent water blocks most, not all, of the rivers.** Neither the flood files (NASA removes known
+  open water) nor the travel-cost layers (see `EDA/eda_friction.ipynb`) block rivers, so
+  `permanent_water_250m.tif` does, from JRC Global Surface Water (v1.5, 1984-2024). A cell is blocked
+  if any 30 m pixel in it is water in at least 75% of observations, small gaps are closed, and cells
+  where people live are always left open (they have land; riverside towns are where bridges and
+  ferries are; 0 people end up in blocked cells). Checked along the White Nile, the detour needed to
+  cross from 2 km on one bank to 2 km on the other:
+
+  | Juba | Mangalla | Bor | Shambe | Adok (Sudd) | Melut | Renk |
+  |---|---|---|---|---|---|---|
+  | open (town) | open (town) | 5 km | 18 km | not blocked | 11 km | 85 km |
+
+  So the river is a barrier for anyone within a 2-hour walk at Shambe, Melut and Renk, but near Bor
+  the braided channel leaks, and in the Sudd JRC barely sees the channel under the vegetation.
+  Bridges and ferries outside towns are not represented. The settings are under `permanent_water`
+  in `config.yaml`.
+- **Recurring vs unusual is NASA's fixed mask.** It was computed once over 2003-2024 and is the same
+  every year, so it describes where flooding normally happens, not how unusual a given year is.
+  Our recalculation with NASA's rule agrees with it for 97-99% of pixel-months
+  (`EDA/eda_flood_masks.ipynb`).
 - **Gaps in the flood record.** Some days have no records at all. Two longer gaps fall in the period we
   use: 15 April to 19 May 2006 and 18 to 29 November 2007, so April 2006, May 2006 and November 2007
   are flagged in `flood_months.csv` (3 or more missing days, `flag_min_missing_days` in the config).
