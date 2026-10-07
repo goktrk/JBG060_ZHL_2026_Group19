@@ -72,3 +72,11 @@ siting:
   candidate_spacing_km: 5
   max_flooded_year_share: 0.10   # TODO: candidate cells flooded in at most this share of years
   max_sites: 20                  # TODO
+
+baseline:
+  output_dir: data/processed/baseline
+  modes: [walking, motorised]     # slow traveller = walking x travel.slow_traveller_factor
+  thresholds_min: [30, 60, 120]   # plus travel.max_time_min
+  long_trip_min: 1440             # sanity check: more than 24 h
+  admin1: raw_data/Administrative boundaries/ssd_admin1.geojson
+  admin3: raw_data/Administrative boundaries/ssd_admin3.geojson
