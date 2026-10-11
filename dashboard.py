@@ -1,22 +1,36 @@
 # Use: PYTHONPATH=. streamlit run dashboard.py
 
 ####################### Pre-Aggregating and Caching the Heavy Data #######################
+import base64
+import io
 import json
 import folium
+import geopandas as gpd
 import numpy as np
 import pandas as pd
 import streamlit as st
+from affine import Affine
+from PIL import Image
+from pyproj import Transformer
+from rasterio.transform import array_bounds
+from rasterio.warp import Resampling, calculate_default_transform, reproject
 from streamlit_folium import st_folium
 from folium.plugins import MarkerCluster
 
-from data_preparation.grid import load_config, make_grid
+from data_preparation.grid import ROOT, data_path, in_grid, load_config, lonlat_to_rowcol, make_grid
 from data_preparation.loading import (
-    load_static, 
-    load_permanent_water, 
-    load_flood, 
+    load_static,
+    load_permanent_water,
+    load_flood,
+    load_flood_likelihood,
     load_facilities
 )
+from data_preparation.build_baseline import build_sites
 from data_preparation.build_flood_monthly import NO_DATA
+from data_preparation.routing import blocked_mask, open_sites, rc_to_lonlat, route
+
+MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August",
+               "September", "October", "November", "December"]
 
 
 @st.cache_resource
@@ -69,6 +83,200 @@ def compute_flood_scenario(month_str, min_days):
         fac_df["county_pct_affected"] = 0
 
     return fac_df, counties_meta
+
+
+@st.cache_resource
+def get_sites():
+    cfg, grid, static, water, facilities = get_base_pipeline()
+    sites = build_sites(facilities, grid)   # facilities sharing a 250 m cell are one site
+    return sites, sites[["row", "col"]].to_numpy()
+
+
+@st.cache_resource(max_entries=4)
+def get_route_inputs(calendar_month, threshold):
+    """Blocked cells and the sites that can still provide care, for one calendar month and threshold."""
+    cfg, grid, static, water, facilities = get_base_pipeline()
+    sites, sites_rc = get_sites()
+    likelihood = load_flood_likelihood(calendar_month, cfg)
+    blocked = blocked_mask(water, likelihood, threshold)
+    usable = open_sites(sites_rc, likelihood, threshold)
+    return blocked, usable, np.isnan(likelihood)
+
+
+@st.cache_resource(max_entries=16)   # each route takes a few seconds; other widgets rerun the script
+def compute_route(lat, lon, calendar_month, threshold, mode):
+    """Flood-aware route from a clicked point, plus the same route ignoring floods for comparison."""
+    cfg, grid, static, water, facilities = get_base_pipeline()
+    sites, sites_rc = get_sites()
+    row, col = lonlat_to_rowcol(grid, np.array([lon]), np.array([lat]))
+    if not in_grid(grid, row, col)[0] or static["county_id"][row[0], col[0]] == 0:
+        return None
+    start = (int(row[0]), int(col[0]))
+    friction = static[f"friction_{mode}"]
+    blocked, usable, no_data = get_route_inputs(calendar_month, threshold)
+
+    flood_aware = route(friction, start, sites_rc[usable], blocked, grid.cell_size, no_data)
+    site = sites.iloc[np.flatnonzero(usable)[flood_aware.site]] if flood_aware.site >= 0 else None
+    no_flood = route(friction, start, sites_rc, water, grid.cell_size)
+    return dict(start=start, flood_aware=flood_aware, site=site, no_flood=no_flood, blocked=blocked)
+
+
+def mask_to_png(mask, transform, crs, resolution_m, resampling):
+    """A boolean mask as a PNG data URL plus lat/lon bounds, reprojected to Web Mercator so Leaflet
+    places it exactly (an image is stretched linearly in Web Mercator, not in our Albers grid)."""
+    h, w = mask.shape
+    dst_transform, dst_w, dst_h = calculate_default_transform(
+        crs, "EPSG:3857", w, h, *array_bounds(h, w, transform), resolution=resolution_m)
+    out = np.zeros((dst_h, dst_w), dtype=np.uint8)
+    reproject(mask.astype(np.uint8), out, src_transform=transform, src_crs=crs,
+              dst_transform=dst_transform, dst_crs="EPSG:3857", resampling=resampling)
+    rgba = np.zeros(out.shape + (4,), dtype=np.uint8)
+    rgba[out > 0] = (33, 102, 172, 150)
+    png = io.BytesIO()
+    Image.fromarray(rgba, "RGBA").save(png, format="PNG", optimize=True)
+    west, south, east, north = array_bounds(dst_h, dst_w, dst_transform)
+    (lon_w, lon_e), (lat_s, lat_n) = Transformer.from_crs("EPSG:3857", "EPSG:4326", always_xy=True).transform(
+        [west, east], [south, north])
+    return ("data:image/png;base64," + base64.b64encode(png.getvalue()).decode(),
+            [[lat_s, lon_w], [lat_n, lon_e]])
+
+
+@st.cache_data(max_entries=8, show_spinner="Drawing all flood-prone cells...")
+def national_overlay(calendar_month, threshold):
+    """Every blocked cell in the country at 500 m (a 500 m pixel is shown if any 250 m cell in it is
+    blocked). Cached, so switching it on again for the same month and threshold is instant."""
+    cfg, grid, static, water, facilities = get_base_pipeline()
+    blocked, _, _ = get_route_inputs(calendar_month, threshold)
+    return mask_to_png(blocked, grid.transform, grid.crs, 500, Resampling.max)
+
+
+def blocked_overlay(grid, blocked, path_rcs, margin=40):
+    """Blocked cells at 250 m in a window around the routes (40 cells = 10 km on each side)."""
+    cells = np.vstack([p for p in path_rcs if len(p)])
+    r0, c0 = np.maximum(cells.min(axis=0) - margin, 0)
+    r1, c1 = np.minimum(cells.max(axis=0) + margin + 1, grid.shape)
+    window_transform = grid.transform * Affine.translation(int(c0), int(r0))
+    url, bounds = mask_to_png(blocked[r0:r1, c0:c1], window_transform, grid.crs, grid.cell_size,
+                              Resampling.nearest)
+    return folium.raster_layers.ImageOverlay(image=url, bounds=bounds,
+                                             name="Blocked near the route (250 m)")
+
+
+@st.cache_data
+def boundaries_geojson(level):
+    """County (2) or state (1) outlines as GeoJSON, simplified to about 110 m so the map stays light."""
+    cfg = load_config()
+    path = data_path(cfg, "admin2") if level == 2 else ROOT / cfg["baseline"]["admin1"]
+    cols = ["adm2_name", "adm1_name"] if level == 2 else ["adm1_name"]
+    units = gpd.read_file(path)[cols + ["geometry"]]
+    return units.assign(geometry=units.simplify(0.001, preserve_topology=True)).to_json()
+
+
+def add_boundaries(m):
+    """County and state outlines, drawn above the flood layers and below the routes."""
+    folium.GeoJson(
+        boundaries_geojson(2), name="County boundaries",
+        style_function=lambda f: {"fill": False, "color": "#555555", "weight": 1, "opacity": 0.8},
+        tooltip=folium.GeoJsonTooltip(fields=["adm2_name", "adm1_name"], aliases=["County:", "State:"]),
+    ).add_to(m)
+    folium.GeoJson(
+        boundaries_geojson(1), name="State boundaries",
+        style_function=lambda f: {"fill": False, "color": "#222222", "weight": 2.5, "opacity": 0.9},
+    ).add_to(m)
+
+
+def build_route_map(grid, result, clicked, national=None):
+    m = folium.Map(location=[7.5, 30.5], zoom_start=6.2, tiles="OpenStreetMap", control_scale=True)
+    if national is not None:
+        url, bounds = national
+        folium.raster_layers.ImageOverlay(image=url, bounds=bounds,
+                                          name="All flood-prone cells and permanent water (500 m)").add_to(m)
+    if result is None:
+        add_boundaries(m)
+        if clicked:
+            folium.Marker(clicked, icon=folium.Icon(color="gray", icon="question-sign")).add_to(m)
+        folium.LayerControl(position="topright", collapsed=False).add_to(m)
+        return m
+
+    paths = [result["flood_aware"].path_rc, result["no_flood"].path_rc]
+    if any(len(p) for p in paths):
+        blocked_overlay(grid, result["blocked"], paths).add_to(m)
+    add_boundaries(m)
+
+    no_flood = result["no_flood"].path_rc
+    if len(no_flood):
+        lon, lat = rc_to_lonlat(grid, no_flood[:, 0], no_flood[:, 1])
+        folium.PolyLine(list(zip(lat, lon)), color="#666666", weight=3, dash_array="6 6",
+                        tooltip="Route if there were no floods").add_to(m)
+
+    flood_aware = result["flood_aware"]
+    if len(flood_aware.path_rc):
+        lon, lat = rc_to_lonlat(grid, flood_aware.path_rc[:, 0], flood_aware.path_rc[:, 1])
+        folium.PolyLine(list(zip(lat, lon)), color="#d7301f", weight=4,
+                        tooltip=f"Flood-aware route: {flood_aware.minutes:.0f} min").add_to(m)
+        site = result["site"]
+        folium.Marker([site["lat"], site["lon"]], icon=folium.Icon(color="green", icon="plus-sign"),
+                      popup=f"{site['rep_facility_name']} ({site['rep_facility_type']})").add_to(m)
+
+    folium.Marker(clicked, icon=folium.Icon(color="red", icon="user"), tooltip="Start").add_to(m)
+    bounds = np.vstack([p for p in paths if len(p)] + [np.array([result["start"]])])
+    lon, lat = rc_to_lonlat(grid, bounds[:, 0], bounds[:, 1])
+    m.fit_bounds([[float(lat.min()), float(lon.min())], [float(lat.max()), float(lon.max())]], padding=(30, 30))
+    folium.LayerControl(position="topright", collapsed=False).add_to(m)
+    return m
+
+
+def format_minutes(minutes):
+    return f"{minutes:.0f} min" if minutes < 60 else f"{int(minutes // 60)} h {minutes % 60:02.0f} min"
+
+
+def render_route_section(calendar_month, threshold, mode):
+    cfg, grid, static, water, facilities = get_base_pipeline()
+    st.subheader("🧭 Route to Care")
+    month_name = MONTH_NAMES[calendar_month - 1]
+    flood_rule = (f"cells flooded in any {month_name} since 2003" if threshold == 0 else
+                  f"cells flooded in more than {threshold:.0%} of {month_name}s (2003-2025)")
+    st.caption(f"Click anywhere in South Sudan. The route avoids permanent water and {flood_rule}, and goes to "
+               f"the nearest facility whose own cell is not flood-prone. The dashed grey line is the route "
+               f"without floods.")
+
+    show_all = st.toggle("Show all flood-prone cells (nationwide)", key="route_show_all",
+                         help="Without this, blocked cells are only drawn within 10 km of the route. Either way "
+                              "the route avoids every flood-prone cell in the country.")
+    national = national_overlay(calendar_month, threshold) if show_all else None
+
+    clicked = st.session_state.get("route_start")
+    result = compute_route(*clicked, calendar_month, threshold, mode) if clicked else None
+    if clicked and result is None:
+        st.warning("That point is outside South Sudan. Click inside the country.")
+
+    # only a click reruns the script; zooming and panning stay in the browser
+    out = st_folium(build_route_map(grid, result, clicked, national), key="route_map", width=1000, height=550,
+                    returned_objects=["last_clicked"])
+    last = (out or {}).get("last_clicked")
+    if last and (last["lat"], last["lng"]) != clicked:
+        st.session_state["route_start"] = (last["lat"], last["lng"])
+        st.rerun()
+
+    if result is None:
+        return
+    flood_aware, no_flood, site = result["flood_aware"], result["no_flood"], result["site"]
+    if flood_aware.site < 0:
+        st.error("No facility that can provide care is reachable without crossing flood-prone cells. "
+                 "Try a higher flood threshold.")
+        return
+
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("Travel Time", format_minutes(flood_aware.minutes))
+    c2.metric("Route Length", f"{flood_aware.length_m / 1000:.1f} km")
+    if no_flood.site >= 0:
+        c3.metric("Extra Time vs. No Floods", f"+{format_minutes(max(flood_aware.minutes - no_flood.minutes, 0.0))}")
+    others = f" (+{site['n_facilities'] - 1} more in the same cell)" if site["n_facilities"] > 1 else ""
+    c4.metric("Destination", site["rep_facility_type"], help=f"{site['rep_facility_name']}{others}")
+    st.write(f"**Destination:** {site['rep_facility_name']}{others}")
+    if flood_aware.through_no_data:
+        st.warning("Part of this route lies north of 10°N, where there is no flood data. Those cells are "
+                   "treated as passable, but they are not known to be dry.")
 
 ####################### Map Generator Function #######################
 
@@ -205,6 +413,18 @@ def main():
 
     show_only_flooded = st.sidebar.checkbox("Show Only Inaccessible / Flooded Facilities", value=False)
 
+    st.sidebar.subheader("Route to Care")
+    route_cfg = load_config()["routing"]
+    route_mode = st.sidebar.radio("Travel Mode", ("walking", "motorised"),
+                                  index=("walking", "motorised").index(route_cfg["default_mode"]),
+                                  format_func=str.capitalize)
+    route_threshold = st.sidebar.slider(
+        "Block Cells Flooded in More Than (% of Years)",
+        min_value=0, max_value=50, step=5, value=round(route_cfg["max_flood_likelihood"] * 100),
+        help="Uses the flood history of the selected month's calendar month (2003-2025). 0% blocks every cell "
+             "flooded (3+ days) in that month in any year; higher values block only cells that flood more often."
+    ) / 100
+
     facilities_data, county_stats = compute_flood_scenario(selected_month, min_days)
 
     county_options = {"All Counties (National View)": None}
@@ -265,7 +485,8 @@ def main():
         st.subheader("🇺🇳 National Overview (All 79 Counties)")
 
     scenario_map = build_advanced_map(county_stats, display_facilities, selected_pcode=selected_pcode)
-    st_folium(scenario_map, width=1000, height=600)
+    # returned_objects=[]: zooming or panning doesn't rerun the script (which redrew the map grey)
+    st_folium(scenario_map, key="scenario_map", width=1000, height=600, returned_objects=[])
 
     st.divider()
 
@@ -292,6 +513,12 @@ def main():
         )
     else:
         st.info("No facilities submerged under this specific scenario threshold.")
+
+    st.divider()
+
+    render_route_section(pd.Period(selected_month, freq="M").month, route_threshold, route_mode)
+
+    st.divider()
 
     with st.expander("Methodological Assumptions & SLE Limitations"):
         st.markdown("""
