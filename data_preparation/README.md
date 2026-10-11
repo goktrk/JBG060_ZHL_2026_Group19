@@ -31,11 +31,7 @@ python -m data_preparation.build_static            # ~30 s
 python -m data_preparation.build_permanent_water   # ~15 s, needs build_static first
 python -m data_preparation.build_facilities        # ~5 s
 python -m data_preparation.build_flood_monthly     # ~6 min
-python -m data_preparation.build_flood_likelihood  # ~1-2 min, needs build_flood_monthly first
 ```
-
-`build_flood_likelihood` is only needed for the flood-aware routing in the dashboard; see
-`data_preparation/README_routing.md`.
 
 | File | Content |
 |---|---|

@@ -6,7 +6,6 @@ Every array returned here is on the same analysis grid, so they line up cell for
     static = load_static()                          # dict of 2D arrays
     months, flood = load_flood("2020-07", "2020-11")   # 5 months, flood.shape = (5, rows, cols)
     months, unusual = load_flood("2020-07", "2020-11", kind="unusual")
-    likelihood = load_flood_likelihood(10)          # share of years each cell was flooded in October
 """
 from collections.abc import Iterator
 
@@ -86,22 +85,6 @@ def load_flood_months(cfg: dict | None = None) -> pd.DataFrame:
     """
     cfg = cfg or load_config()
     return pd.read_csv(data_path(cfg, "flood_months"))
-
-
-def load_flood_likelihood(month: int, cfg: dict | None = None) -> np.ndarray:
-    """
-    Share of years (0-1) each cell was flooded in calendar month `month` (1-12), float32.
-    NaN where there is no flood data, which does not mean "never flooded". See build_flood_likelihood.
-    """
-    if not 1 <= month <= 12:
-        raise ValueError(f"month must be 1-12, not {month!r}")
-    cfg = cfg or load_config()
-    with rasterio.open(data_path(cfg, "flood_likelihood")) as src:
-        built_with = src.tags().get("min_days_flooded")
-        if built_with != str(cfg["flood"]["min_days_flooded"]):
-            raise ValueError(f"flood likelihood was built with min_days_flooded={built_with}, config says "
-                             f"{cfg['flood']['min_days_flooded']}; rerun build_flood_likelihood")
-        return src.read(month)
 
 
 def load_facilities(cfg: dict | None = None) -> gpd.GeoDataFrame:

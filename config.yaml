@@ -23,7 +23,6 @@ paths:
   counties_table: data/interim/counties.csv
   facilities_table: data/interim/facilities.parquet
   facilities_removed: data/interim/facilities_removed.csv   # every dropped facility, with the reason
-  flood_likelihood: data/interim/flood_likelihood_250m.tif   # per calendar month: share of years the cell was flooded
 
 grid:
   crs: "ESRI:102022"             # Africa Albers Equal Area. TODO: confirm vs UTM 36N
@@ -47,10 +46,6 @@ permanent_water:
   min_occurrence: 75             # a 30 m pixel is permanent water if water in at least this % of observations
   keep_populated_cells_open: true   # cells where people live are never blocked (they have land; riverside towns have crossings)
   close_gaps: true               # close 1-2 cell breaks and corner-only contacts so rivers stay continuous
-
-routing:
-  max_flood_likelihood: 0.0      # cells flooded in more than this share of years (that calendar month) are blocked; 0 = flooded in any year
-  default_mode: walking          # walking | motorised
 
 travel:
   modes: [walking, motorised, slow]
