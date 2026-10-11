@@ -13,5 +13,3 @@ cache
 .git
 .vscode
 *.npy
-.claude/
-data/processed/
