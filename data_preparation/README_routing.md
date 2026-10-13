@@ -141,7 +141,7 @@ The Route to Care section sits below the National Overview map and the Top 5 tab
 | `compute_route(lat, lon, month, threshold, mode)` | Flood-aware route plus the no-flood route; cached, up to 16 |
 | `national_overlay(month, threshold)` | Every blocked cell as one image at 500 m; cached, up to 8 |
 | `blocked_overlay(...)` | Blocked cells at 250 m within 10 km (40 cells) of the routes |
-| `boundaries_geojson(level)` | County and state outlines, simplified to about 110 m, cached |
+| `add_facilities(...)` | Every facility: red = flood-prone, green = open, orange = protected |
 | `build_route_map(...)` | Assembles the folium map |
 | `render_route_section(...)` | Caption, toggle, map, click handling, metrics and warnings |
 
@@ -151,7 +151,8 @@ On the map:
 - **blue cells**: blocked cells (flood-prone or permanent water), drawn near the route by default
 - **"Show all flood-prone cells (nationwide)" toggle**: draws every blocked cell in the country. It
   only changes what is drawn; the route always avoids every blocked cell nationwide.
-- **county and state boundaries**: each can be switched on and off in the layer menu
+- **dots**: every health facility, red = flood-prone, green = open, orange = protected (Top 5)
+- **satellite imagery** by default; OpenStreetMap can be picked in the layer menu
 
 Below the map: travel time, route length, extra time compared with the no-flood route, and the
 destination facility. Warnings appear for clicks outside South Sudan, unreachable points, and routes

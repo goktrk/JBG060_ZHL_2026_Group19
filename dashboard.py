@@ -17,7 +17,7 @@ from rasterio.warp import Resampling, calculate_default_transform, reproject
 from streamlit_folium import st_folium
 from folium.plugins import MarkerCluster
 
-from data_preparation.grid import ROOT, data_path, in_grid, load_config, lonlat_to_rowcol, make_grid
+from data_preparation.grid import in_grid, load_config, lonlat_to_rowcol, make_grid
 from data_preparation.loading import (
     load_static,
     load_permanent_water,
@@ -182,37 +182,37 @@ def blocked_overlay(grid, blocked, path_rcs, margin=40):
                                              name="Blocked near the route (250 m)")
 
 
-@st.cache_data
-def boundaries_geojson(level):
-    """County (2) or state (1) outlines as GeoJSON, simplified to about 110 m so the map stays light."""
-    cfg = load_config()
-    path = data_path(cfg, "admin2") if level == 2 else ROOT / cfg["baseline"]["admin1"]
-    cols = ["adm2_name", "adm1_name"] if level == 2 else ["adm1_name"]
-    units = gpd.read_file(path)[cols + ["geometry"]]
-    return units.assign(geometry=units.simplify(0.001, preserve_topology=True)).to_json()
-
-
-def add_boundaries(m):
-    """County and state outlines, drawn above the flood layers and below the routes."""
+def add_facilities(m, facilities, top_n):
+    """Every facility, drawn above the flood layers and below the routes:
+    red = flood-prone, green = open, orange = protected."""
+    protected, flooded = facilities["is_protected"], facilities["is_flooded"]
+    points = gpd.GeoDataFrame(
+        {"name": facilities["Facility_n"], "type": facilities["Facility_t"],
+         "status": np.select([protected, flooded], [f"PROTECTED (TOP {top_n})", "SUBMERGED / CUT OFF"], "OPERATIONAL"),
+         "color": np.select([protected, flooded], ["#FF9800", "#FF3344"], "#00E676")},
+        geometry=gpd.points_from_xy(facilities["Long"], facilities["Lat"]), crs="EPSG:4326")
+    points = points.iloc[np.argsort(flooded.to_numpy(int) + protected.to_numpy(int), kind="stable")]   # red, orange on top
     folium.GeoJson(
-        boundaries_geojson(2), name="County boundaries",
-        style_function=lambda f: {"fill": False, "color": "#555555", "weight": 1, "opacity": 0.8},
-        tooltip=folium.GeoJsonTooltip(fields=["adm2_name", "adm1_name"], aliases=["County:", "State:"]),
-    ).add_to(m)
-    folium.GeoJson(
-        boundaries_geojson(1), name="State boundaries",
-        style_function=lambda f: {"fill": False, "color": "#222222", "weight": 2.5, "opacity": 0.9},
+        points.to_json(), name="Health facilities",
+        marker=folium.CircleMarker(radius=4.5, color="#ffffff", weight=0.6, fill=True, fill_opacity=0.9),
+        style_function=lambda f: {"fillColor": f["properties"]["color"]},
+        tooltip=folium.GeoJsonTooltip(fields=["name", "type", "status"], aliases=["Facility:", "Type:", "Status:"]),
     ).add_to(m)
 
 
-def build_route_map(grid, result, clicked, national=None):
+def build_route_map(grid, result, clicked, facilities, top_n, national=None):
     m = folium.Map(location=[7.5, 30.5], zoom_start=6.2, tiles="OpenStreetMap", control_scale=True)
+    folium.TileLayer(
+        tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        attr='Esri World Imagery',
+        name='Satellite Imagery'
+    ).add_to(m)
     if national is not None:
         url, bounds = national
         folium.raster_layers.ImageOverlay(image=url, bounds=bounds,
                                           name="All flood-prone cells and permanent water (500 m)").add_to(m)
     if result is None:
-        add_boundaries(m)
+        add_facilities(m, facilities, top_n)
         if clicked:
             folium.Marker(clicked, icon=folium.Icon(color="gray", icon="question-sign")).add_to(m)
         folium.LayerControl(position="topright", collapsed=False).add_to(m)
@@ -221,7 +221,7 @@ def build_route_map(grid, result, clicked, national=None):
     paths = [result["flood_aware"].path_rc, result["no_flood"].path_rc]
     if any(len(p) for p in paths):
         blocked_overlay(grid, result["blocked"], paths).add_to(m)
-    add_boundaries(m)
+    add_facilities(m, facilities, top_n)
 
     no_flood = result["no_flood"].path_rc
     if len(no_flood):
@@ -250,7 +250,7 @@ def format_minutes(minutes):
     return f"{minutes:.0f} min" if minutes < 60 else f"{int(minutes // 60)} h {minutes % 60:02.0f} min"
 
 
-def render_route_section(calendar_month, threshold, mode, protected):
+def render_route_section(calendar_month, threshold, mode, protected, facilities_data, top_n):
     cfg, grid, static, water, facilities = get_base_pipeline()
     st.subheader("🧭 Route to Care")
     month_name = MONTH_NAMES[calendar_month - 1]
@@ -258,7 +258,7 @@ def render_route_section(calendar_month, threshold, mode, protected):
                   f"cells flooded in more than {threshold:.0%} of {month_name}s (2003-2025)")
     caption = (f"Click anywhere in South Sudan. The route avoids permanent water and {flood_rule}, and goes to "
                f"the nearest facility whose own cell is not flood-prone. The dashed grey line is the route "
-               f"without floods.")
+               f"without floods. Facilities: red = flood-prone, green = open, orange = protected.")
     if protected:
         caption += (f" The Top {len(protected)} facilities above are assumed protected, so they also count as "
                     f"open; the flood-prone ground around them stays blocked.")
@@ -275,8 +275,8 @@ def render_route_section(calendar_month, threshold, mode, protected):
         st.warning("That point is outside South Sudan. Click inside the country.")
 
     # only a click reruns the script; zooming and panning stay in the browser
-    out = st_folium(build_route_map(grid, result, clicked, national), key="route_map", width=1000, height=550,
-                    returned_objects=["last_clicked"])
+    out = st_folium(build_route_map(grid, result, clicked, facilities_data, top_n, national), key="route_map",
+                    width=1000, height=550, returned_objects=["last_clicked"])
     last = (out or {}).get("last_clicked")
     if last and (last["lat"], last["lng"]) != clicked:
         st.session_state["route_start"] = (last["lat"], last["lng"])
@@ -561,7 +561,7 @@ def main():
 
     st.divider()
 
-    render_route_section(calendar_month, route_threshold, route_mode, protected)
+    render_route_section(calendar_month, route_threshold, route_mode, protected, facilities_data, top_n)
 
     st.divider()
 
