@@ -34,7 +34,8 @@ python -m data_preparation.build_flood_monthly     # ~6 min
 python -m data_preparation.build_flood_likelihood  # ~1-2 min, needs build_flood_monthly first
 ```
 
-`build_flood_likelihood` is only needed for the flood-aware routing in the dashboard; see
+`build_flood_likelihood` is needed by the dashboard: it decides which facilities are flood-prone, the
+Top 5 ranking and the routing. See `data_preparation/README_prioritization.md` and
 `data_preparation/README_routing.md`.
 
 | File | Content |

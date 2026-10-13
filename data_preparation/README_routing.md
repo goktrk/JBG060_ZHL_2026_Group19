@@ -94,7 +94,8 @@ year since 2003. Higher values block only cells that flood more often (for examp
 of the years).
 
 A facility counts as able to provide care only when its own cell is not above the threshold.
-Facilities in flood-prone cells are skipped, and the route goes to the next nearest one.
+Facilities in flood-prone cells are skipped, and the route goes to the next nearest one. The National
+Overview uses the same rule for facility status (see `README_prioritization.md`).
 
 ### 3. The route (`routing.py`)
 
@@ -138,7 +139,7 @@ The Route to Care section sits below the National Overview map and the Top 5 tab
 |---|---|
 | `get_sites()` | Facility sites, built once |
 | `get_route_inputs(month, threshold)` | Blocked mask, open facilities and no-data mask; cached, up to 4 settings |
-| `compute_route(lat, lon, month, threshold, mode)` | Flood-aware route plus the no-flood route; cached, up to 16 |
+| `compute_route(lat, lon, month, threshold, mode, protected)` | Flood-aware route plus the no-flood route, with the protected sites open; cached, up to 16 |
 | `national_overlay(month, threshold)` | Every blocked cell as one image at 500 m; cached, up to 8 |
 | `blocked_overlay(...)` | Blocked cells at 250 m within 10 km (40 cells) of the routes |
 | `add_facilities(...)` | Every facility: red = flood-prone, green = open, orange = protected |
@@ -183,9 +184,9 @@ towards the edges of the country.
 | **Hard block** (infinite cost) instead of a penalty | It was the team's original idea and is easy to explain. Its downside is listed under limitations. |
 | Default threshold **0** ("flooded in any year") | The flood record is sparse (below 1% of cells in any month), so higher thresholds blocked almost nothing. At 20%, about 0.08% of cells were blocked in October. |
 | **Not** NASA's "recurring" label | It was tested. It covers almost the same tiny area as the 20% threshold (0.14% of cells in October, against 1.67% for "any year"). NASA's recurring mask is fixed, so all flood growth after 2020 is labelled "unusual" (see `README.md`). |
-| Flood-prone facilities are skipped | The team decided facilities "count if they can provide care"; there is no data on status or staffing, so the facility's own flood exposure is the proxy. |
+| Flood-prone facilities are skipped, unless protected | The team decided facilities "count if they can provide care"; there is no data on status or staffing, so the facility's own flood exposure is the proxy. |
 | No-data cells (north of 10°N) are passable | Blocking them would cut off the whole north; the dashboard warns instead. |
-| Calendar-month history, not the selected year | Routing is meant for anticipation ("what usually floods in October"), while the National Overview shows what happened in one specific month. At the default settings, in every scenario month the route map blocks a superset of what the overview shows as flooded. |
+| Calendar-month history, not the selected year | Routing is meant for anticipation ("what usually floods in October"), while the National Overview's county colours show what happened in one specific month (its facility status uses the same history as routing). At the default settings, in every scenario month the route map blocks a superset of what the overview shows as flooded. |
 
 Numbers for October (cells inside South Sudan):
 

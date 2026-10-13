@@ -13,14 +13,16 @@ The unit is a **site**: the facilities sharing a 250 m cell, from `build_sites` 
    - Sites without flood data (NaN, north of 10°N) are not flagged.
 2. **Baseline catchments, no floods.** `travel_time(friction_walking, all sites, blocked=water)`, the
    same solve as `build_baseline`. `nearest` gives each cell's usual site and `minutes` its usual
-   travel time.
+   travel time. The dashboard computes this itself (`get_baseline_walking`), so `build_baseline`
+   doesn't need to run first.
 3. **Flood scenario.** `travel_time(friction_walking, open sites only, blocked=water | likelihood > threshold)`:
    every flooded site is lost and flood-prone cells are impassable. People who live in blocked cells,
    or are walled in by them, are unreachable (NaN).
 4. **Per flooded site** (`site_impacts`), over the people in its baseline catchment:
    - **Most Saved:** `catchment_pop`, the population whose nearest site without floods is this one.
    - **Worst-Off First:** `share_cut_off`, the part of that population whose flood-scenario time is
-     NaN or above `travel.max_time_min` (120 min). Ties are broken by `extra_min`, the
+     NaN or above `travel.max_time_min` (120 min). People who were already more than 120 min away
+     without floods count as cut off too. Ties are broken by `extra_min`, the
      population-weighted mean of (flood minutes − baseline minutes) over the people still reached; a
      catchment where nobody is reached counts as the largest.
 5. **Top 5** (`rank_sites`): the flooded sites sorted by the selected criterion, descending, first
@@ -28,7 +30,8 @@ The unit is a **site**: the facilities sharing a 250 m cell, from `build_sites` 
 6. **Protection in Route to Care.** With "Assume Top 5 Are Protected" on (the default), the Top 5
    sites count as open destinations (`usable[protected] = True`). Their own cells are passable as
    route endpoints, but the flood-prone cells around them stay blocked: sandbagging protects the
-   facility, not its access.
+   facility, not its access. A protected site surrounded by flood-prone cells therefore stays
+   unreachable (in November at threshold 0, 3 of the 5 under either criterion).
 
 Steps 2-4 use walking whatever the route's travel mode, since most people walk. Each solve takes
 about 15 s on the national grid. The baseline is cached once and the flood scenario per (calendar
@@ -37,7 +40,7 @@ month, threshold), so the first view takes about 30 s and later views are instan
 | Dashboard | Comes from |
 |---|---|
 | Submerged / Inaccessible, red markers | facilities on flooded sites (step 1) |
-| Blue markers "PROTECTED (TOP 5)" | the Top 5, when protection is on |
+| "PROTECTED (TOP 5)": blue on the overview map, orange on the route map | the Top 5, when protection is on |
 | Top 5 table | step 5: Catchment Population, or Cut Off (%) with Extra Time (min) |
 | County colours, Flooded In-Situ Population | the selected month only (Min Days slider), not the likelihood |
 
