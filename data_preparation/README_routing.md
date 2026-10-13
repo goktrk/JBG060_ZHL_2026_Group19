@@ -154,6 +154,8 @@ On the map:
   only changes what is drawn; the route always avoids every blocked cell nationwide.
 - **dots**: every health facility, red = flood-prone, green = open, orange = protected (Top 5)
 - **satellite imagery** by default; OpenStreetMap can be picked in the layer menu
+- **layer menu (☰)**: folds open on hover. The browser remembers which layers are on (localStorage),
+  so a new click keeps them; the nationwide layer follows its toggle instead
 
 Below the map: travel time, route length, extra time compared with the no-flood route, and the
 destination facility. Warnings appear for clicks outside South Sudan, unreachable points, and routes
@@ -227,6 +229,12 @@ binary; keep the encoding when you edit it.
   more cells, so expect more unreachable points; raising the threshold relaxes this.
 - **Each click takes about 5 seconds.** The search runs on the full national grid (4500 x 5308
   cells), twice (with and without floods). Results are cached, so repeating a click is instant.
+- **The nationwide layer overstates the blocked area.** It is drawn at 500 m and a pixel turns blue
+  when any of its four 250 m cells is blocked, so it shows 31-40% more area than is blocked
+  (October: 16,109 km2 drawn, 11,874 km2 blocked). Only the drawing; routes use the exact 250 m
+  cells, as does the "Blocked near the route" layer. Where both layers overlap the blue looks darker.
+- **Seasonal rivers can be crossed.** Khors such as the Nyanding and Nyirol are almost never seen as
+  water, so they are neither permanent water nor flood-prone (see "Known limitations" in `README.md`).
 - **Flood counts are a lower bound.** Clouds hide flooding in the satellite data, most of all in the
   wet season, which is also why December and January show more flooding than August.
 - **The Min Days slider does not affect routing.** The likelihood file is built with the config

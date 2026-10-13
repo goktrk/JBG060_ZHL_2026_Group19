@@ -16,6 +16,7 @@ from rasterio.transform import array_bounds
 from rasterio.warp import Resampling, calculate_default_transform, reproject
 from streamlit_folium import st_folium
 from folium.plugins import MarkerCluster
+from folium.template import Template
 
 from data_preparation.grid import in_grid, load_config, lonlat_to_rowcol, make_grid
 from data_preparation.loading import (
@@ -33,6 +34,17 @@ from data_preparation.travel import travel_time
 
 MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August",
                "September", "October", "November", "December"]
+NATIONAL_LAYER = "All flood-prone cells and permanent water (500 m)"
+# the route map's layer menu folds into a ☰ button
+LAYER_MENU_CSS = """<style>
+.leaflet-control-layers .leaflet-control-layers-toggle {
+    background-image: none !important; font-size: 22px; color: #333; text-decoration: none;
+}
+.leaflet-control-layers:not(.leaflet-control-layers-expanded) .leaflet-control-layers-toggle {
+    display: flex; align-items: center; justify-content: center;
+}
+.leaflet-control-layers-toggle::before { content: "☰"; }
+</style>"""
 
 
 @st.cache_resource
@@ -200,6 +212,51 @@ def add_facilities(m, facilities, top_n):
     ).add_to(m)
 
 
+class RememberLayers(folium.MacroElement):
+    """Saves in the browser which layers of `control` are switched on, and switches them the same way
+    when the map is rebuilt (each click on the map reruns the script). Layers in `skip` are left alone."""
+    _template = Template("""
+        {% macro script(this, kwargs) %}
+        (function () {
+            var map = {{ this._parent.get_name() }}, control = {{ this.control.get_name() }};
+            var key = {{ this.key|tojson }}, skip = {{ this.skip|tojson }}, saved = {}, leaving = false;
+            try { saved = JSON.parse(localStorage.getItem(key)) || {}; } catch (e) {}
+            // folium leaves every base map attached, the last one on top: keep only the saved or visible one
+            var bases = control._layers.filter(function (l) { return !l.overlay; });
+            var want = bases.filter(function (l) { return saved[l.name]; })[0]
+                || bases.filter(function (l) { return map.hasLayer(l.layer); }).pop();
+            bases.forEach(function (l) { if (l !== want) map.removeLayer(l.layer); });
+            if (want) map.addLayer(want.layer);
+            control._layers.forEach(function (l) {
+                if (!l.overlay || !(l.name in saved) || skip.indexOf(l.name) >= 0) return;
+                if (saved[l.name] !== map.hasLayer(l.layer)) saved[l.name] ? map.addLayer(l.layer) : map.removeLayer(l.layer);
+            });
+            map.on("unload", function () { leaving = true; });   // removing the old map is not a choice
+            map.on("overlayadd overlayremove baselayerchange", function () {
+                if (leaving) return;
+                control._layers.forEach(function (l) {
+                    if (skip.indexOf(l.name) < 0) saved[l.name] = map.hasLayer(l.layer);
+                });
+                try { localStorage.setItem(key, JSON.stringify(saved)); } catch (e) {}
+            });
+        })();
+        {% endmacro %}
+    """)
+
+    def __init__(self, control, key, skip=()):
+        super().__init__()
+        self._name = "RememberLayers"
+        self.control, self.key, self.skip = control, key, list(skip)
+
+
+def add_layer_menu(m):
+    """The layer menu, folded into a ☰ button. It keeps the user's choices across reruns; the nationwide
+    layer is left to its own toggle."""
+    control = folium.LayerControl(position="topright", collapsed=True).add_to(m)
+    m.get_root().header.add_child(folium.Element(LAYER_MENU_CSS))
+    RememberLayers(control, "route_map_layers", skip=[NATIONAL_LAYER]).add_to(m)
+
+
 def build_route_map(grid, result, clicked, facilities, top_n, national=None):
     m = folium.Map(location=[7.5, 30.5], zoom_start=6.2, tiles="OpenStreetMap", control_scale=True)
     folium.TileLayer(
@@ -209,13 +266,12 @@ def build_route_map(grid, result, clicked, facilities, top_n, national=None):
     ).add_to(m)
     if national is not None:
         url, bounds = national
-        folium.raster_layers.ImageOverlay(image=url, bounds=bounds,
-                                          name="All flood-prone cells and permanent water (500 m)").add_to(m)
+        folium.raster_layers.ImageOverlay(image=url, bounds=bounds, name=NATIONAL_LAYER).add_to(m)
     if result is None:
         add_facilities(m, facilities, top_n)
         if clicked:
             folium.Marker(clicked, icon=folium.Icon(color="gray", icon="question-sign")).add_to(m)
-        folium.LayerControl(position="topright", collapsed=False).add_to(m)
+        add_layer_menu(m)
         return m
 
     paths = [result["flood_aware"].path_rc, result["no_flood"].path_rc]
@@ -242,7 +298,7 @@ def build_route_map(grid, result, clicked, facilities, top_n, national=None):
     bounds = np.vstack([p for p in paths if len(p)] + [np.array([result["start"]])])
     lon, lat = rc_to_lonlat(grid, bounds[:, 0], bounds[:, 1])
     m.fit_bounds([[float(lat.min()), float(lon.min())], [float(lat.max()), float(lon.max())]], padding=(30, 30))
-    folium.LayerControl(position="topright", collapsed=False).add_to(m)
+    add_layer_menu(m)
     return m
 
 

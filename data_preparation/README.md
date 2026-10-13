@@ -190,6 +190,20 @@ pop_flooded_per_county = np.bincount(static["county_id"].ravel(),
   the braided channel leaks, and in the Sudd JRC barely sees the channel under the vegetation.
   Bridges and ferries outside towns are not represented. The settings are under `permanent_water`
   in `config.yaml`.
+
+  Seasonal rivers (khors) are not barriers at all. JRC only sees open water, and these are dry most
+  of the year, narrower than a 30 m pixel or hidden under swamp vegetation. Checked against the
+  OpenStreetMap course, cells within 500 m of the river:
+
+  | River | Never seen as water | Water in >= 75% of observations | Permanent water |
+  |---|---|---|---|
+  | Nyanding (374 km) | 73% | 2% | 2% |
+  | Nyirol (651 km) | 73% | 0% | 0% |
+  | Sobat (352 km), for comparison | 0% | 68% | 61% |
+
+  The flood layer flags at most 5% of the Nyanding's cells and 1% of the Nyirol's, so both can be
+  crossed in every month. Even the Sobat is blocked along only about 61% of its course, because
+  populated riverside cells stay open and some stretches are water in only 50-74% of observations.
 - **Recurring vs unusual is NASA's fixed mask.** It was computed once over 2003-2024 and is the same
   every year, so it describes where flooding normally happens, not how unusual a given year is.
   Our recalculation with NASA's rule agrees with it for 97-99% of pixel-months
