@@ -26,7 +26,7 @@ python -m data_preparation.build_permanent_water   # ~15 s, needs build_static f
 python -m data_preparation.build_facilities        # ~5 s
 python -m data_preparation.build_flood_monthly     # ~6 min
 python -m data_preparation.build_flood_likelihood  # ~1-2 min, needs build_flood_monthly first (new)
-python -m pytest tests                              # 26 tests, a few seconds
+python -m pytest tests                              # 31 tests, a few seconds
 ```
 
 Then start the dashboard (PowerShell):
@@ -124,6 +124,8 @@ res.path_rc, res.minutes, res.length_m, res.site, res.through_no_data
 - `site = -1` and `minutes = NaN` mean no open facility can be reached without crossing a
   blocked cell.
 - `through_no_data` is True when the path crosses cells without flood data (north of 10°N).
+- With "Assume Top 5 Are Protected" on, the dashboard also counts the Top 5 sites as open
+  (`usable[protected] = True`, see `README_prioritization.md`); the flood-prone cells around them stay blocked.
 
 Facilities that share a 250 m cell are one site, built with `build_sites` from `build_baseline.py`
 (the same sites as the baseline).
@@ -164,12 +166,13 @@ towards the edges of the country.
 | Control | National Overview | Route to Care |
 |---|---|---|
 | Historical / Predicted Scenario Month | that exact month (e.g. Oct 2022) | only the calendar month (every October since 2003) |
-| Min Days Flooded to Block Access | yes | no, always 3 (from the config) |
-| Prioritization Criterion | yes (Top 5 table) | no |
+| Min Days Flooded to Block Access | county colours and flooded population only | no, always 3 (from the config) |
+| Block Cells Flooded in More Than (% of Years) | facility status and Top 5 | yes |
+| Prioritization Criterion | yes (Top 5 table) | which sites are protected |
 | Show Only Inaccessible / Flooded Facilities | yes | no |
 | Filter / Zoom to County | yes | no |
 | Travel Mode (under "Route to Care") | no | yes |
-| Block Cells Flooded in More Than (% of Years) | no | yes |
+| Assume Top 5 Are Protected (under "Route to Care") | Top 5 markers | yes |
 
 ## Decisions and why
 

@@ -52,6 +52,9 @@ routing:
   max_flood_likelihood: 0.0      # cells flooded in more than this share of years (that calendar month) are blocked; 0 = flooded in any year
   default_mode: walking          # walking | motorised
 
+priorities:
+  top_n: 5                       # flood-prone facilities ranked for protection; cut off = travel.max_time_min
+
 travel:
   modes: [walking, motorised, slow]
   slow_traveller_factor: 1.5     # walking travel cost x this (1.5 or 2)
