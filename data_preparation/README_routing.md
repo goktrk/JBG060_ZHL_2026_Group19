@@ -26,7 +26,7 @@ python -m data_preparation.build_permanent_water   # ~15 s, needs build_static f
 python -m data_preparation.build_facilities        # ~5 s
 python -m data_preparation.build_flood_monthly     # ~6 min
 python -m data_preparation.build_flood_likelihood  # ~1-2 min, needs build_flood_monthly first (new)
-python -m pytest tests                              # 26 tests, a few seconds
+python -m pytest tests                              # 31 tests, a few seconds
 ```
 
 Then start the dashboard (PowerShell):
@@ -94,7 +94,8 @@ year since 2003. Higher values block only cells that flood more often (for examp
 of the years).
 
 A facility counts as able to provide care only when its own cell is not above the threshold.
-Facilities in flood-prone cells are skipped, and the route goes to the next nearest one.
+Facilities in flood-prone cells are skipped, and the route goes to the next nearest one. The National
+Overview uses the same rule for facility status (see `README_prioritization.md`).
 
 ### 3. The route (`routing.py`)
 
@@ -124,6 +125,8 @@ res.path_rc, res.minutes, res.length_m, res.site, res.through_no_data
 - `site = -1` and `minutes = NaN` mean no open facility can be reached without crossing a
   blocked cell.
 - `through_no_data` is True when the path crosses cells without flood data (north of 10°N).
+- With "Assume Top 5 Are Protected" on, the dashboard also counts the Top 5 sites as open
+  (`usable[protected] = True`, see `README_prioritization.md`); the flood-prone cells around them stay blocked.
 
 Facilities that share a 250 m cell are one site, built with `build_sites` from `build_baseline.py`
 (the same sites as the baseline).
@@ -136,10 +139,10 @@ The Route to Care section sits below the National Overview map and the Top 5 tab
 |---|---|
 | `get_sites()` | Facility sites, built once |
 | `get_route_inputs(month, threshold)` | Blocked mask, open facilities and no-data mask; cached, up to 4 settings |
-| `compute_route(lat, lon, month, threshold, mode)` | Flood-aware route plus the no-flood route; cached, up to 16 |
+| `compute_route(lat, lon, month, threshold, mode, protected)` | Flood-aware route plus the no-flood route, with the protected sites open; cached, up to 16 |
 | `national_overlay(month, threshold)` | Every blocked cell as one image at 500 m; cached, up to 8 |
 | `blocked_overlay(...)` | Blocked cells at 250 m within 10 km (40 cells) of the routes |
-| `boundaries_geojson(level)` | County and state outlines, simplified to about 110 m, cached |
+| `add_facilities(...)` | Every facility: red = flood-prone, green = open, orange = protected |
 | `build_route_map(...)` | Assembles the folium map |
 | `render_route_section(...)` | Caption, toggle, map, click handling, metrics and warnings |
 
@@ -149,7 +152,10 @@ On the map:
 - **blue cells**: blocked cells (flood-prone or permanent water), drawn near the route by default
 - **"Show all flood-prone cells (nationwide)" toggle**: draws every blocked cell in the country. It
   only changes what is drawn; the route always avoids every blocked cell nationwide.
-- **county and state boundaries**: each can be switched on and off in the layer menu
+- **dots**: every health facility, red = flood-prone, green = open, orange = protected (Top 5)
+- **satellite imagery** by default; OpenStreetMap can be picked in the layer menu
+- **layer menu (☰)**: folds open on hover. The browser remembers which layers are on (localStorage),
+  so a new click keeps them; the nationwide layer follows its toggle instead
 
 Below the map: travel time, route length, extra time compared with the no-flood route, and the
 destination facility. Warnings appear for clicks outside South Sudan, unreachable points, and routes
@@ -164,12 +170,13 @@ towards the edges of the country.
 | Control | National Overview | Route to Care |
 |---|---|---|
 | Historical / Predicted Scenario Month | that exact month (e.g. Oct 2022) | only the calendar month (every October since 2003) |
-| Min Days Flooded to Block Access | yes | no, always 3 (from the config) |
-| Prioritization Criterion | yes (Top 5 table) | no |
+| Min Days Flooded to Block Access | county colours and flooded population only | no, always 3 (from the config) |
+| Block Cells Flooded in More Than (% of Years) | facility status and Top 5 | yes |
+| Prioritization Criterion | yes (Top 5 table) | which sites are protected |
 | Show Only Inaccessible / Flooded Facilities | yes | no |
 | Filter / Zoom to County | yes | no |
 | Travel Mode (under "Route to Care") | no | yes |
-| Block Cells Flooded in More Than (% of Years) | no | yes |
+| Assume Top 5 Are Protected (under "Route to Care") | Top 5 markers | yes |
 
 ## Decisions and why
 
@@ -179,9 +186,9 @@ towards the edges of the country.
 | **Hard block** (infinite cost) instead of a penalty | It was the team's original idea and is easy to explain. Its downside is listed under limitations. |
 | Default threshold **0** ("flooded in any year") | The flood record is sparse (below 1% of cells in any month), so higher thresholds blocked almost nothing. At 20%, about 0.08% of cells were blocked in October. |
 | **Not** NASA's "recurring" label | It was tested. It covers almost the same tiny area as the 20% threshold (0.14% of cells in October, against 1.67% for "any year"). NASA's recurring mask is fixed, so all flood growth after 2020 is labelled "unusual" (see `README.md`). |
-| Flood-prone facilities are skipped | The team decided facilities "count if they can provide care"; there is no data on status or staffing, so the facility's own flood exposure is the proxy. |
+| Flood-prone facilities are skipped, unless protected | The team decided facilities "count if they can provide care"; there is no data on status or staffing, so the facility's own flood exposure is the proxy. |
 | No-data cells (north of 10°N) are passable | Blocking them would cut off the whole north; the dashboard warns instead. |
-| Calendar-month history, not the selected year | Routing is meant for anticipation ("what usually floods in October"), while the National Overview shows what happened in one specific month. At the default settings, in every scenario month the route map blocks a superset of what the overview shows as flooded. |
+| Calendar-month history, not the selected year | Routing is meant for anticipation ("what usually floods in October"), while the National Overview's county colours show what happened in one specific month (its facility status uses the same history as routing). At the default settings, in every scenario month the route map blocks a superset of what the overview shows as flooded. |
 
 Numbers for October (cells inside South Sudan):
 
@@ -222,6 +229,12 @@ binary; keep the encoding when you edit it.
   more cells, so expect more unreachable points; raising the threshold relaxes this.
 - **Each click takes about 5 seconds.** The search runs on the full national grid (4500 x 5308
   cells), twice (with and without floods). Results are cached, so repeating a click is instant.
+- **The nationwide layer overstates the blocked area.** It is drawn at 500 m and a pixel turns blue
+  when any of its four 250 m cells is blocked, so it shows 31-40% more area than is blocked
+  (October: 16,109 km2 drawn, 11,874 km2 blocked). Only the drawing; routes use the exact 250 m
+  cells, as does the "Blocked near the route" layer. Where both layers overlap the blue looks darker.
+- **Seasonal rivers can be crossed.** Khors such as the Nyanding and Nyirol are almost never seen as
+  water, so they are neither permanent water nor flood-prone (see "Known limitations" in `README.md`).
 - **Flood counts are a lower bound.** Clouds hide flooding in the satellite data, most of all in the
   wet season, which is also why December and January show more flooding than August.
 - **The Min Days slider does not affect routing.** The likelihood file is built with the config

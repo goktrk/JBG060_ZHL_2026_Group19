@@ -21,17 +21,41 @@
 
 ```text
 JBG060-2026/
+|-- data_preparation/              # Analysis grid, flood, facilities, travel time, routing, prioritization
+|-- EDA/                           # Exploratory notebooks and figures
 |-- literature/                    # Supporting papers and data documentation
 |-- processing_data/
 |   |-- loading.py                 # Hydrometeorological data loaders
 |   `-- loading_impact_data.py     # Exposure and impact data loaders
 |-- raw_data/                      # External download; ignored by Git
+|-- tests/                         # pytest tests (python -m pytest tests)
 |-- .gitignore
+|-- config.yaml                    # Every threshold and parameter
+|-- dashboard.py                   # Streamlit dashboard
 |-- Project_README.md              # Official README file created by Course Team
 |-- README.md                      # README file for project description
 `-- requirements.txt               # Pinned Python dependencies
 
 ```
+
+### Dashboard
+
+Build the prepared data once (`data_preparation/README.md`, "Building the files"), then run from the
+repository root:
+
+```
+$env:PYTHONPATH = "."; streamlit run dashboard.py    # PowerShell
+PYTHONPATH=. streamlit run dashboard.py              # macOS / Linux
+```
+
+The first load takes about 30-45 s (facility ranking); later views are cached. How each part is calculated:
+
+| Part | README |
+|---|---|
+| Prepared data: grid, flood months, facilities | `data_preparation/README.md` |
+| Travel time without floods | `data_preparation/README_baseline.md` |
+| Flood-prone facilities, Top 5 ranking, protection | `data_preparation/README_prioritization.md` |
+| Route to Care | `data_preparation/README_routing.md` |
 
 ## Credits and acknowledgements
 
