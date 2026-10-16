@@ -1,0 +1,143 @@
+{
+  "run_timestamp_utc": "2026-10-16T17:50:24+00:00",
+  "config_used": {
+    "min_days_flooded": 3,
+    "flooded_cell_passable": false,
+    "first_year": 2003,
+    "last_year": 2025,
+    "population_year": 2020,
+    "max_time_min": 120
+  },
+  "flooded_rule": "days >= 3 and days != 255 (band all); blocked = water | flooded",
+  "mode": "walking",
+  "focus_areas": {
+    "bor_south": {
+      "pcodes": [
+        "SS0303"
+      ],
+      "county_ids": [
+        18
+      ],
+      "names": [
+        "Bor South"
+      ]
+    },
+    "lol_aweil": {
+      "pcodes": [
+        "SS0501",
+        "SS0502",
+        "SS0503",
+        "SS0504",
+        "SS0505"
+      ],
+      "county_ids": [
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      "names": [
+        "Aweil Centre",
+        "Aweil East",
+        "Aweil North",
+        "Aweil South",
+        "Aweil West"
+      ]
+    },
+    "combined": {
+      "pcodes": null,
+      "county_ids": [
+        18,
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      "names": [
+        "Bor South",
+        "Aweil Centre",
+        "Aweil East",
+        "Aweil North",
+        "Aweil South",
+        "Aweil West"
+      ]
+    }
+  },
+  "selection": {
+    "metric": "combined_pop_newly_beyond_120",
+    "max_no_data_share": 0.05,
+    "gap_flagged_months_excluded": [
+      "2006-04",
+      "2006-05",
+      "2007-11"
+    ]
+  },
+  "focus_area_max_no_data_share": {
+    "bor_south_no_data_share": 0.0,
+    "lol_aweil_no_data_share": 0.0
+  },
+  "solve": {
+    "timed_month": "2023-01",
+    "one_solve_seconds": 18.0,
+    "max_solve_seconds": 120,
+    "candidates_mode": "all",
+    "months_solved": 276,
+    "step2_seconds": 5038.3
+  },
+  "hardcoded_months": [
+    {
+      "month": "2020-07",
+      "combined_pop_newly_beyond_120": 0.0,
+      "rank": 115,
+      "of_solved": 276,
+      "percentile_of_nonzero": NaN,
+      "selected": false,
+      "tier": null
+    },
+    {
+      "month": "2020-09",
+      "combined_pop_newly_beyond_120": 217.349449,
+      "rank": 45,
+      "of_solved": 276,
+      "percentile_of_nonzero": 61.4,
+      "selected": false,
+      "tier": null
+    },
+    {
+      "month": "2020-11",
+      "combined_pop_newly_beyond_120": 6900.585876,
+      "rank": 5,
+      "of_solved": 276,
+      "percentile_of_nonzero": 96.5,
+      "selected": true,
+      "tier": "worst_bor_south"
+    },
+    {
+      "month": "2021-09",
+      "combined_pop_newly_beyond_120": 1302.696313,
+      "rank": 21,
+      "of_solved": 276,
+      "percentile_of_nonzero": 82.5,
+      "selected": false,
+      "tier": null
+    },
+    {
+      "month": "2022-10",
+      "combined_pop_newly_beyond_120": 7650.855215,
+      "rank": 3,
+      "of_solved": 276,
+      "percentile_of_nonzero": 98.2,
+      "selected": false,
+      "tier": null
+    }
+  ],
+  "inputs_sha256": {
+    "static_stack": "e3b49eb3aee17fc9ded0be5e03a991f077287278d8204b8bc33c25ad19d8f789",
+    "permanent_water": "d392c6fd29fb1cb5a06300936a4e773e2e26249d3f653ac0b494200ce14c4176",
+    "facilities_table": "f3c4a41ece13447cf0133f21028cb12ee0fc8598dbfbf4a09d36df282968f45c",
+    "travel_time_walking_min": "200f8e7daaeb59114e6f539b63dbe3440492b9426d950406a3c1f591c7d72918"
+  },
+  "total_seconds": 5263.0
+}

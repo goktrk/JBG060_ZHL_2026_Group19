@@ -56,6 +56,7 @@ The first load takes about 30-45 s (facility ranking); later views are cached. H
 | Travel time without floods | `data_preparation/README_baseline.md` |
 | Flood-prone facilities, Top 5 ranking, protection | `data_preparation/README_prioritization.md` |
 | Route to Care | `data_preparation/README_routing.md` |
+| Flood scenario months for the dashboard | `data_preparation/README_scenarios.md` |
 
 ## Credits and acknowledgements
 

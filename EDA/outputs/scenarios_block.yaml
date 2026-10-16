@@ -1,0 +1,16 @@
+# Flood scenarios for the dashboard, from: python -m data_preparation.select_scenarios
+# flooded = at least flood.min_days_flooded (3) days that month and not 255 (band "all");
+# flooded cells are blocked (blocked = water | flooded) and sites on them are closed
+scenarios:
+  - id: "2008-11"
+    label: "Nov 2008 (severe, worst for Aweil / Lol)"
+    tier: severe
+  - id: "2020-11"
+    label: "Nov 2020 (worst for Bor South)"
+    tier: worst_bor_south
+  - id: "2025-10"
+    label: "Oct 2025 (medium)"
+    tier: medium
+  - id: "2025-01"
+    label: "Jan 2025 (mild)"
+    tier: mild
