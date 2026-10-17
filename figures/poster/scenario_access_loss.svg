@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="763.2pt" height="295.2pt" viewBox="0 0 763.2 295.2" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.3, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 295.2 
+L 763.2 295.2 
+L 763.2 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 315.768438 155.949875 
+L 757.44 155.949875 
+L 757.44 29.4725 
+L 315.768438 29.4725 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 315.768438 155.949875 
+L 315.768438 29.4725 
+" clip-path="url(#p2f78c4a167)" style="fill: none; stroke: #dcdcdc; stroke-width: 1.2; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_2">
+      <defs>
+       <path id="me8f2dd2003" d="M 0 0 
+L 0 8 
+" style="stroke: #4d4d4d; stroke-width: 1.5"/>
+      </defs>
+      <g>
+       <use xlink:href="#me8f2dd2003" x="315.768438" y="155.949875" style="fill: #4d4d4d; stroke: #4d4d4d; stroke-width: 1.5"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 22px; font-family: 'Arial', 'Helvetica', 'Liberation Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1a1a1a" x="315.768438" y="187.697062" transform="rotate(-0 315.768438 187.697062)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 431.184413 155.949875 
+L 431.184413 29.4725 
+" clip-path="url(#p2f78c4a167)" style="fill: none; stroke: #dcdcdc; stroke-width: 1.2; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#me8f2dd2003" x="431.184413" y="155.949875" style="fill: #4d4d4d; stroke: #4d4d4d; stroke-width: 1.5"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 22px; font-family: 'Arial', 'Helvetica', 'Liberation Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1a1a1a" x="431.184413" y="187.697062" transform="rotate(-0 431.184413 187.697062)">5,000</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 546.600389 155.949875 
+L 546.600389 29.4725 
+" clip-path="url(#p2f78c4a167)" style="fill: none; stroke: #dcdcdc; stroke-width: 1.2; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#me8f2dd2003" x="546.600389" y="155.949875" style="fill: #4d4d4d; stroke: #4d4d4d; stroke-width: 1.5"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 22px; font-family: 'Arial', 'Helvetica', 'Liberation Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1a1a1a" x="546.600389" y="187.697062" transform="rotate(-0 546.600389 187.697062)">10,000</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_7">
+      <path d="M 662.016364 155.949875 
+L 662.016364 29.4725 
+" clip-path="url(#p2f78c4a167)" style="fill: none; stroke: #dcdcdc; stroke-width: 1.2; stroke-linecap: round"/>
+     </g>
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#me8f2dd2003" x="662.016364" y="155.949875" style="fill: #4d4d4d; stroke: #4d4d4d; stroke-width: 1.5"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 22px; font-family: 'Arial', 'Helvetica', 'Liberation Sans', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #1a1a1a" x="662.016364" y="187.697062" transform="rotate(-0 662.016364 187.697062)">15,000</text>
+     </g>
+    </g>
+    <g id="text_5">
+     <text style="font-size: 24px; font-family: 'Arial', 'Helvetica', 'Liberation Sans', 'DejaVu Sans', sans-serif; fill: #1a1a1a" transform="translate(413.842344 215.248312)">People pushed beyond</text>
+     <text style="font-size: 24px; font-family: 'Arial', 'Helvetica', 'Liberation Sans', 'DejaVu Sans', sans-serif; fill: #1a1a1a" transform="translate(424.557969 240.914062)">a 2-hour walk to care</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_9"/>
+     <g id="text_6">
+      <text style="font-size: 22px; font-family: 'Arial', 'Helvetica', 'Liberation Sans', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1a1a1a" x="307.768438" y="53.49472" transform="rotate(-0 307.768438 53.49472)">Nov 2008 · largest loss</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_10"/>
+     <g id="text_7">
+      <text style="font-size: 22px; font-family: 'Arial', 'Helvetica', 'Liberation Sans', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1a1a1a" x="307.768438" y="84.877209" transform="rotate(-0 307.768438 84.877209)">Nov 2020 · worst for Bor South</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_11"/>
+     <g id="text_8">
+      <text style="font-size: 22px; font-family: 'Arial', 'Helvetica', 'Liberation Sans', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1a1a1a" x="307.768438" y="116.433291" transform="rotate(-0 307.768438 116.433291)">Oct 2025 · typical</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_12"/>
+     <g id="text_9">
+      <text style="font-size: 22px; font-family: 'Arial', 'Helvetica', 'Liberation Sans', 'DejaVu Sans', sans-serif; text-anchor: end; fill: #1a1a1a" x="307.768438" y="147.707499" transform="rotate(-0 307.768438 147.707499)">Jan 2025 · small</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 315.768438 35.221472 
+L 677.794308 35.221472 
+L 677.794308 55.955467 
+L 315.768438 55.955467 
+z
+" clip-path="url(#p2f78c4a167)" style="fill: #1c5cab; stroke: #0d2b52; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 315.768438 66.636617 
+L 415.447196 66.636617 
+L 415.447196 87.370613 
+L 315.768438 87.370613 
+z
+" clip-path="url(#p2f78c4a167)" style="fill: #1c5cab; stroke: #0d2b52; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 315.768438 98.051762 
+L 326.806126 98.051762 
+L 326.806126 118.785758 
+L 315.768438 118.785758 
+z
+" clip-path="url(#p2f78c4a167)" style="fill: #1c5cab; stroke: #0d2b52; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 315.768438 129.466908 
+L 316.20685 129.466908 
+L 316.20685 150.200903 
+L 315.768438 150.200903 
+z
+" clip-path="url(#p2f78c4a167)" style="fill: #1c5cab; stroke: #0d2b52; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 677.794308 35.221472 
+L 677.794308 35.221472 
+L 677.794308 55.955467 
+L 677.794308 55.955467 
+z
+" clip-path="url(#p2f78c4a167)" style="fill: #4e8fc2; stroke: #0d2b52; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 415.447196 66.636617 
+L 475.056008 66.636617 
+L 475.056008 87.370613 
+L 415.447196 87.370613 
+z
+" clip-path="url(#p2f78c4a167)" style="fill: #4e8fc2; stroke: #0d2b52; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 326.806126 98.051762 
+L 326.806126 98.051762 
+L 326.806126 118.785758 
+L 326.806126 118.785758 
+z
+" clip-path="url(#p2f78c4a167)" style="fill: #4e8fc2; stroke: #0d2b52; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 316.20685 129.466908 
+L 317.710453 129.466908 
+L 317.710453 150.200903 
+L 316.20685 150.200903 
+z
+" clip-path="url(#p2f78c4a167)" style="fill: #4e8fc2; stroke: #0d2b52; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 315.768438 155.949875 
+L 315.768438 29.4725 
+" style="fill: none; stroke: #4d4d4d; stroke-width: 1.5; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 315.768438 155.949875 
+L 757.44 155.949875 
+" style="fill: none; stroke: #4d4d4d; stroke-width: 1.5; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 22px; font-family: 'Arial', 'Helvetica', 'Liberation Sans', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1a1a1a" x="684.719267" y="51.275813" transform="rotate(-0 684.719267 51.275813)">15,700</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 22px; font-family: 'Arial', 'Helvetica', 'Liberation Sans', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1a1a1a" x="481.980966" y="82.690959" transform="rotate(-0 481.980966 82.690959)">6,900</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 22px; font-family: 'Arial', 'Helvetica', 'Liberation Sans', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1a1a1a" x="333.731084" y="114.106104" transform="rotate(-0 333.731084 114.106104)">478</text>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 22px; font-family: 'Arial', 'Helvetica', 'Liberation Sans', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1a1a1a" x="324.635411" y="145.521249" transform="rotate(-0 324.635411 145.521249)">84</text>
+   </g>
+   <g id="legend_1">
+    <g id="patch_13">
+     <path d="M 321.268438 21.14 
+L 345.468437 21.14 
+L 345.468437 2.88 
+L 321.268438 2.88 
+z
+" style="fill: #1c5cab; stroke: #0d2b52; stroke-linejoin: miter"/>
+    </g>
+    <g id="text_14">
+     <text style="font-size: 22px; font-family: 'Arial', 'Helvetica', 'Liberation Sans', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1a1a1a" x="356.468437" y="19.6" transform="rotate(-0 356.468437 19.6)">Aweil counties</text>
+    </g>
+    <g id="patch_14">
+     <path d="M 531.904688 21.14 
+L 556.104688 21.14 
+L 556.104688 2.88 
+L 531.904688 2.88 
+z
+" style="fill: #4e8fc2; stroke: #0d2b52; stroke-linejoin: miter"/>
+    </g>
+    <g id="text_15">
+     <text style="font-size: 22px; font-family: 'Arial', 'Helvetica', 'Liberation Sans', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #1a1a1a" x="567.104688" y="19.6" transform="rotate(-0 567.104688 19.6)">Bor South</text>
+    </g>
+   </g>
+  </g>
+  <g id="text_16">
+   <text style="font-size: 20px; font-family: 'Arial', 'Helvetica', 'Liberation Sans', 'DejaVu Sans', sans-serif; fill: #4d4d4d" transform="translate(9.1584 265.759687)">Aweil counties stand in for the Lol river area.</text>
+   <text style="font-size: 20px; font-family: 'Arial', 'Helvetica', 'Liberation Sans', 'DejaVu Sans', sans-serif; fill: #4d4d4d" transform="translate(9.1584 288.345)">Numbers are minimums because of cloud cover.</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p2f78c4a167">
+   <rect x="315.768438" y="29.4725" width="441.671562" height="126.477375"/>
+  </clipPath>
+ </defs>
+</svg>
