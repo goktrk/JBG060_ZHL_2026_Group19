@@ -34,9 +34,19 @@ python -m data_preparation.build_flood_monthly     # ~6 min
 python -m data_preparation.build_flood_likelihood  # ~1-2 min, needs build_flood_monthly first
 ```
 
-`build_flood_likelihood` is needed by the dashboard: it decides which facilities are flood-prone, the
-Top 5 ranking and the routing. See `data_preparation/README_prioritization.md` and
-`data_preparation/README_routing.md`.
+`build_flood_likelihood` is needed by the dashboard's Route to Care (`README_routing.md`).
+
+The analysis steps then form a chain, each reading the previous one's output:
+
+```
+python -m data_preparation.build_baseline          # travel times without floods (README_baseline.md)
+python -m data_preparation.build_access_loss       # per flood scenario: who is cut off (README_access_loss.md)
+python -m data_preparation.build_priorities        # which closed facilities to protect (README_prioritization.md)
+python -m data_preparation.build_prepositioning    # which facilities receive extra people (README_prepositioning.md)
+```
+
+They write to `data/processed/`. The flood rules they share (flooded cell, closed facility, cut off)
+are in `scenarios.py`.
 
 | File | Content |
 |---|---|

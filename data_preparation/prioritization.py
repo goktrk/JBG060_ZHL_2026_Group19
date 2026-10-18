@@ -1,76 +1,117 @@
 """
-Which facility sites are flood-prone, and which of them to protect first.
+Which closed facility sites to protect first in a flood scenario.
 
-    likelihood = load_flood_likelihood(10)                           # October
-    flooded = flooded_sites(sites_rc, likelihood, threshold=0.0)     # the site's own cell is flood-prone
-    base = travel_time(friction, sites_rc, blocked=water)            # no floods
-    flood = travel_time(friction, sites_rc[~flooded], blocked=blocked_mask(water, likelihood, 0.0))
-    impacts = site_impacts(pop, base.nearest, base.minutes, flood.minutes, len(sites_rc), max_time_min=120)
-    top = rank_sites(impacts, flooded, "most_saved", top_n=5)       # rows of impacts, by site_id
+For every site the flood closes, re-run the scenario with only that site reopened ("protected"),
+and count who gets access back. Two rankings, both always shown:
 
-The calculation is described in data_preparation/README_prioritization.md.
+- most_saved: people brought back within `travel.max_time_min` (2 h) of care;
+- worst_off:  people who would be more than `priorities.worst_off_min` (4 h) from care without the
+              site, brought back within it. This favours remote communities with nowhere else to go.
+
+The Top N is chosen greedily: first the site that brings back the most people, then the site that
+brings back the most of the people still left, and so on, so two neighbouring sites that rescue the
+same village don't both take a place. The full calculation is in README_prioritization.md.
+Which cells are flooded, which sites closed and who loses access come from scenarios.py.
+
+    closed = closed_sites(sites_rc, flooded, buffer_m=1000, cell_size_m=250)     # scenarios.py
+    flood = travel_time(friction, sites_rc[~closed], blocked=water | flooded)    # or read from build_access_loss
+    regained, lost = regained_cells(pop, base.minutes, flood.minutes, flooded, friction,
+                                    water | flooded, sites_rc, np.flatnonzero(closed), limit_min=120)
+    order = greedy_order(regained, pop)
 """
+import math
+
 import numpy as np
 import pandas as pd
+from skimage.graph import MCP_Geometric
 
-from data_preparation.routing import open_sites
-
-CRITERIA = ("most_saved", "worst_off")
-
-
-def flooded_sites(sites_rc, likelihood, threshold) -> np.ndarray:
-    """True for sites whose own cell is flooded in more than `threshold` of years (the opposite of
-    routing.open_sites). Sites without flood data (NaN) are not flagged."""
-    return ~open_sites(sites_rc, likelihood, threshold)
+from data_preparation.scenarios import lost_cells
+from data_preparation.travel import cell_costs, source_costs
 
 
-def site_impacts(pop, base_nearest, base_minutes, flood_minutes, n_sites, max_time_min) -> pd.DataFrame:
+def reach_radius(friction, max_min, cell_size_m) -> int:
     """
-    What losing each site costs the people in its catchment, indexed by site_id 0..n_sites-1.
-
-    base_nearest and base_minutes come from travel_time without floods, flood_minutes from
-    travel_time with the flood-prone cells blocked and the flooded sites removed (NaN = unreachable).
-
-    - catchment_pop: people whose nearest site without floods is this one
-    - share_cut_off: share of them who are unreachable or more than max_time_min away in the flood
-      scenario (NaN when nobody lives in the catchment)
-    - extra_min: population-weighted mean of flood minus baseline minutes over the people still
-      reached (NaN when nobody is reached)
+    Cells that can be reached within `max_min` minutes all lie within this many cells of the start:
+    no step is cheaper than the lowest friction in the grid, so nothing further away is reachable in time.
     """
-    served = np.asarray(base_nearest) >= 0
-    site = np.asarray(base_nearest)[served]
-    people = np.asarray(pop)[served].astype("float64")
-    base = np.asarray(base_minutes)[served].astype("float64")
-    flood = np.asarray(flood_minutes)[served].astype("float64")
-
-    reached = np.isfinite(flood)
-    cut_off = ~reached | (flood > max_time_min)
-    catchment = np.bincount(site, people, minlength=n_sites)
-    pop_reached = np.bincount(site[reached], people[reached], minlength=n_sites)
-    extra = np.bincount(site[reached], people[reached] * (flood[reached] - base[reached]), minlength=n_sites)
-    with np.errstate(invalid="ignore", divide="ignore"):
-        return pd.DataFrame({
-            "catchment_pop": catchment,
-            "share_cut_off": np.bincount(site, people * cut_off, minlength=n_sites) / catchment,
-            "extra_min": extra / pop_reached,
-        })
+    f = np.asarray(friction, dtype="float64")
+    fastest = f[np.isfinite(f) & (f > 0)].min()
+    return math.ceil(max_min / (fastest * cell_size_m)) + 1
 
 
-def rank_sites(impacts, flooded, criterion, top_n) -> pd.DataFrame:
+def time_from_site(friction, site_rc, blocked, radius, cell_size_m):
     """
-    The flooded sites, the one to protect first on top, at most top_n rows of `impacts`.
+    Minutes from one site to the cells within `radius` cells of it, with the same step costs as
+    travel.travel_time (the site's own cell is passable even if blocked). Exact for every cell whose
+    time is below the limit `radius` was computed for.
 
-    most_saved: largest catchment population first. worst_off: largest share cut off first, then
-    most extra minutes; a catchment where nobody is reached counts as the most extra minutes, and
-    one where nobody lives comes last.
+    Returns the window (row slice, col slice) and the minutes in it (NaN = not reached), or
+    (None, None, None) if the site's cell has no usable friction.
     """
-    candidates = impacts[np.asarray(flooded, dtype=bool)]
-    if criterion == "most_saved":
-        ranked = candidates.sort_values("catchment_pop", ascending=False, kind="stable")
-    elif criterion == "worst_off":
-        nan_as = {"share_cut_off": -np.inf, "extra_min": np.inf}
-        ranked = candidates.sort_values(["share_cut_off", "extra_min"], ascending=False,
-                                        key=lambda col: col.fillna(nan_as[col.name]))
-    else:
-        raise ValueError(f"criterion must be one of {CRITERIA}, not {criterion!r}")
-    return ranked.head(top_n)
+    r, c = int(site_rc[0]), int(site_rc[1])
+    rows = slice(max(r - radius, 0), r + radius + 1)
+    cols = slice(max(c - radius, 0), c + radius + 1)
+    window_friction = np.asarray(friction)[rows, cols]
+    local = np.array([[r - rows.start, c - cols.start]])
+
+    cost, usable = source_costs(window_friction, local, cell_size_m)
+    if not usable[0]:
+        return None, None, None
+    costs = cell_costs(window_friction, None if blocked is None else np.asarray(blocked)[rows, cols], cell_size_m)
+    costs[local[0, 0], local[0, 1]] = cost[0]
+    cumulative, _ = MCP_Geometric(costs, fully_connected=True).find_costs([tuple(local[0])])
+    return rows, cols, np.where(np.isfinite(cumulative), cumulative, np.nan)
+
+
+def regained_cells(pop, base_minutes, flood_minutes, flooded, friction, blocked, sites_rc, candidates,
+                   limit_min, cell_size_m=250.0) -> tuple[dict[int, np.ndarray], np.ndarray]:
+    """
+    For each candidate site (indices into sites_rc), the cells whose people get access back within
+    `limit_min` when only that site is reopened, as flat indices into the grid.
+
+    Reopening one site adds one source, so each cell's new time is the lower of its flood-scenario
+    time and its time to that site. Only that second time has to be solved, from the site alone.
+    Also returns the `lost_cells` mask the gains are counted against.
+    """
+    lost = lost_cells(pop, base_minutes, flood_minutes, flooded, limit_min)
+    radius = reach_radius(friction, limit_min, cell_size_m)
+    width = np.asarray(pop).shape[1]
+    regained = {}
+    for i in candidates:
+        rows, cols, minutes = time_from_site(friction, sites_rc[i], blocked, radius, cell_size_m)
+        if minutes is None:
+            regained[int(i)] = np.empty(0, dtype=np.int64)
+            continue
+        with np.errstate(invalid="ignore"):
+            hit = lost[rows, cols] & (minutes <= limit_min)
+        r, c = np.nonzero(hit)
+        regained[int(i)] = (r + rows.start).astype(np.int64) * width + (c + cols.start)
+    return regained, lost
+
+
+def greedy_order(regained: dict[int, np.ndarray], pop) -> pd.DataFrame:
+    """
+    Order sites greedily: each pick brings back the most people not already brought back by the
+    earlier picks. Ties go to the larger gain on its own, then the lower site id.
+
+    Returns one row per site: site_id, gain (people it brings back on its own), rank (1 = protect
+    first), added (people this pick adds) and cumulative (people brought back by ranks 1..rank).
+    """
+    flat_pop = np.asarray(pop, dtype="float64").ravel()
+    ids = sorted(regained)
+    every = np.unique(np.concatenate([regained[i] for i in ids])) if ids else np.empty(0, np.int64)
+    weight = flat_pop[every]
+    members = {i: np.searchsorted(every, regained[i]) for i in ids}
+    gain = {i: float(weight[members[i]].sum()) for i in ids}
+
+    covered = np.zeros(len(every), dtype=bool)
+    rows, total, left = [], 0.0, list(ids)
+    while left:
+        added = {i: float(weight[members[i]][~covered[members[i]]].sum()) for i in left}
+        best = max(left, key=lambda i: (added[i], gain[i], -i))
+        covered[members[best]] = True
+        total += added[best]
+        rows.append({"site_id": best, "gain": gain[best], "rank": len(rows) + 1,
+                     "added": added[best], "cumulative": total})
+        left.remove(best)
+    return pd.DataFrame(rows, columns=["site_id", "gain", "rank", "added", "cumulative"])

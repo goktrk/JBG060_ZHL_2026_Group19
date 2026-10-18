@@ -20,7 +20,10 @@ python -m data_preparation.select_scenarios --select-only   # seconds: only redo
 
 ## How a month is picked
 
-- Severity: people newly more than 120 min from care, or cut off, in Bor South plus Aweil (same limit as `measure_access_loss.py`).
+- Severity: people on dry land newly more than 120 min from care, or cut off, in Bor South plus Aweil
+  (the rules of `build_access_loss.py`, from `scenarios.py`: facilities closed by a flooded cell within
+  1 km, people living in flooded cells counted separately). **The current picks were made with the
+  older rules** (only a facility's own cell, flooded people counted as cut off); rerun to update them.
 - Left out: months with no loss, months where over 5% of a focus area has no flood data, and the
   months with gaps in the flood record (2006-04, 2006-05, 2007-11).
 - Always in: the worst month overall and the worst month of each focus area, even if they share a
@@ -37,4 +40,5 @@ Things to know:
 - Flooded means 3 or more days that month (`flood.min_days_flooded`). Flooded cells are blocked and
   facilities on them closed, so people living in a flooded cell count as cut off.
 - The Lol river has no geometry in the repository; the Aweil counties (county_id 35-39) stand in for it.
-- The Top 5 and routes only use the calendar month, so they are the same for Nov 2008 and Nov 2020.
+- The Top 5 is precomputed per scenario month (`build_priorities`, see `README_prioritization.md`).
+  Routes still only use the calendar month, so they are the same for Nov 2008 and Nov 2020.

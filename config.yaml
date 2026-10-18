@@ -53,7 +53,37 @@ routing:
   default_mode: walking          # walking | motorised
 
 priorities:
-  top_n: 5                       # flood-prone facilities ranked for protection; cut off = travel.max_time_min
+  top_n: 5                       # facilities shown for protection (greedy order, see README_prioritization.md)
+  worst_off_min: 240             # worst-off ranking: people more than this from care without the site, brought back within it
+  mode: walking                  # friction layer used for the protection reruns
+  output_dir: data/processed/priorities
+
+access_loss:
+  output_dir: data/processed/access_loss
+  modes: [walking, motorised]    # slow traveller = walking minutes x travel.slow_traveller_factor
+  thresholds_min: [60, 120]      # cut off = within this before the flood, beyond it (or unreachable) after
+
+prepositioning:
+  output_dir: data/processed/prepositioning
+  protected_rankings: [most_saved, worst_off]   # side variant: the Top N of each ranking protected; [] = none
+  small_delay_min: 15            # "path blocked" switches with less extra time than this are reported separately
+
+# Flood scenarios: observed months picked by data_preparation/select_scenarios.py (EDA/outputs/scenarios_block.yaml)
+# flooded = at least flood.min_days_flooded days that month (band "all"); blocked = water | flooded;
+# sites with a flooded cell within facilities.flood_buffer_m are closed
+scenarios:
+  - id: "2008-11"
+    label: "Nov 2008 (severe, worst for Aweil / Lol)"
+    tier: severe
+  - id: "2020-11"
+    label: "Nov 2020 (worst for Bor South)"
+    tier: worst_bor_south
+  - id: "2025-10"
+    label: "Oct 2025 (medium)"
+    tier: medium
+  - id: "2025-01"
+    label: "Jan 2025 (mild)"
+    tier: mild
 
 travel:
   modes: [walking, motorised, slow]
@@ -66,7 +96,7 @@ facilities:
   duplicate_max_distance_m: 50     # duplicates: same type, at most this far apart ...
   duplicate_min_name_similarity: 0.8   # ... and names at least this alike (0-1)
   county_snap_max_m: 2000          # outside every county: snap to the nearest within this, else drop
-  flood_buffer_m: 0              # 0 = facility's own cell only
+  flood_buffer_m: 1000           # a site is closed if a flooded cell lies within this distance (0 = own cell only)
   cutoff_drop_share: 0.5         # TODO: drop in population reachable within 2 h that counts as cut off
   manual_off: []                 # facility IDs switched off by hand
 

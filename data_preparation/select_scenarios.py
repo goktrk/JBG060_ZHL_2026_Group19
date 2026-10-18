@@ -30,6 +30,7 @@ from data_preparation.build_flood_monthly import NO_DATA
 from data_preparation.grid import ROOT, data_path, load_config, make_grid
 from data_preparation.loading import (iter_flood, load_facilities, load_flood_months, load_permanent_water,
                                       load_static)
+from data_preparation.scenarios import closed_sites, lost_cells
 from data_preparation.travel import travel_time
 
 FOCUS_AREAS = {                                                       # county pcodes
@@ -38,7 +39,7 @@ FOCUS_AREAS = {                                                       # county p
 }
 AREA_NAMES = {"bor_south": "Bor South", "lol_aweil": "Aweil / Lol"}   # in reasons and labels
 # severity: people newly more than this many minutes' walk from care; 120 is the limit of
-# measure_access_loss.py and travel.max_time_min in config.yaml
+# build_access_loss.py and travel.max_time_min in config.yaml
 LIMIT_MIN = 120
 LIMITS_MIN = (60, 120)      # step 2 computes the loss at both, scenario_candidates.csv keeps both
 LOSS = f"combined_pop_newly_beyond_{LIMIT_MIN}"
@@ -72,13 +73,14 @@ def is_flooded(days, min_days) -> np.ndarray:
     return (days >= min_days) & (days != NO_DATA)
 
 
-def flood_stats(days, county_id, pop, fac_rc, fac_county, ids, min_days) -> dict[str, float]:
-    """Step 1 for one month, per area: flooded cells and share, people and facilities on them, no-data share."""
+def flood_stats(days, county_id, pop, fac_rc, fac_county, ids, min_days, buffer_m, cell_size_m) -> dict[str, float]:
+    """Step 1 for one month, per area: flooded cells and share, people on them, closed facilities
+    (a flooded cell within buffer_m, the shared rule in scenarios.py), no-data share."""
     flooded = is_flooded(days, min_days)
     cells = per_area(county_id, ids)
     flooded_cells = per_area(county_id, ids, flooded)
     flooded_pop = per_area(county_id, ids, np.where(flooded, pop, 0))
-    flooded_facilities = per_area(fac_county, ids, flooded[fac_rc[:, 0], fac_rc[:, 1]])
+    flooded_facilities = per_area(fac_county, ids, closed_sites(fac_rc, flooded, buffer_m, cell_size_m))
     no_data = per_area(county_id, ids, days == NO_DATA)
     stats = {}
     for area in ids:
@@ -90,18 +92,20 @@ def flood_stats(days, county_id, pop, fac_rc, fac_county, ids, min_days) -> dict
     return stats
 
 
-def flood_minutes(friction, sources, water, flooded, cell_size_m=250.0) -> np.ndarray:
-    """Minutes to the nearest open site, with sites on flooded cells closed and flooded cells blocked."""
-    open_sites = ~flooded[sources[:, 0], sources[:, 1]]
+def flood_minutes(friction, sources, water, flooded, buffer_m, cell_size_m=250.0) -> np.ndarray:
+    """Minutes to the nearest open site, with flooded cells blocked and sites closed by the shared rule
+    in scenarios.py (a flooded cell within buffer_m)."""
+    open_sites = ~closed_sites(sources, flooded, buffer_m, cell_size_m)
     return travel_time(friction, sources[open_sites], blocked=water | flooded, cell_size_m=cell_size_m).minutes
 
 
-def access_loss(base_min, flood_min, pop, county_id, ids, limits) -> dict[str, float]:
-    """Step 2 for one month, per area, with the definitions of measure_access_loss.py."""
+def access_loss(base_min, flood_min, flooded, pop, county_id, ids, limits) -> dict[str, float]:
+    """Step 2 for one month, per area, with the definitions of build_access_loss.py (scenarios.lost_cells)."""
     loss = {}
     for limit in limits:
-        # within the limit without floods, but beyond it or unreachable (NaN) with floods
-        newly = (base_min <= limit) & ((flood_min > limit) | np.isnan(flood_min))
+        # on dry land, within the limit without floods, but beyond it or unreachable (NaN) with floods;
+        # people living in flooded cells are left out (build_access_loss counts them separately)
+        newly = lost_cells(pop, base_min, flood_min, flooded, limit)
         for area, people in per_area(county_id, ids, np.where(newly, pop, 0)).items():
             loss[f"{area}_pop_newly_beyond_{limit}"] = people
     reached = np.isfinite(base_min) & np.isfinite(flood_min)
@@ -256,8 +260,9 @@ def flooding_per_month(cfg, inp) -> pd.DataFrame:
     """Step 1: flood_stats for every month, with the gap flag from flood_months.csv."""
     min_days = cfg["flood"]["min_days_flooded"]
     first, last = cfg["flood"]["first_year"], cfg["flood"]["last_year"]
+    buffer_m, cell = cfg["facilities"]["flood_buffer_m"], cfg["grid"]["cell_size_m"]
     rows = [{"month": str(month), **flood_stats(days, inp["county_id"], inp["pop"], inp["fac_rc"],
-                                                inp["fac_county"], inp["ids"], min_days)}
+                                                inp["fac_county"], inp["ids"], min_days, buffer_m, cell)}
             for month, days in iter_flood(f"{first}-01", f"{last}-12", cfg)]
     table = pd.DataFrame(rows)
     table.insert(1, "year", table["month"].str[:4].astype(int))
@@ -275,8 +280,9 @@ def solve_month(cfg, inp, month) -> dict[str, float]:
     """Step 2 for one month: block its flooded cells, close the sites on them, compare with the baseline."""
     _, days = next(iter_flood(month, cfg=cfg))
     flooded = is_flooded(days, cfg["flood"]["min_days_flooded"])
-    minutes = flood_minutes(inp["friction"], inp["sources"], inp["water"], flooded, cfg["grid"]["cell_size_m"])
-    return access_loss(inp["base_min"], minutes, inp["pop"], inp["county_id"], inp["ids"], LIMITS_MIN)
+    minutes = flood_minutes(inp["friction"], inp["sources"], inp["water"], flooded,
+                            cfg["facilities"]["flood_buffer_m"], cfg["grid"]["cell_size_m"])
+    return access_loss(inp["base_min"], minutes, flooded, inp["pop"], inp["county_id"], inp["ids"], LIMITS_MIN)
 
 
 def solve_months(cfg, inp, table) -> tuple[dict, dict]:

@@ -152,7 +152,7 @@ On the map:
 - **blue cells**: blocked cells (flood-prone or permanent water), drawn near the route by default
 - **"Show all flood-prone cells (nationwide)" toggle**: draws every blocked cell in the country. It
   only changes what is drawn; the route always avoids every blocked cell nationwide.
-- **dots**: every health facility, red = flood-prone, green = open, orange = protected (Top 5)
+- **dots**: every health facility, red = closed in the selected scenario (flood within 1 km), green = open, orange = protected (Top 5)
 - **satellite imagery** by default; OpenStreetMap can be picked in the layer menu
 - **layer menu (☰)**: folds open on hover. The browser remembers which layers are on (localStorage),
   so a new click keeps them; the nationwide layer follows its toggle instead
@@ -169,9 +169,9 @@ towards the edges of the country.
 
 | Control | National Overview | Route to Care |
 |---|---|---|
-| Historical / Predicted Scenario Month | that exact month (e.g. Oct 2022) | only the calendar month (every October since 2003) |
+| Flood Scenario (Observed Month) | that exact month: county colours, facility status and the Top 5 (precomputed) | only the calendar month (every October since 2003) |
 | Min Days Flooded to Block Access | county colours and flooded population only | no, always 3 (from the config) |
-| Block Cells Flooded in More Than (% of Years) | facility status and Top 5 | yes |
+| Block Cells Flooded in More Than (% of Years) | no | yes |
 | Prioritization Criterion | yes (Top 5 table) | which sites are protected |
 | Show Only Inaccessible / Flooded Facilities | yes | no |
 | Filter / Zoom to County | yes | no |

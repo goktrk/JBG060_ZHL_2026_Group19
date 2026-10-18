@@ -8,6 +8,7 @@ Every array returned here is on the same analysis grid, so they line up cell for
     months, unusual = load_flood("2020-07", "2020-11", kind="unusual")
     likelihood = load_flood_likelihood(10)          # share of years each cell was flooded in October
 """
+import json
 from collections.abc import Iterator
 
 import geopandas as gpd
@@ -16,7 +17,7 @@ import pandas as pd
 import rasterio
 
 from data_preparation.build_flood_monthly import BANDS, NO_DATA
-from data_preparation.grid import data_path, load_config
+from data_preparation.grid import ROOT, data_path, load_config
 
 
 def load_static(cfg: dict | None = None) -> dict[str, np.ndarray]:
@@ -102,6 +103,69 @@ def load_flood_likelihood(month: int, cfg: dict | None = None) -> np.ndarray:
             raise ValueError(f"flood likelihood was built with min_days_flooded={built_with}, config says "
                              f"{cfg['flood']['min_days_flooded']}; rerun build_flood_likelihood")
         return src.read(month)
+
+
+def read_raster(path) -> np.ndarray:
+    """Band 1 of a GeoTIFF; a clear error if the step that writes it hasn't run."""
+    if not path.exists():
+        raise FileNotFoundError(f"{path} is missing; run the step that builds it (see data_preparation/README*.md)")
+    with rasterio.open(path) as src:
+        return src.read(1)
+
+
+def load_baseline(mode: str, cfg: dict | None = None) -> tuple[np.ndarray, np.ndarray, dict]:
+    """
+    No-flood travel time from build_baseline: minutes to the nearest site (NaN = unreachable), that
+    site's site_id (-1 = unreachable), and the run's metadata (settings used, sanity checks).
+    """
+    cfg = cfg or load_config()
+    folder = ROOT / cfg["baseline"]["output_dir"]
+    minutes = read_raster(folder / f"travel_time_{mode}_min.tif")
+    nearest = read_raster(folder / f"nearest_site_{mode}.tif")
+    with open(folder / "baseline_metadata.json", encoding="utf-8") as f:
+        return minutes, nearest, json.load(f)
+
+
+def load_sites(cfg: dict | None = None) -> pd.DataFrame:
+    """The facility sites (facilities sharing a 250 m cell) from build_baseline; row i is site_id i."""
+    cfg = cfg or load_config()
+    path = ROOT / cfg["baseline"]["output_dir"] / "internal" / "sites.parquet"
+    if not path.exists():
+        raise FileNotFoundError(f"{path} is missing; run: python -m data_preparation.build_baseline")
+    return pd.read_parquet(path)
+
+
+def load_access_loss(scenario_id: str, cfg: dict | None = None) -> tuple[dict, pd.DataFrame]:
+    """Access loss for one scenario from build_access_loss: the national summary and the county table."""
+    cfg = cfg or load_config()
+    folder = ROOT / cfg["access_loss"]["output_dir"]
+    summary_path = folder / f"access_loss_{scenario_id}.json"
+    if not summary_path.exists():
+        raise FileNotFoundError(f"no access loss for {scenario_id}; run: python -m data_preparation.build_access_loss")
+    with open(summary_path, encoding="utf-8") as f:
+        return json.load(f), pd.read_csv(folder / f"access_loss_{scenario_id}_county.csv")
+
+
+def load_scenario_travel(scenario_id: str, mode: str, cfg: dict | None = None) -> tuple[np.ndarray, np.ndarray]:
+    """Flood-scenario travel time from build_access_loss: minutes (NaN = unreachable) and nearest site_id (-1)."""
+    cfg = cfg or load_config()
+    folder = ROOT / cfg["access_loss"]["output_dir"]
+    return (read_raster(folder / f"flood_travel_time_{mode}_{scenario_id}.tif"),
+            read_raster(folder / f"flood_nearest_site_{mode}_{scenario_id}.tif"))
+
+
+def load_priorities(scenario_id: str, cfg: dict | None = None) -> tuple[pd.DataFrame, dict]:
+    """
+    Precomputed protection priorities for one scenario (from build_priorities): one row per site
+    the flood closes, with both rankings, and a summary dict with the totals and settings.
+    """
+    cfg = cfg or load_config()
+    folder = ROOT / cfg["priorities"]["output_dir"]
+    table_path = folder / f"priorities_{scenario_id}.parquet"
+    if not table_path.exists():
+        raise FileNotFoundError(f"no priorities for {scenario_id}; run: python -m data_preparation.build_priorities")
+    with open(folder / f"priorities_{scenario_id}.json", encoding="utf-8") as f:
+        return pd.read_parquet(table_path), json.load(f)
 
 
 def load_facilities(cfg: dict | None = None) -> gpd.GeoDataFrame:

@@ -24,13 +24,12 @@ from data_preparation.loading import (
     load_permanent_water,
     load_flood,
     load_flood_likelihood,
-    load_facilities
+    load_facilities,
+    load_priorities,
 )
 from data_preparation.build_baseline import build_sites
 from data_preparation.build_flood_monthly import NO_DATA
-from data_preparation.prioritization import flooded_sites, rank_sites, site_impacts
 from data_preparation.routing import blocked_mask, open_sites, rc_to_lonlat, route
-from data_preparation.travel import travel_time
 
 MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August",
                "September", "October", "November", "December"]
@@ -66,7 +65,7 @@ def compute_flood_scenario(month_str, min_days):
     days = flood[0]
     flooded = (days >= min_days) & (days != NO_DATA)
 
-    #Facilities (their flood status comes from get_priorities)
+    #Facilities (their flood status comes from get_priorities: closed in this scenario or not)
     fac_df = facilities.copy()
 
     # Population aggregation
@@ -107,28 +106,11 @@ def get_route_inputs(calendar_month, threshold):
     return blocked, usable, np.isnan(likelihood)
 
 
-@st.cache_resource(show_spinner="Computing walking times to care without floods...")
-def get_baseline_walking():
-    """Walking time to the nearest site without floods, the same solve as build_baseline."""
-    cfg, grid, static, water, facilities = get_base_pipeline()
-    sites, sites_rc = get_sites()
-    return travel_time(static["friction_walking"], sites_rc, blocked=water, cell_size_m=grid.cell_size)
-
-
-@st.cache_resource(max_entries=4, show_spinner="Finding and ranking flood-prone facilities (up to 30 s)...")
-def get_priorities(calendar_month, threshold):
-    """Sites with their flood status and what losing each one costs its catchment (walking).
-    See data_preparation/README_prioritization.md."""
-    cfg, grid, static, water, facilities = get_base_pipeline()
-    sites, sites_rc = get_sites()
-    likelihood = load_flood_likelihood(calendar_month, cfg)
-    flooded = flooded_sites(sites_rc, likelihood, threshold)
-    base = get_baseline_walking()
-    flood = travel_time(static["friction_walking"], sites_rc[~flooded],
-                        blocked=blocked_mask(water, likelihood, threshold), cell_size_m=grid.cell_size)
-    impacts = site_impacts(static["population"], base.nearest, base.minutes, flood.minutes, len(sites),
-                           cfg["travel"]["max_time_min"])
-    return sites.assign(flooded=flooded).join(impacts)
+@st.cache_data
+def get_priorities(scenario_id):
+    """Precomputed protection priorities for one scenario, from data_preparation.build_priorities:
+    one row per closed site with both rankings, and the totals. See README_prioritization.md."""
+    return load_priorities(scenario_id, load_config())
 
 
 @st.cache_resource(max_entries=16)   # each route takes a few seconds; other widgets rerun the script
@@ -200,7 +182,7 @@ def add_facilities(m, facilities, top_n):
     protected, flooded = facilities["is_protected"], facilities["is_flooded"]
     points = gpd.GeoDataFrame(
         {"name": facilities["Facility_n"], "type": facilities["Facility_t"],
-         "status": np.select([protected, flooded], [f"PROTECTED (TOP {top_n})", "SUBMERGED / CUT OFF"], "OPERATIONAL"),
+         "status": np.select([protected, flooded], [f"PROTECTED (TOP {top_n})", "CLOSED (FLOOD NEARBY)"], "OPERATIONAL"),
          "color": np.select([protected, flooded], ["#FF9800", "#FF3344"], "#00E676")},
         geometry=gpd.points_from_xy(facilities["Long"], facilities["Lat"]), crs="EPSG:4326")
     points = points.iloc[np.argsort(flooded.to_numpy(int) + protected.to_numpy(int), kind="stable")]   # red, orange on top
@@ -444,7 +426,7 @@ def build_advanced_map(counties_meta, facilities_data, top_n, selected_pcode=Non
         is_flooded = fac["is_flooded"]
         color = "#FF3344" if is_flooded else "#00E676"
         heading_color = "#d9534f" if is_flooded else "#2e7d32"
-        status_label = "SUBMERGED / CUT OFF" if is_flooded else "OPERATIONAL"
+        status_label = "CLOSED (FLOOD NEARBY)" if is_flooded else "OPERATIONAL"
         if fac["is_protected"]:
             color = heading_color = "#1E6FD9"
             status_label = f"PROTECTED (TOP {top_n})"
@@ -480,19 +462,22 @@ def main():
 
     st.set_page_config(page_title="ZOA Healthcare Access Tool", layout="wide")
 
+    cfg = load_config()
     st.sidebar.title("Scenario & Policy Parameters (Monthly, Yearly Flood Selection)")
+    scenario_labels = {s["id"]: s["label"] for s in cfg["scenarios"]}
     selected_month = st.sidebar.selectbox(
-        "Historical / Predicted Scenario Month",
-        ["2020-07", "2020-09", "2020-11", "2021-09", "2022-10"],
-        index=2
+        "Flood Scenario (Observed Month)", list(scenario_labels), format_func=scenario_labels.get,
+        help="Observed flood months picked by data_preparation/select_scenarios.py (the `scenarios` list in "
+             "config.yaml). The protection ranking is precomputed for each of them."
     )
 
     min_days = st.sidebar.slider(
         "Min Days Flooded to Block Access",
-        min_value=3, max_value=14, value=3
+        min_value=3, max_value=14, value=cfg["flood"]["min_days_flooded"],
+        help="Used for the county map. The protection ranking is precomputed with flood.min_days_flooded "
+             f"from config.yaml ({cfg['flood']['min_days_flooded']} days)."
     )
 
-    cfg = load_config()
     route_cfg, top_n = cfg["routing"], cfg["priorities"]["top_n"]
     route_threshold = st.sidebar.slider(
         "Block Cells Flooded in More Than (% of Years)",
@@ -526,13 +511,16 @@ def main():
     facilities_data, county_stats = compute_flood_scenario(selected_month, min_days)
 
     calendar_month = pd.Period(selected_month, freq="M").month
-    priorities = get_priorities(calendar_month, route_threshold)
+    priorities, priority_summary = get_priorities(selected_month)
     criterion = "worst_off" if "Worst-Off" in priority_mode else "most_saved"
-    top_sites = rank_sites(priorities, priorities["flooded"], criterion, top_n)
+    ranked = priorities.sort_values(f"rank_{criterion}")
+    top_sites = ranked[ranked[f"added_{criterion}"] > 0].head(top_n)   # greedy order; skip sites adding nobody
     protected = tuple(top_sites["site_id"].tolist()) if protect_top else ()
 
-    # facility status from its site's flood likelihood, the same rule as Route to Care
-    facilities_data = facilities_data.merge(priorities[["row", "col", "site_id", "flooded"]], on=["row", "col"])
+    # facility status: closed in this scenario (a flooded cell within facilities.flood_buffer_m)
+    sites, _ = get_sites()
+    status = sites[["row", "col", "site_id"]].assign(flooded=sites["site_id"].isin(priorities["site_id"]))
+    facilities_data = facilities_data.merge(status, on=["row", "col"])
     facilities_data["is_flooded"] = facilities_data.pop("flooded")
     facilities_data["is_protected"] = facilities_data["site_id"].isin(protected)
 
@@ -555,17 +543,21 @@ def main():
     total_affected_people = int(county_stats["flooded_pop"].sum())
 
     metric_label = "Worst-Off First" if criterion == "worst_off" else "Most Saved"
+    limit_min = cfg["priorities"]["worst_off_min"] if criterion == "worst_off" else cfg["travel"]["max_time_min"]
+    limit_text = f"{limit_min / 60:g} hours"
     if criterion == "worst_off":
-        metric_help = (f"Ranks flood-prone facilities by the share of their catchment population left more than "
-                       f"{cfg['travel']['max_time_min']} min from care, or unable to reach any, once flood-prone "
-                       f"cells and facilities are lost (walking). Ties go to the larger extra travel time.")
+        metric_help = (f"Ranks closed facilities by how many people would be more than {limit_text} from care "
+                       f"without them, and are brought back within {limit_text} if that facility is protected "
+                       f"(walking). Favours remote communities with nowhere else to go.")
     else:
-        metric_help = ("Ranks flood-prone facilities by catchment population: the people for whom it is the "
-                       "nearest facility when there are no floods (walking).")
+        metric_help = (f"Ranks closed facilities by how many people get access back within {limit_text} of care "
+                       f"if that facility is protected (walking).")
+    metric_help += (" Greedy order: each next facility adds the most people not already brought back by the "
+                    "ones above it.")
 
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("Total Facilities", f"{total_facilities:,}")
-    col2.metric("Submerged / Inaccessible", f"{flooded_facilities:,}", delta=f"{flooded_facilities/total_facilities*100:.1f}%", delta_color="inverse")
+    col2.metric(f"Closed (Flood Within {cfg['facilities']['flood_buffer_m'] / 1000:g} km)", f"{flooded_facilities:,}", delta=f"{flooded_facilities/total_facilities*100:.1f}%", delta_color="inverse")
     col3.metric("Flooded In-Situ Population", f"{total_affected_people:,}")
     
     col4.metric("Active Decision Metric", metric_label,  help=metric_help)
@@ -604,16 +596,26 @@ def main():
             "Type": top_sites["rep_facility_type"],
             "State": top_sites["rep_facility_id"].map(facilities_data.set_index("FID")["Admin1"]),
         })
-        if criterion == "worst_off":
-            table["Cut Off (%)"] = (100 * top_sites["share_cut_off"]).round(1)
-            table["Extra Time (min)"] = top_sites["extra_min"].round()   # the tie-break; empty = nobody reached
-        else:
-            table["Catchment Population"] = top_sites["catchment_pop"].round().astype(int)
+        table["County"] = top_sites["adm2_name"]
+        table[f"People Brought Back (within {limit_text})"] = top_sites[f"added_{criterion}"].round().astype(int)
+        table["If Protected Alone"] = top_sites[f"gain_{criterion}"].round().astype(int)
         table.index = pd.RangeIndex(1, len(table) + 1, name="Rank")
 
         st.dataframe(table, use_container_width=True)
     else:
-        st.info("No facilities submerged under this specific scenario threshold.")
+        st.info("No closed facility brings anyone back within the limit in this scenario.")
+
+    ranking = priority_summary["rankings"][criterion]
+    covered = float(top_sites[f"cumulative_{criterion}"].max()) if len(top_sites) else 0.0
+    losing = ranking["people_losing_access"]
+    losing_text = (f"are pushed beyond {limit_text} from care" if criterion == "worst_off"
+                   else f"lose access within {limit_text}")
+    st.caption(
+        f"In this scenario {losing:,} people {losing_text}. Protecting these {len(top_sites)} facilities brings back "
+        f"{covered:,.0f}; **{losing - covered:,.0f} people are not covered**. "
+        f"{priority_summary['people_living_in_flooded_cells']:,} people live in flooded cells and are not counted: "
+        f"protecting a facility doesn't make their homes passable. Screening tool for local verification, "
+        f"not an instruction.")
 
     st.divider()
 

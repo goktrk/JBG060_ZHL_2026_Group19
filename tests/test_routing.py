@@ -122,3 +122,22 @@ def test_likelihood_from_years():
     assert share.dtype == np.float32
     np.testing.assert_allclose(share[0, [0, 1, 3]], [0.0, 0.5, 2 / 3])   # no-data years left out
     assert np.isnan(share[0, 2])
+
+
+def test_protected_site_stays_open_but_its_surroundings_stay_blocked():
+    friction = np.full((15, 15), 0.012)
+    likelihood = np.zeros((15, 15), dtype=np.float32)
+    sites = np.array([[7, 9], [7, 14]])
+    likelihood[7, 9] = 0.5                        # the nearest facility is flood-prone
+    blocked = blocked_mask(None, likelihood, 0.0)
+    usable = open_sites(sites, likelihood, 0.0)
+    assert route(friction, (7, 2), sites[usable], blocked).site == 0   # goes on to (7, 14)
+
+    protected = usable.copy()
+    protected[0] = True                           # as the dashboard does for the Top 5
+    res = route(friction, (7, 2), sites[protected], blocked)
+    assert tuple(sites[protected][res.site]) == (7, 9) and res.minutes == pytest.approx(7 * 3.0)
+
+    likelihood[5:10, 7:12] = 0.5                  # the ground around it floods too
+    res = route(friction, (7, 2), sites[protected], blocked_mask(None, likelihood, 0.0))
+    assert tuple(sites[protected][res.site]) == (7, 14)
