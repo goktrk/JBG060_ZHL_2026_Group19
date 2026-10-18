@@ -35,7 +35,8 @@ from data_preparation.travel import travel_time
 MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August",
                "September", "October", "November", "December"]
 NATIONAL_LAYER = "All flood-prone cells and permanent water (500 m)"
-# the route map's layer menu folds into a ☰ button
+
+# The route map's layer menu folds into a ☰ button
 LAYER_MENU_CSS = """<style>
 .leaflet-control-layers .leaflet-control-layers-toggle {
     background-image: none !important; font-size: 22px; color: #333; text-decoration: none;
@@ -54,22 +55,27 @@ def get_base_pipeline():
     static = load_static(cfg)
     water = load_permanent_water(cfg)
     facilities = load_facilities(cfg)
-    return cfg, grid, static, water, facilities
+    counties_meta = pd.read_csv("data/interim/counties.csv")
+    if "adm2_pcode" not in counties_meta.columns and "county_pcode" in counties_meta.columns:
+        counties_meta["adm2_pcode"] = counties_meta["county_pcode"]
+    facilities["Facility_n"] = (
+        facilities["adm2_name"].fillna(facilities["Admin1"])
+        + " · "
+        + facilities["Facility_t"].fillna("Clinic")
+    )
+    return cfg, grid, static, water, facilities, counties_meta
 
 
 @st.cache_data
 def compute_flood_scenario(month_str, min_days):
-    cfg, grid, static, water, facilities = get_base_pipeline()
+    cfg, grid, static, water, facilities, counties_meta = get_base_pipeline()
 
-    #Flood Raster
     months, flood = load_flood(month_str)
     days = flood[0]
     flooded = (days >= min_days) & (days != NO_DATA)
 
-    #Facilities (their flood status comes from get_priorities)
     fac_df = facilities.copy()
 
-    # Population aggregation
     county_ids = static["county_id"].ravel()
     pop = static["population"].ravel()
     n_counties = int(county_ids.max() + 1)
@@ -77,29 +83,25 @@ def compute_flood_scenario(month_str, min_days):
     total_pop = np.bincount(county_ids, weights=pop, minlength=n_counties)
     flooded_pop = np.bincount(county_ids, weights=(pop * flooded.ravel()), minlength=n_counties)
 
-    counties_meta = pd.read_csv("data/interim/counties.csv")
+    counties_df = counties_meta.copy()
+    counties_df["total_pop"] = counties_df["county_id"].map(lambda cid: total_pop[cid] if cid < n_counties else 0)
+    counties_df["flooded_pop"] = counties_df["county_id"].map(lambda cid: flooded_pop[cid] if cid < n_counties else 0)
+    counties_df["pct_pop_affected"] = (counties_df["flooded_pop"] / np.maximum(counties_df["total_pop"], 1)) * 100
 
-    if ("adm2_pcode" not in counties_meta.columns and "county_pcode" in counties_meta.columns):
-        counties_meta["adm2_pcode"] = counties_meta["county_pcode"]
-
-    counties_meta["total_pop"] = counties_meta["county_id"].map(lambda cid: total_pop[cid] if cid < n_counties else 0)
-    counties_meta["flooded_pop"] = counties_meta["county_id"].map(lambda cid: flooded_pop[cid] if cid < n_counties else 0)
-    counties_meta["pct_pop_affected"] = (counties_meta["flooded_pop"] / np.maximum(counties_meta["total_pop"], 1)) * 100
-
-    return fac_df, counties_meta
+    return fac_df, counties_df
 
 
 @st.cache_resource
 def get_sites():
-    cfg, grid, static, water, facilities = get_base_pipeline()
-    sites = build_sites(facilities, grid)   # facilities sharing a 250 m cell are one site
+    cfg, grid, static, water, facilities, _ = get_base_pipeline()
+    sites = build_sites(facilities, grid)
     return sites, sites[["row", "col"]].to_numpy()
 
 
 @st.cache_resource(max_entries=4)
 def get_route_inputs(calendar_month, threshold):
     """Blocked cells and the sites that can still provide care, for one calendar month and threshold."""
-    cfg, grid, static, water, facilities = get_base_pipeline()
+    cfg, grid, static, water, facilities, _ = get_base_pipeline()
     sites, sites_rc = get_sites()
     likelihood = load_flood_likelihood(calendar_month, cfg)
     blocked = blocked_mask(water, likelihood, threshold)
@@ -110,16 +112,15 @@ def get_route_inputs(calendar_month, threshold):
 @st.cache_resource(show_spinner="Computing walking times to care without floods...")
 def get_baseline_walking():
     """Walking time to the nearest site without floods, the same solve as build_baseline."""
-    cfg, grid, static, water, facilities = get_base_pipeline()
+    cfg, grid, static, water, facilities, _ = get_base_pipeline()
     sites, sites_rc = get_sites()
     return travel_time(static["friction_walking"], sites_rc, blocked=water, cell_size_m=grid.cell_size)
 
 
 @st.cache_resource(max_entries=4, show_spinner="Finding and ranking flood-prone facilities (up to 30 s)...")
 def get_priorities(calendar_month, threshold):
-    """Sites with their flood status and what losing each one costs its catchment (walking).
-    See data_preparation/README_prioritization.md."""
-    cfg, grid, static, water, facilities = get_base_pipeline()
+    """Sites with their flood status and what losing each one costs its catchment (walking)."""
+    cfg, grid, static, water, facilities, _ = get_base_pipeline()
     sites, sites_rc = get_sites()
     likelihood = load_flood_likelihood(calendar_month, cfg)
     flooded = flooded_sites(sites_rc, likelihood, threshold)
@@ -131,11 +132,10 @@ def get_priorities(calendar_month, threshold):
     return sites.assign(flooded=flooded).join(impacts)
 
 
-@st.cache_resource(max_entries=16)   # each route takes a few seconds; other widgets rerun the script
+@st.cache_resource(max_entries=16)
 def compute_route(lat, lon, calendar_month, threshold, mode, protected=()):
-    """Flood-aware route from a clicked point, plus the same route ignoring floods for comparison.
-    Sites in `protected` (site ids) count as open even when their cell is flood-prone."""
-    cfg, grid, static, water, facilities = get_base_pipeline()
+    """Flood-aware route from a clicked point, plus the same route ignoring floods for comparison."""
+    cfg, grid, static, water, facilities, _ = get_base_pipeline()
     sites, sites_rc = get_sites()
     row, col = lonlat_to_rowcol(grid, np.array([lon]), np.array([lat]))
     if not in_grid(grid, row, col)[0] or static["county_id"][row[0], col[0]] == 0:
@@ -144,7 +144,7 @@ def compute_route(lat, lon, calendar_month, threshold, mode, protected=()):
     friction = static[f"friction_{mode}"]
     blocked, usable, no_data = get_route_inputs(calendar_month, threshold)
     if protected:
-        usable = usable.copy()   # the cached array is shared
+        usable = usable.copy()
         usable[list(protected)] = True
 
     flood_aware = route(friction, start, sites_rc[usable], blocked, grid.cell_size, no_data)
@@ -154,8 +154,7 @@ def compute_route(lat, lon, calendar_month, threshold, mode, protected=()):
 
 
 def mask_to_png(mask, transform, crs, resolution_m, resampling):
-    """A boolean mask as a PNG data URL plus lat/lon bounds, reprojected to Web Mercator so Leaflet
-    places it exactly (an image is stretched linearly in Web Mercator, not in our Albers grid)."""
+    """A boolean mask as a PNG data URL plus lat/lon bounds, reprojected to Web Mercator."""
     h, w = mask.shape
     dst_transform, dst_w, dst_h = calculate_default_transform(
         crs, "EPSG:3857", w, h, *array_bounds(h, w, transform), resolution=resolution_m)
@@ -175,9 +174,8 @@ def mask_to_png(mask, transform, crs, resolution_m, resampling):
 
 @st.cache_data(max_entries=8, show_spinner="Drawing all flood-prone cells...")
 def national_overlay(calendar_month, threshold):
-    """Every blocked cell in the country at 500 m (a 500 m pixel is shown if any 250 m cell in it is
-    blocked). Cached, so switching it on again for the same month and threshold is instant."""
-    cfg, grid, static, water, facilities = get_base_pipeline()
+    """Every blocked cell in the country at 500 m."""
+    cfg, grid, static, water, facilities, _ = get_base_pipeline()
     blocked, _, _ = get_route_inputs(calendar_month, threshold)
     return mask_to_png(blocked, grid.transform, grid.crs, 500, Resampling.max)
 
@@ -195,15 +193,14 @@ def blocked_overlay(grid, blocked, path_rcs, margin=40):
 
 
 def add_facilities(m, facilities, top_n):
-    """Every facility, drawn above the flood layers and below the routes:
-    red = flood-prone, green = open, orange = protected."""
+    """Every facility, drawn above the flood layers and below the routes."""
     protected, flooded = facilities["is_protected"], facilities["is_flooded"]
     points = gpd.GeoDataFrame(
         {"name": facilities["Facility_n"], "type": facilities["Facility_t"],
          "status": np.select([protected, flooded], [f"PROTECTED (TOP {top_n})", "SUBMERGED / CUT OFF"], "OPERATIONAL"),
-         "color": np.select([protected, flooded], ["#FF9800", "#FF3344"], "#00E676")},
+         "color": np.select([protected, flooded], ["#1E6FD9", "#FF3344"], "#00E676")},
         geometry=gpd.points_from_xy(facilities["Long"], facilities["Lat"]), crs="EPSG:4326")
-    points = points.iloc[np.argsort(flooded.to_numpy(int) + protected.to_numpy(int), kind="stable")]   # red, orange on top
+    points = points.iloc[np.argsort(flooded.to_numpy(int) + protected.to_numpy(int), kind="stable")]
     folium.GeoJson(
         points.to_json(), name="Health facilities",
         marker=folium.CircleMarker(radius=4.5, color="#ffffff", weight=0.6, fill=True, fill_opacity=0.9),
@@ -213,15 +210,13 @@ def add_facilities(m, facilities, top_n):
 
 
 class RememberLayers(folium.MacroElement):
-    """Saves in the browser which layers of `control` are switched on, and switches them the same way
-    when the map is rebuilt (each click on the map reruns the script). Layers in `skip` are left alone."""
+    """Saves layer toggle states across script reruns."""
     _template = Template("""
         {% macro script(this, kwargs) %}
         (function () {
             var map = {{ this._parent.get_name() }}, control = {{ this.control.get_name() }};
             var key = {{ this.key|tojson }}, skip = {{ this.skip|tojson }}, saved = {}, leaving = false;
             try { saved = JSON.parse(localStorage.getItem(key)) || {}; } catch (e) {}
-            // folium leaves every base map attached, the last one on top: keep only the saved or visible one
             var bases = control._layers.filter(function (l) { return !l.overlay; });
             var want = bases.filter(function (l) { return saved[l.name]; })[0]
                 || bases.filter(function (l) { return map.hasLayer(l.layer); }).pop();
@@ -231,7 +226,7 @@ class RememberLayers(folium.MacroElement):
                 if (!l.overlay || !(l.name in saved) || skip.indexOf(l.name) >= 0) return;
                 if (saved[l.name] !== map.hasLayer(l.layer)) saved[l.name] ? map.addLayer(l.layer) : map.removeLayer(l.layer);
             });
-            map.on("unload", function () { leaving = true; });   // removing the old map is not a choice
+            map.on("unload", function () { leaving = true; });
             map.on("overlayadd overlayremove baselayerchange", function () {
                 if (leaving) return;
                 control._layers.forEach(function (l) {
@@ -250,8 +245,6 @@ class RememberLayers(folium.MacroElement):
 
 
 def add_layer_menu(m):
-    """The layer menu, folded into a ☰ button. It keeps the user's choices across reruns; the nationwide
-    layer is left to its own toggle."""
     control = folium.LayerControl(position="topright", collapsed=True).add_to(m)
     m.get_root().header.add_child(folium.Element(LAYER_MENU_CSS))
     RememberLayers(control, "route_map_layers", skip=[NATIONAL_LAYER]).add_to(m)
@@ -292,7 +285,7 @@ def build_route_map(grid, result, clicked, facilities, top_n, national=None):
                         tooltip=f"Flood-aware route: {flood_aware.minutes:.0f} min").add_to(m)
         site = result["site"]
         folium.Marker([site["lat"], site["lon"]], icon=folium.Icon(color="green", icon="plus-sign"),
-                      popup=f"{site['rep_facility_name']} ({site['rep_facility_type']})").add_to(m)
+                      popup=f"{site['rep_facility_name']}").add_to(m)
 
     folium.Marker(clicked, icon=folium.Icon(color="red", icon="user"), tooltip="Start").add_to(m)
     bounds = np.vstack([p for p in paths if len(p)] + [np.array([result["start"]])])
@@ -307,14 +300,14 @@ def format_minutes(minutes):
 
 
 def render_route_section(calendar_month, threshold, mode, protected, facilities_data, top_n):
-    cfg, grid, static, water, facilities = get_base_pipeline()
+    cfg, grid, static, water, facilities, _ = get_base_pipeline()
     st.subheader("🧭 Route to Care")
     month_name = MONTH_NAMES[calendar_month - 1]
     flood_rule = (f"cells flooded in any {month_name} since 2003" if threshold == 0 else
                   f"cells flooded in more than {threshold:.0%} of {month_name}s (2003-2025)")
     caption = (f"Click anywhere in South Sudan. The route avoids permanent water and {flood_rule}, and goes to "
                f"the nearest facility whose own cell is not flood-prone. The dashed grey line is the route "
-               f"without floods. Facilities: red = flood-prone, green = open, orange = protected.")
+               f"without floods. Facilities: red = flood-prone, green = open, blue = protected.")
     if protected:
         caption += (f" The Top {len(protected)} facilities above are assumed protected, so they also count as "
                     f"open; the flood-prone ground around them stays blocked.")
@@ -326,11 +319,9 @@ def render_route_section(calendar_month, threshold, mode, protected, facilities_
     national = national_overlay(calendar_month, threshold) if show_all else None
 
     clicked = st.session_state.get("route_start")
-    result = compute_route(*clicked, calendar_month, threshold, mode, protected) if clicked else None
+    result = compute_route(clicked[0], clicked[1], calendar_month, threshold, mode, protected) if clicked else None
     if clicked and result is None:
         st.warning("That point is outside South Sudan. Click inside the country.")
-
-    # only a click reruns the script; zooming and panning stay in the browser
     out = st_folium(build_route_map(grid, result, clicked, facilities_data, top_n, national), key="route_map",
                     width=1000, height=550, returned_objects=["last_clicked"])
     last = (out or {}).get("last_clicked")
@@ -359,10 +350,10 @@ def render_route_section(calendar_month, threshold, mode, protected, facilities_
         st.warning("Part of this route lies north of 10°N, where there is no flood data. Those cells are "
                    "treated as passable, but they are not known to be dry.")
 
+
 ####################### Map Generator Function #######################
 
 def build_advanced_map(counties_meta, facilities_data, top_n, selected_pcode=None):
-
     initial_location = [7.5, 30.5]
     initial_zoom = 6.2
 
@@ -375,7 +366,9 @@ def build_advanced_map(counties_meta, facilities_data, top_n, selected_pcode=Non
             props = feat.get("properties", {})
             if (props.get("adm2_pcode") == selected_pcode or props.get("county_pcode") == selected_pcode):
                 selected_feature = feat
-                initial_location = [props.get("center_lat", 7.5), props.get("center_lon", 30.5),]
+                c_lat = props.get("center_lat") or 7.5
+                c_lon = props.get("center_lon") or 30.5
+                initial_location = [c_lat, c_lon]
                 initial_zoom = 8.5
                 break
 
@@ -438,7 +431,7 @@ def build_advanced_map(counties_meta, facilities_data, top_n, selected_pcode=Non
 
     protected_group = folium.FeatureGroup(name=f"Protected Facilities (Top {top_n})")
     if facilities_data["is_protected"].any():
-        protected_group.add_to(m)   # outside the cluster, so they stay visible at every zoom
+        protected_group.add_to(m)
 
     for _, fac in facilities_data.iterrows():
         is_flooded = fac["is_flooded"]
@@ -474,41 +467,61 @@ def build_advanced_map(counties_meta, facilities_data, top_n, selected_pcode=Non
     folium.LayerControl(position="topright", collapsed=False).add_to(m)
     return m
 
+
 ####################### User Interface (Folium + Streamlit) #######################
 
 def main():
-
     st.set_page_config(page_title="ZOA Healthcare Access Tool", layout="wide")
 
-    st.sidebar.title("Scenario & Policy Parameters (Monthly, Yearly Flood Selection)")
+    cfg = load_config()
+
+    st.sidebar.title("Scenario & Policy Parameters")
+
+    SCENARIO_LABELS = {
+        "2008-11": "2008-11 (Nov 2008 · largest loss)",
+        "2020-11": "2020-11 (Nov 2020 · worst for Bor South)",
+        "2025-10": "2025-10 (Oct 2025 · typical)",
+        "2025-01": "2025-01 (Jan 2025 · small)",
+    }
+
+    raw_scenarios = cfg.get("scenarios")
+    if isinstance(raw_scenarios, dict):
+        scenario_months = list(raw_scenarios.keys())
+    elif isinstance(raw_scenarios, list) and raw_scenarios and isinstance(raw_scenarios[0], dict):
+        scenario_months = [s.get("id") or s.get("month") for s in raw_scenarios]
+    elif isinstance(raw_scenarios, list) and raw_scenarios:
+        scenario_months = [str(s) for s in raw_scenarios]
+    else:
+        scenario_months = ["2008-11", "2020-11", "2025-10", "2025-01"]
+
     selected_month = st.sidebar.selectbox(
-        "Historical / Predicted Scenario Month",
-        ["2020-07", "2020-09", "2020-11", "2021-09", "2022-10"],
-        index=2
+        "Historical Flood Scenario Month",
+        scenario_months,
+        index=scenario_months.index("2020-11") if "2020-11" in scenario_months else 1,
+        format_func=lambda m: SCENARIO_LABELS.get(m, m),
+        help="Observed MODIS flood months (2003–2025). Note: 2008-11 and 2020-11 show different county "
+             "flood extents on the overview map, but share the November historical likelihood for the "
+             "Top 5 ranking and Route to Care."
     )
 
     min_days = st.sidebar.slider(
         "Min Days Flooded to Block Access",
-        min_value=3, max_value=14, value=3
+        min_value=3, max_value=14, value=3,
+        help="Affects the county choropleth colors and flooded population statistics for the selected month."
     )
 
-    cfg = load_config()
     route_cfg, top_n = cfg["routing"], cfg["priorities"]["top_n"]
     route_threshold = st.sidebar.slider(
         "Block Cells Flooded in More Than (% of Years)",
         min_value=0, max_value=50, step=5, value=round(route_cfg["max_flood_likelihood"] * 100),
-        help="Blocks cells whose flood likelihood for this calendar month is above this value. The likelihood is "
-             "the share of years (2003-2025) a cell was flooded on 3+ days in that month, so it moves in steps of "
-             "one year: about 4.3% with 23 years (4.5% for April, May and November, which have 22). "
-             "0% = flooded in at least 1 year · 5% = 2 years · 10% = 3 · 15% = 4 · 20% = 5 · 25% = 6. "
-             "Values in between give the same result as the step below (e.g. 2% = 0%)."
+        help="Blocks cells whose flood likelihood for this calendar month is above this value (2003-2025)."
     ) / 100
 
     priority_mode = st.sidebar.radio(
         "Anticipatory Defense Prioritization Criterion",
         ("Population Density (Utilitarian: Most Saved)", 
          "Isolation Risk (Egalitarian: Worst-Off First)"),
-         help="Explicitly switch between protecting high-density urban facilities vs remote lone facilities."
+        help="Switch between protecting high-density urban facilities vs remote lone facilities."
     )
 
     show_only_flooded = st.sidebar.checkbox("Show Only Inaccessible / Flooded Facilities", value=False)
@@ -522,7 +535,6 @@ def main():
         help=f"Treats the Top {top_n} facilities in the table as protected (e.g. sandbagged): they stay open and "
              "routes can end at them. The flood-prone ground around them stays blocked."
     )
-
     facilities_data, county_stats = compute_flood_scenario(selected_month, min_days)
 
     calendar_month = pd.Period(selected_month, freq="M").month
@@ -531,10 +543,11 @@ def main():
     top_sites = rank_sites(priorities, priorities["flooded"], criterion, top_n)
     protected = tuple(top_sites["site_id"].tolist()) if protect_top else ()
 
-    # facility status from its site's flood likelihood, the same rule as Route to Care
     facilities_data = facilities_data.merge(priorities[["row", "col", "site_id", "flooded"]], on=["row", "col"])
     facilities_data["is_flooded"] = facilities_data.pop("flooded")
     facilities_data["is_protected"] = facilities_data["site_id"].isin(protected)
+
+    fid_to_admin1 = dict(zip(facilities_data["FID"], facilities_data["Admin1"]))
 
     county_options = {"All Counties (National View)": None}
     for _, row in county_stats.sort_values("adm2_name").iterrows():
@@ -548,7 +561,7 @@ def main():
 
     display_facilities = facilities_data.copy()
     if show_only_flooded:
-        display_facilities = display_facilities[display_facilities["is_flooded"]]
+        display_facilities = display_facilities[display_facilities["is_flooded"] | display_facilities["is_protected"]]
 
     total_facilities = len(facilities_data)
     flooded_facilities = int(facilities_data["is_flooded"].sum())
@@ -565,14 +578,12 @@ def main():
 
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("Total Facilities", f"{total_facilities:,}")
-    col2.metric("Submerged / Inaccessible", f"{flooded_facilities:,}", delta=f"{flooded_facilities/total_facilities*100:.1f}%", delta_color="inverse")
+    col2.metric("Submerged / Inaccessible", f"{flooded_facilities:,}", 
+                delta=f"{flooded_facilities/total_facilities*100:.1f}%", delta_color="inverse")
     col3.metric("Flooded In-Situ Population", f"{total_affected_people:,}")
-    
-    col4.metric("Active Decision Metric", metric_label,  help=metric_help)
+    col4.metric("Active Decision Metric", metric_label, help=metric_help)
 
     st.divider()
-
-    #
 
     if selected_pcode:
         selected_row = county_stats[county_stats["adm2_pcode"] == selected_pcode].iloc[0]
@@ -586,27 +597,28 @@ def main():
         st.subheader("🇺🇳 National Overview (All 79 Counties)")
 
     scenario_map = build_advanced_map(county_stats, display_facilities, top_n, selected_pcode=selected_pcode)
-    # returned_objects=[]: zooming or panning doesn't rerun the script (which redrew the map grey)
     st_folium(scenario_map, key="scenario_map", width=1000, height=600, returned_objects=[])
 
     st.divider()
 
-    ####################### Additional Info #######################
+    ####################### Top-N Prioritization Table #######################
 
-    st.write(
-        f"### Top {top_n} Recommended Facilities for Temporary Defences"
-        f" ({metric_label})")
+    st.write(f"### Top {top_n} Recommended Facilities for Temporary Defences ({metric_label})")
+    fid_to_county = dict(zip(facilities_data["FID"], facilities_data["adm2_name"]))
+    fid_to_admin1 = dict(zip(facilities_data["FID"], facilities_data["Admin1"]))
+
     if not top_sites.empty:
         others = top_sites["n_facilities"] - 1
+        county_col = top_sites["rep_facility_id"].map(fid_to_county)
         table = pd.DataFrame({
-            "Facility Name": top_sites["rep_facility_name"]
-                             + others.map(lambda n: f" (+{n} more in the same cell)" if n else ""),
-            "Type": top_sites["rep_facility_type"],
-            "State": top_sites["rep_facility_id"].map(facilities_data.set_index("FID")["Admin1"]),
+            "County": county_col,
+            "Facility Type": top_sites["rep_facility_type"]
+                             + others.map(lambda n: f" (+{n} more in cell)" if n else ""),
+            "State": top_sites["rep_facility_id"].map(fid_to_admin1),
         })
         if criterion == "worst_off":
             table["Cut Off (%)"] = (100 * top_sites["share_cut_off"]).round(1)
-            table["Extra Time (min)"] = top_sites["extra_min"].round()   # the tie-break; empty = nobody reached
+            table["Extra Time (min)"] = top_sites["extra_min"].round()
         else:
             table["Catchment Population"] = top_sites["catchment_pop"].round().astype(int)
         table.index = pd.RangeIndex(1, len(table) + 1, name="Rank")
@@ -623,10 +635,15 @@ def main():
 
     with st.expander("Methodological Assumptions & SLE Limitations"):
         st.markdown("""
-        - **Friction vs. Reality:** Friction surfaces represent mathematical resistance over land, not confirmed physical roads.
-        - **Operational Integrity:** Facility status is derived from spatial coordinates; unflooded facilities may still lack staff, medicines, or operational power.
-        - **Equity Alert:** Utilitarian optimization biases sandbagging and flood defenses toward densely populated towns, systematically under-ranking remote communities.
+- **Friction vs. Reality:** Friction surfaces represent mathematical resistance over land, not confirmed physical roads.
+- **Operational Integrity:** Facility status is derived from spatial coordinates; unflooded facilities may still lack staff, medicines, or operational power.
+- **Equity Alert (Protection Bias):** Utilitarian optimization biases sandbagging and flood defenses toward densely populated towns, systematically under-ranking remote communities.
+- **The 'Average' Traveller:** Routing assumes an average, able-bodied traveller. A standard two-hour walk is significantly longer for a disabled person, elderly patient, or someone in labour.
+- **Crowding & Capacity Limitations:** Rerouting catchments to the nearest open facility assumes infinite capacity and perfect compliance, which could overwhelm receiving clinics in reality.
+- **No Data North of 10°N:** Approximately 6% of the country (e.g., Renk, Manyo) lacks satellite flood data. These areas are treated as passable in routing grids but are not confirmed to be dry.
+- **River Crossability:** The permanent water mask blocks most, but not all, major rivers. Seasonal khors (e.g., Nyanding, Nyirol) are typically unblocked and modeled as passable terrain.
+- **Abyei Region:** Included in the population modeling metrics but has no recorded health facilities within this dataset.
+- **Cloud Cover Underestimation:** Satellite flood counts function strictly as a lower bound, as dense cloud cover frequently obscures flooding detection during the wet season.
         """)
-
 if __name__ == "__main__":
     main()
