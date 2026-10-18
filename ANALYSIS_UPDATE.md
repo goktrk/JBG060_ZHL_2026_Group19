@@ -82,11 +82,11 @@ python -m data_preparation.build_static
 python -m data_preparation.build_permanent_water
 python -m data_preparation.build_facilities
 python -m data_preparation.build_flood_monthly
-python -m data_preparation.build_flood_likelihood   # only for the route map
 python -m data_preparation.build_baseline
 python -m data_preparation.build_access_loss
 python -m data_preparation.build_priorities
 python -m data_preparation.build_prepositioning     # ~18 min; --skip-protected for ~1 min
+python -m data_preparation.build_dashboard_layers   # ~1.5 min, map layers for the dashboard
 python -m pytest tests                              # 45 tests
 $env:PYTHONPATH = "."; streamlit run dashboard.py
 ```
@@ -96,7 +96,7 @@ About 40 minutes from scratch. Always run as `python -m ...` from the repository
 ## 8. Still open
 
 - **Dashboard:** show the access-loss groups and the pre-positioning list (both precomputed and ready).
-- **Route to Care** still uses "flooded in any year" for the calendar month, and solves routes live; it can disagree with the scenario.
+- **Route to Care** now follows the selected scenario (same closed facilities and flooded cells as everything else); it still solves the route line live on click. The sidebar slider "Block Cells Flooded in More Than (% of Years)" is no longer used (shown in red) and can be removed.
 - **Optional:** rerun `select_scenarios`; `build_access_loss --all-months` (~3 h) for recurrence/lag.
 - **Not started:** recurrence (P2), lag analysis (P2), temporary facility siting (P3).
 - Large maps in `data/processed/baseline` and `access_loss` are gitignored; `priorities` and `prepositioning` are small and committed.

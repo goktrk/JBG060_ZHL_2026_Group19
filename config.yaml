@@ -68,21 +68,24 @@ prepositioning:
   protected_rankings: [most_saved, worst_off]   # side variant: the Top N of each ranking protected; [] = none
   small_delay_min: 15            # "path blocked" switches with less extra time than this are reported separately
 
+dashboard:
+  output_dir: data/processed/dashboard   # pre-rendered map layers (build_dashboard_layers)
+
 # Flood scenarios: observed months picked by data_preparation/select_scenarios.py (EDA/outputs/scenarios_block.yaml)
 # flooded = at least flood.min_days_flooded days that month (band "all"); blocked = water | flooded;
 # sites with a flooded cell within facilities.flood_buffer_m are closed
 scenarios:
   - id: "2008-11"
-    label: "Nov 2008 (severe, worst for Aweil / Lol)"
+    label: "2008-11 (Nov 2008 - largest loss)"
     tier: severe
   - id: "2020-11"
-    label: "Nov 2020 (worst for Bor South)"
+    label: "2020-11 (Nov 2020 - worst for Bor South)"
     tier: worst_bor_south
   - id: "2025-10"
-    label: "Oct 2025 (medium)"
+    label: "2025-10 (Oct 2025 - typical)"
     tier: medium
   - id: "2025-01"
-    label: "Jan 2025 (mild)"
+    label: "2025-01 (Jan 2025 - small)"
     tier: mild
 
 travel:

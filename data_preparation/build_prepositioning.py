@@ -10,6 +10,7 @@ prepositioning.protected_rankings.
 Outputs in prepositioning.output_dir (data/processed/prepositioning/), per scenario id:
     prepositioning_<id>_receiving.csv   one row per receiving facility, mode and variant
     prepositioning_<id>_flows.csv       people per (from facility, to facility, reason), mode and variant
+    prepositioning_<id>_sources.csv     per closed facility: its usual people who move, lose access or are flooded
     prepositioning_<id>.json            people per group and the settings used
 
 Chain: build_baseline -> build_access_loss -> build_priorities -> build_prepositioning.
@@ -27,7 +28,8 @@ from data_preparation.build_priorities import check_access_loss
 from data_preparation.grid import ROOT, data_path, load_config, make_grid
 from data_preparation.loading import (load_access_loss, load_baseline, load_permanent_water, load_priorities,
                                       load_scenario_travel, load_sites, load_static)
-from data_preparation.prepositioning import check_balance, classify, flow_table, group_totals, receiving_table
+from data_preparation.prepositioning import (check_balance, classify, flow_table, group_totals, receiving_table,
+                                             source_table)
 from data_preparation.scenarios import scenario_flood
 from data_preparation.travel import travel_time
 
@@ -51,7 +53,7 @@ def reopen(friction, sites_rc, closed, protected, blocked, cell_size_m):
 
 
 def describe(receiving: pd.DataFrame, sites: pd.DataFrame, county_names: pd.Series) -> pd.DataFrame:
-    """Add the facility name, type and county to a receiving table."""
+    """Add the facility name, type and county to a table with a site_id column."""
     info = sites.set_index("site_id")[["rep_facility_name", "rep_facility_type", "n_facilities", "admin2_pcode"]]
     out = receiving.join(info, on="site_id")
     out["adm2_name"] = out["admin2_pcode"].map(county_names)
@@ -91,7 +93,7 @@ def main():
         closed[access["closed_site_ids"]] = True
         protected = {ranking: protected_sites(sid, ranking, cfg) for ranking in rankings}
 
-        receiving, flows, groups_out = [], [], {}
+        receiving, flows, sources, groups_out = [], [], [], {}
         for mode in modes:
             check_access_loss(access, cfg, mode)
             base_minutes, base_nearest = baseline[mode]
@@ -109,6 +111,8 @@ def main():
                 tag = {"mode": mode, "variant": variant}
                 receiving.append(r.assign(**tag))
                 flows.append(f.assign(**tag))
+                sources.append(describe(source_table(pop, base_nearest, groups, closed_v), sites,
+                                        county_names).assign(**tag))
                 totals = {k: round(v) for k, v in group_totals(pop, groups).items()}
                 moved = f["people"].sum()
                 totals |= {"moved_within_limit": round(float(f["people_within_limit"].sum())),
@@ -121,6 +125,8 @@ def main():
         pd.concat(receiving, ignore_index=True).round(3).to_csv(out_dir / f"prepositioning_{sid}_receiving.csv",
                                                                 index=False)
         pd.concat(flows, ignore_index=True).round(3).to_csv(out_dir / f"prepositioning_{sid}_flows.csv", index=False)
+        pd.concat(sources, ignore_index=True).round(3).to_csv(out_dir / f"prepositioning_{sid}_sources.csv",
+                                                              index=False)
         summary = {"scenario": scenario, "sites_closed": int(closed.sum()),
                    "protected_sites": {k: v.tolist() for k, v in protected.items()},
                    "groups": groups_out,

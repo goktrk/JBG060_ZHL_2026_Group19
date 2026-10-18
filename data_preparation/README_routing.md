@@ -1,5 +1,10 @@
 # Flood-aware routing to care (Route to Care)
 
+> **Update:** Route to Care now follows the **selected flood scenario**, like the rest of the dashboard:
+> permanent water and that month's flooded cells are blocked, and facilities closed in the scenario (a flooded
+> cell within 1 km, from `build_access_loss`) can't be destinations. The flood likelihood and its sidebar
+> slider described below are no longer used. The map always shows the month's flooded cells and permanent water.
+
 This page explains the "Route to Care" part of the project: what it does, how it is built, the
 decisions behind it, and what to watch out for when you continue the work. It builds on the
 prepared data in `data_preparation/README.md` and the travel-time solver in
@@ -142,7 +147,7 @@ The Route to Care section sits below the National Overview map and the Top 5 tab
 | `compute_route(lat, lon, month, threshold, mode, protected)` | Flood-aware route plus the no-flood route, with the protected sites open; cached, up to 16 |
 | `national_overlay(month, threshold)` | Every blocked cell as one image at 500 m; cached, up to 8 |
 | `blocked_overlay(...)` | Blocked cells at 250 m within 10 km (40 cells) of the routes |
-| `add_facilities(...)` | Every facility: red = flood-prone, green = open, orange = protected |
+| `add_facilities(...)` | Every facility: red = flood-prone, green = open, blue = protected |
 | `build_route_map(...)` | Assembles the folium map |
 | `render_route_section(...)` | Caption, toggle, map, click handling, metrics and warnings |
 
@@ -152,7 +157,7 @@ On the map:
 - **blue cells**: blocked cells (flood-prone or permanent water), drawn near the route by default
 - **"Show all flood-prone cells (nationwide)" toggle**: draws every blocked cell in the country. It
   only changes what is drawn; the route always avoids every blocked cell nationwide.
-- **dots**: every health facility, red = closed in the selected scenario (flood within 1 km), green = open, orange = protected (Top 5)
+- **dots**: every health facility, red = closed in the selected scenario (flood within 1 km), green = open, blue = protected (Top 5)
 - **satellite imagery** by default; OpenStreetMap can be picked in the layer menu
 - **layer menu (☰)**: folds open on hover. The browser remembers which layers are on (localStorage),
   so a new click keeps them; the nationwide layer follows its toggle instead

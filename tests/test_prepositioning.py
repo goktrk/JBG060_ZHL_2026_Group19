@@ -5,7 +5,8 @@ import numpy as np
 import pytest
 
 from data_preparation.prepositioning import (FLOODED, LOST, MOVED_BLOCKED, MOVED_CLOSED, NOT_COUNTED, SAME,
-                                             check_balance, classify, flow_table, group_totals, receiving_table)
+                                             check_balance, classify, flow_table, group_totals, receiving_table,
+                                             source_table)
 from data_preparation.scenarios import closed_sites
 from data_preparation.travel import travel_time
 
@@ -121,3 +122,16 @@ def test_small_delays_are_flagged():
     groups = np.array([[MOVED_BLOCKED, MOVED_BLOCKED]], dtype=np.int8)
     flows = flow_table(pop, base_nearest, base_min, flood_nearest, flood_min, groups, 120, 15)
     assert flows.loc[0, "people_small_delay"] == 10 and flows.loc[0, "people_within_limit"] == 30
+
+
+def test_source_table_splits_each_closed_facility():
+    friction, sites, pop, flooded = three_sites()
+    flooded[1, 58] = True                                   # a home near site 1 floods too
+    pop[1, 58] = 7
+    closed, base, flood, flood_nearest = solve(friction, sites, flooded)
+    groups = classify(pop, base.nearest, flood_nearest, flooded, closed)
+    sources = source_table(pop, base.nearest, groups, closed).set_index("site_id")
+    assert sources.index.tolist() == [1]                    # only the closed site
+    row = sources.loc[1]
+    assert row["moved"] == 70 and row["living_in_flooded_cells"] == 7 and row["lost_all_access"] == 0
+    assert row["moved"] + row["lost_all_access"] + row["living_in_flooded_cells"] == row["usual_population"]

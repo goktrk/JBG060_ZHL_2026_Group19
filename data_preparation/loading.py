@@ -154,6 +154,24 @@ def load_scenario_travel(scenario_id: str, mode: str, cfg: dict | None = None) -
             read_raster(folder / f"flood_nearest_site_{mode}_{scenario_id}.tif"))
 
 
+def load_prepositioning(scenario_id: str, cfg: dict | None = None) -> tuple[dict, pd.DataFrame, pd.DataFrame,
+                                                                          pd.DataFrame]:
+    """
+    Pre-positioning for one scenario from build_prepositioning: the summary, the receiving-facilities
+    table, the flows table and the per-closed-facility sources table (all with `mode` and `variant` columns).
+    """
+    cfg = cfg or load_config()
+    folder = ROOT / cfg["prepositioning"]["output_dir"]
+    summary_path = folder / f"prepositioning_{scenario_id}.json"
+    if not summary_path.exists():
+        raise FileNotFoundError(f"no pre-positioning for {scenario_id}; run: python -m data_preparation.build_prepositioning")
+    with open(summary_path, encoding="utf-8") as f:
+        summary = json.load(f)
+    return (summary, pd.read_csv(folder / f"prepositioning_{scenario_id}_receiving.csv"),
+            pd.read_csv(folder / f"prepositioning_{scenario_id}_flows.csv"),
+            pd.read_csv(folder / f"prepositioning_{scenario_id}_sources.csv"))
+
+
 def load_priorities(scenario_id: str, cfg: dict | None = None) -> tuple[pd.DataFrame, dict]:
     """
     Precomputed protection priorities for one scenario (from build_priorities): one row per site

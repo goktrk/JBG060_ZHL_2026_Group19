@@ -1,0 +1,526 @@
+{
+  "legends": {
+    "cut_off": {
+      "title": "People cut off from care (per km²)",
+      "classes": [
+        [
+          "#fcc5c0",
+          "1–10 people"
+        ],
+        [
+          "#fa9fb5",
+          "10–50"
+        ],
+        [
+          "#f768a1",
+          "50–200"
+        ],
+        [
+          "#c51b8a",
+          "200–1,000"
+        ],
+        [
+          "#7a0177",
+          "more than 1,000"
+        ]
+      ]
+    },
+    "no_facility": {
+      "title": "People with no facility reachable (per km²)",
+      "classes": [
+        [
+          "#fcc5c0",
+          "1–10 people"
+        ],
+        [
+          "#fa9fb5",
+          "10–50"
+        ],
+        [
+          "#f768a1",
+          "50–200"
+        ],
+        [
+          "#c51b8a",
+          "200–1,000"
+        ],
+        [
+          "#7a0177",
+          "more than 1,000"
+        ]
+      ]
+    },
+    "travel_time": {
+      "title": "Travel time to care during the flood",
+      "classes": [
+        [
+          "#ffffcc",
+          "under 30 min"
+        ],
+        [
+          "#fed976",
+          "30–60 min"
+        ],
+        [
+          "#fd8d3c",
+          "1–2 h"
+        ],
+        [
+          "#e31a1c",
+          "2–4 h"
+        ],
+        [
+          "#800026",
+          "more than 4 h"
+        ],
+        [
+          "#252525",
+          "no facility reachable"
+        ]
+      ]
+    },
+    "extra_time": {
+      "title": "Extra travel time due to the flood",
+      "classes": [
+        [
+          "#fee6ce",
+          "under 15 min"
+        ],
+        [
+          "#fdae6b",
+          "15–60 min"
+        ],
+        [
+          "#f16913",
+          "1–2 h"
+        ],
+        [
+          "#a63603",
+          "more than 2 h"
+        ],
+        [
+          "#252525",
+          "no facility reachable"
+        ]
+      ]
+    }
+  },
+  "images": {
+    "2008-11|walking|cut_off": {
+      "file": "layer_2008-11_walking_cut_off.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2008-11|walking|no_facility": {
+      "file": "layer_2008-11_walking_no_facility.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2008-11|walking|travel_time": {
+      "file": "layer_2008-11_walking_travel_time.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2008-11|walking|extra_time": {
+      "file": "layer_2008-11_walking_extra_time.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2020-11|walking|cut_off": {
+      "file": "layer_2020-11_walking_cut_off.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2020-11|walking|no_facility": {
+      "file": "layer_2020-11_walking_no_facility.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2020-11|walking|travel_time": {
+      "file": "layer_2020-11_walking_travel_time.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2020-11|walking|extra_time": {
+      "file": "layer_2020-11_walking_extra_time.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2025-10|walking|cut_off": {
+      "file": "layer_2025-10_walking_cut_off.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2025-10|walking|no_facility": {
+      "file": "layer_2025-10_walking_no_facility.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2025-10|walking|travel_time": {
+      "file": "layer_2025-10_walking_travel_time.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2025-10|walking|extra_time": {
+      "file": "layer_2025-10_walking_extra_time.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2025-01|walking|cut_off": {
+      "file": "layer_2025-01_walking_cut_off.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2025-01|walking|no_facility": {
+      "file": "layer_2025-01_walking_no_facility.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2025-01|walking|travel_time": {
+      "file": "layer_2025-01_walking_travel_time.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2025-01|walking|extra_time": {
+      "file": "layer_2025-01_walking_extra_time.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2008-11|motorised|cut_off": {
+      "file": "layer_2008-11_motorised_cut_off.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2008-11|motorised|no_facility": {
+      "file": "layer_2008-11_motorised_no_facility.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2008-11|motorised|travel_time": {
+      "file": "layer_2008-11_motorised_travel_time.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2008-11|motorised|extra_time": {
+      "file": "layer_2008-11_motorised_extra_time.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2020-11|motorised|cut_off": {
+      "file": "layer_2020-11_motorised_cut_off.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2020-11|motorised|no_facility": {
+      "file": "layer_2020-11_motorised_no_facility.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2020-11|motorised|travel_time": {
+      "file": "layer_2020-11_motorised_travel_time.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2020-11|motorised|extra_time": {
+      "file": "layer_2020-11_motorised_extra_time.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2025-10|motorised|cut_off": {
+      "file": "layer_2025-10_motorised_cut_off.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2025-10|motorised|no_facility": {
+      "file": "layer_2025-10_motorised_no_facility.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2025-10|motorised|travel_time": {
+      "file": "layer_2025-10_motorised_travel_time.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2025-10|motorised|extra_time": {
+      "file": "layer_2025-10_motorised_extra_time.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2025-01|motorised|cut_off": {
+      "file": "layer_2025-01_motorised_cut_off.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2025-01|motorised|no_facility": {
+      "file": "layer_2025-01_motorised_no_facility.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2025-01|motorised|travel_time": {
+      "file": "layer_2025-01_motorised_travel_time.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    },
+    "2025-01|motorised|extra_time": {
+      "file": "layer_2025-01_motorised_extra_time.png",
+      "bounds": [
+        [
+          3.042887846714321,
+          23.661079896164036
+        ],
+        [
+          12.68609697461717,
+          36.45308954202602
+        ]
+      ]
+    }
+  }
+}

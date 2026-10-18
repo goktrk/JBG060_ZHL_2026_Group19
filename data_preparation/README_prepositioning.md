@@ -67,6 +67,10 @@ The "all" and "within 2 h" columns side by side give the range of added load.
 **`prepositioning_<id>_flows.csv`**: people per `from_site` → `to_site` and `reason`, with
 `people_within_limit`, `people_small_delay` and `extra_min`. Shows where each closed facility's people go.
 
+**`prepositioning_<id>_sources.csv`**: per closed facility, what happens to its usual people: `moved`,
+`lost_all_access`, `living_in_flooded_cells` (they add up to `usual_population`). Used by the dashboard's
+"Focus on a closed facility".
+
 **`prepositioning_<id>.json`**: people per group, per mode and variant, the protected sites, settings.
 
 ## Current results (walking, as is)

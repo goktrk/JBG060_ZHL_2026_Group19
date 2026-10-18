@@ -70,6 +70,29 @@ def check_balance(pop, base_nearest, groups, closed):
         raise AssertionError(f"groups add up to {total:,.0f}, not {p[counted].sum():,.0f}")
 
 
+def source_table(pop, base_nearest, groups, closed) -> pd.DataFrame:
+    """
+    What happens to the usual population of each closed facility: how many move to another facility,
+    lose all access, or live in flooded cells. The three add up to its usual population.
+    """
+    p = np.asarray(pop, dtype="float64")
+    base = np.asarray(base_nearest)
+    closed_ids = np.flatnonzero(closed)
+    n = len(closed)
+    counted = groups != NOT_COUNTED
+
+    def per_site(mask):
+        return np.bincount(base[mask], weights=p[mask], minlength=n)[closed_ids]
+
+    return pd.DataFrame({
+        "site_id": closed_ids,
+        "usual_population": per_site(counted),
+        "moved": per_site(groups == MOVED_CLOSED),
+        "lost_all_access": per_site(groups == LOST),
+        "living_in_flooded_cells": per_site(groups == FLOODED),
+    })
+
+
 def flow_table(pop, base_nearest, base_minutes, flood_nearest, flood_minutes, groups, limit_min,
                small_delay_min) -> pd.DataFrame:
     """
