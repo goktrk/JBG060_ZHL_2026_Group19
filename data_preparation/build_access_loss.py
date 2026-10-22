@@ -22,6 +22,7 @@ With --all-months, every month of the flood record instead, as two tables (no ra
 
 Chain: build_baseline -> build_access_loss -> build_priorities. Needs build_baseline first.
 Run from the repository root:  python -m data_preparation.build_access_loss [--scenario 2020-11] [--all-months]
+    --months-file data/processed/evaluation/peak_months.csv --mode walking   # other months, one mode
 """
 import argparse
 import json
@@ -148,13 +149,25 @@ def months_in_record(cfg: dict) -> list[dict]:
     return [{"id": str(m), "label": m.strftime("%b %Y")} for m in months]
 
 
+def months_from_file(path, cfg) -> list[dict]:
+    """Scenario entries for the months in a csv with an `id` column (e.g. peak_months.csv), leaving out the
+    months that are already dashboard scenarios (their results, with every mode, stay as they are)."""
+    known = {s["id"] for s in cfg["scenarios"]}
+    ids = pd.read_csv(path)["id"].astype(str)
+    return [{"id": m, "label": f"{m} (peak month)"} for m in ids if m not in known]
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--scenario", help="only this scenario id (default: all in config.yaml)")
     parser.add_argument("--all-months", action="store_true", help="every month of the flood record, tables only")
+    parser.add_argument("--months-file", help="csv with an `id` column: run these months (dashboard scenarios skipped)")
+    parser.add_argument("--mode", choices=["walking", "motorised"], help="only this travel mode")
     args = parser.parse_args()
 
     cfg = load_config()
+    if args.mode:
+        cfg["access_loss"]["modes"] = [args.mode]
     grid = make_grid(cfg)
     static, water = load_static(cfg), load_permanent_water(cfg)
     sites = load_sites(cfg)
@@ -168,6 +181,8 @@ def main():
 
     if args.all_months:
         scenarios = months_in_record(cfg)
+    elif args.months_file:
+        scenarios = months_from_file(ROOT / args.months_file, cfg)
     else:
         scenarios = [s for s in cfg["scenarios"] if args.scenario in (None, s["id"])]
         if not scenarios:

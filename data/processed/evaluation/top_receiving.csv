@@ -1,0 +1,229 @@
+site_id,rep_facility_name,rep_facility_type,adm2_name,usual_population,added_within_limit,relative_increase_within_limit,year,month,cut_off,rank
+1197,Monoji Primary Health Care Unit,Primary Health Care Unit,Juba,6419.406,36.814,0.006,2003,2003-01,56189,1
+1166,Walang Walang Primary Health Care Unit,Primary Health Care Unit,Juba,3568.453,35.232,0.01,2003,2003-01,56189,2
+1661,Ganzi Primary Health Care Unit,Primary Health Care Unit,Magwi,2890.682,26.711,0.009,2003,2003-01,56189,3
+1152,Tombur Primary Health Care Unit,Primary Health Care Unit,Juba,3805.742,16.112,0.004,2003,2003-01,56189,4
+63,Globany Primary Health Care Unit,Primary Health Care Unit,Fashoda,4650.845,15.472,0.003,2003,2003-01,56189,5
+278,Wunrok Primary Health Care Centre,Primary Health Care Centre,Twic,14533.839,13.346,0.001,2003,2003-01,56189,6
+862,Health Link Site 3 Primary Health Care Unit,Primary Health Care Unit,Awerial,1756.46,8.729,0.005,2003,2003-01,56189,7
+467,Luonyaker Primary Health Care Centre,Primary Health Care Centre,Gogrial East,9134.628,2.385,0.0,2003,2003-01,56189,8
+558,Lurchuk Primary Health Care Unit,Primary Health Care Unit,Tonj North,7616.753,1.357,0.0,2003,2003-01,56189,9
+336,Mading Primary Health Care Centre,Primary Health Care Centre,Luakpiny/Nasir,29274.799,0.252,0.0,2003,2003-01,56189,10
+1661,Ganzi Primary Health Care Unit,Primary Health Care Unit,Magwi,2890.682,26.711,0.009,2004,2004-01,56104,1
+236,Ajong Primary Health Care Unit,Primary Health Care Unit,Twic,9598.667,20.958,0.002,2004,2004-01,56104,2
+278,Wunrok Primary Health Care Centre,Primary Health Care Centre,Twic,14533.839,13.346,0.001,2004,2004-01,56104,3
+862,Health Link Site 3 Primary Health Care Unit,Primary Health Care Unit,Awerial,1756.46,8.729,0.005,2004,2004-01,56104,4
+544,Marial Abook Primary Health Care Unit,Primary Health Care Unit,Tonj North,3686.266,3.159,0.001,2004,2004-01,56104,5
+231,Pannyok Primary Health Care Unit,Primary Health Care Unit,Twic,10988.658,2.33,0.0,2004,2004-01,56104,6
+923,Mijiki Primary Health Care Unit,Primary Health Care Unit,Terekeka,1618.174,2.184,0.001,2004,2004-01,56104,7
+558,Lurchuk Primary Health Care Unit,Primary Health Care Unit,Tonj North,7616.753,1.357,0.0,2004,2004-01,56104,8
+1147,Gondokoro Main Land Primary Health Care Unit,Primary Health Care Unit,Juba,468.709,0.861,0.002,2004,2004-01,56104,9
+1027,Mongolla Primary Health Care Centre,Primary Health Care Centre,Juba,9629.322,0.666,0.0,2004,2004-01,56104,10
+1199,Malakia Primary Health Care Unit,Primary Health Care Unit,Juba,5822.175,3825.587,0.657,2005,2005-12,56788,1
+63,Globany Primary Health Care Unit,Primary Health Care Unit,Fashoda,4650.845,2570.426,0.553,2005,2005-12,56788,2
+398,Turu Primary Health Care Unit,Primary Health Care Unit,Maiwut,6245.706,2553.094,0.409,2005,2005-12,56788,3
+1206,Sacret Heart Primary Health Care Centre,Primary Health Care Centre,Juba,4172.701,1581.906,0.379,2005,2005-12,56788,4
+1246,Rajaf West Primary Health Care Unit,Primary Health Care Unit,Juba,1413.994,1265.248,0.895,2005,2005-12,56788,5
+60,Rom Primary Health Care Unit,Primary Health Care Unit,Baliet,13089.917,1184.224,0.09,2005,2005-12,56788,6
+1213,Gumbo Primary Health Care Unit,Primary Health Care Unit,Juba,31718.01,1154.083,0.036,2005,2005-12,56788,7
+1190,Juba Teaching Hospital,Teaching Hospital,Juba,8123.575,367.504,0.045,2005,2005-12,56788,8
+1192,Ustratuna Primary Health Care Centre,Primary Health Care Centre,Juba,4385.627,205.221,0.047,2005,2005-12,56788,9
+1265,Pager _Rajaf Primary Health Care Unit,Primary Health Care Unit,Juba,530.779,116.592,0.22,2005,2005-12,56788,10
+368,Nassir County Hospital,County Hospital,Luakpiny/Nasir,18391.294,20624.916,1.121,2006,2006-12,72675,1
+364,Yomding Primary Health Care Unit,Primary Health Care Unit,Ulang,16639.013,12863.091,0.773,2006,2006-12,72675,2
+278,Wunrok Primary Health Care Centre,Primary Health Care Centre,Twic,14533.839,5370.955,0.37,2006,2006-12,72675,3
+228,Toch Noon Primary Health Care Unit,Primary Health Care Unit,Twic,7919.634,2942.082,0.371,2006,2006-12,72675,4
+63,Globany Primary Health Care Unit,Primary Health Care Unit,Fashoda,4650.845,2570.054,0.553,2006,2006-12,72675,5
+236,Ajong Primary Health Care Unit,Primary Health Care Unit,Twic,9598.667,2416.169,0.252,2006,2006-12,72675,6
+180,Majak Pagai Primary Health Care Unit,Primary Health Care Unit,Twic,13529.882,2353.682,0.174,2006,2006-12,72675,7
+160,Yiik Thon Primary Health Care Unit,Primary Health Care Unit,Twic,12629.582,2278.585,0.18,2006,2006-12,72675,8
+231,Pannyok Primary Health Care Unit,Primary Health Care Unit,Twic,10988.658,1959.361,0.178,2006,2006-12,72675,9
+1166,Walang Walang Primary Health Care Unit,Primary Health Care Unit,Juba,3568.453,1326.455,0.372,2006,2006-12,72675,10
+368,Nassir County Hospital,County Hospital,Luakpiny/Nasir,18391.294,20700.134,1.126,2007,2007-01,61557,1
+364,Yomding Primary Health Care Unit,Primary Health Care Unit,Ulang,16639.013,12863.091,0.773,2007,2007-01,61557,2
+1143,Gondokoro Primary Health Care Unit,Primary Health Care Unit,Juba,1536.52,432.515,0.281,2007,2007-01,61557,3
+1166,Walang Walang Primary Health Care Unit,Primary Health Care Unit,Juba,3568.453,63.478,0.018,2007,2007-01,61557,4
+236,Ajong Primary Health Care Unit,Primary Health Care Unit,Twic,9598.667,59.646,0.006,2007,2007-01,61557,5
+1197,Monoji Primary Health Care Unit,Primary Health Care Unit,Juba,6419.406,36.814,0.006,2007,2007-01,61557,6
+1190,Juba Teaching Hospital,Teaching Hospital,Juba,8123.575,24.411,0.003,2007,2007-01,61557,7
+272,Pandit Twic Primary Health Care Unit,Primary Health Care Unit,Twic,10814.976,16.13,0.001,2007,2007-01,61557,8
+1152,Tombur Primary Health Care Unit,Primary Health Care Unit,Juba,3805.742,16.112,0.004,2007,2007-01,61557,9
+462,Warap State Hospital,State Hospital,Gogrial West,5499.677,10.419,0.002,2007,2007-01,61557,10
+360,Koat Primary Health Care Unit,Primary Health Care Unit,Luakpiny/Nasir,10202.594,26221.235,2.57,2008,2008-11,188470,1
+356,Rup Board Primary Health Care Centre,Primary Health Care Centre,Ulang,11690.587,12157.398,1.04,2008,2008-11,188470,2
+196,Nyamlel New Life Ministry Primary Health Care Unit,Primary Health Care Unit,Aweil West,5427.613,8513.624,1.569,2008,2008-11,188470,3
+957,Lokweni Primary Health Care Unit,Primary Health Care Unit,Terekeka,7066.942,5879.52,0.832,2008,2008-11,188470,4
+372,Nyokthiang Primary Health Care Unit,Primary Health Care Unit,Gogrial West,15303.612,5723.329,0.374,2008,2008-11,188470,5
+147,Anyiel Primary Health Care Unit,Primary Health Care Unit,Twic,17498.771,5088.319,0.291,2008,2008-11,188470,6
+566,Akobo County Hospital,County Hospital,Akobo,60476.881,4330.526,0.072,2008,2008-11,188470,7
+228,Toch Noon Primary Health Care Unit,Primary Health Care Unit,Twic,7919.634,4244.397,0.536,2008,2008-11,188470,8
+980,Molusuk Primary Health Care Unit,Primary Health Care Unit,Terekeka,6900.505,3985.261,0.578,2008,2008-11,188470,9
+536,Thokwath Primary Health Care Unit,Primary Health Care Unit,Akobo,9539.028,3916.114,0.411,2008,2008-11,188470,10
+360,Koat Primary Health Care Unit,Primary Health Care Unit,Luakpiny/Nasir,10202.594,26408.065,2.588,2009,2009-01,88900,1
+364,Yomding Primary Health Care Unit,Primary Health Care Unit,Ulang,16639.013,12773.212,0.768,2009,2009-01,88900,2
+709,Pager Primary Health Care Unit,Primary Health Care Unit,Twic East,19548.614,12106.689,0.619,2009,2009-01,88900,3
+289,Titcok Primary Health Care Unit,Primary Health Care Unit,Twic,10671.239,10420.241,0.976,2009,2009-01,88900,4
+719,Wangulei Primary Health Care Unit,Primary Health Care Unit,Twic East,20312.405,6395.781,0.315,2009,2009-01,88900,5
+147,Anyiel Primary Health Care Unit,Primary Health Care Unit,Twic,17498.771,5886.9,0.336,2009,2009-01,88900,6
+566,Akobo County Hospital,County Hospital,Akobo,60476.881,5592.795,0.092,2009,2009-01,88900,7
+51,Gollo Primary Health Care Unit,Primary Health Care Unit,Fashoda,5111.165,5275.543,1.032,2009,2009-01,88900,8
+536,Thokwath Primary Health Care Unit,Primary Health Care Unit,Akobo,9539.028,3914.49,0.41,2009,2009-01,88900,9
+63,Globany Primary Health Care Unit,Primary Health Care Unit,Fashoda,4650.845,3610.367,0.776,2009,2009-01,88900,10
+1197,Monoji Primary Health Care Unit,Primary Health Care Unit,Juba,6419.406,36.814,0.006,2010,2010-01,56920,1
+1152,Tombur Primary Health Care Unit,Primary Health Care Unit,Juba,3805.742,16.112,0.004,2010,2010-01,56920,2
+278,Wunrok Primary Health Care Centre,Primary Health Care Centre,Twic,14533.839,13.346,0.001,2010,2010-01,56920,3
+462,Warap State Hospital,State Hospital,Gogrial West,5499.677,10.419,0.002,2010,2010-01,56920,4
+862,Health Link Site 3 Primary Health Care Unit,Primary Health Care Unit,Awerial,1756.46,8.729,0.005,2010,2010-01,56920,5
+1184,Good Sheperd Clinic Primary Health Care Centre,Primary Health Care Centre,Juba,15329.733,6.258,0.0,2010,2010-01,56920,6
+172,Roingut Primary Health Care Unit,Primary Health Care Unit,Aweil North,7945.126,2.56,0.0,2010,2010-01,56920,7
+923,Mijiki Primary Health Care Unit,Primary Health Care Unit,Terekeka,1618.174,2.184,0.001,2010,2010-01,56920,8
+364,Yomding Primary Health Care Unit,Primary Health Care Unit,Ulang,16639.013,12863.091,0.773,2011,2011-01,2676,1
+1166,Walang Walang Primary Health Care Unit,Primary Health Care Unit,Juba,3568.453,1305.209,0.366,2011,2011-01,2676,2
+1117,Mobil Primary Health Care Unit,Primary Health Care Unit,Juba,2588.534,657.3,0.254,2011,2011-01,2676,3
+236,Ajong Primary Health Care Unit,Primary Health Care Unit,Twic,9598.667,207.191,0.022,2011,2011-01,2676,4
+180,Majak Pagai Primary Health Care Unit,Primary Health Care Unit,Twic,13529.882,67.963,0.005,2011,2011-01,2676,5
+1142,Belpham Medical Hq Primary Health Care Centre,Primary Health Care Centre,Juba,6218.418,38.137,0.006,2011,2011-01,2676,6
+278,Wunrok Primary Health Care Centre,Primary Health Care Centre,Twic,14533.839,36.535,0.003,2011,2011-01,2676,7
+276,Tuele Primary Health Care Unit,Primary Health Care Unit,Twic,8183.886,26.572,0.003,2011,2011-01,2676,8
+369,MSF- Holland Hosp. Primary Health Care Centre,Primary Health Care Centre,Luakpiny/Nasir,23464.618,23.993,0.001,2011,2011-01,2676,9
+301,Magak Primary Health Care Centre,Primary Health Care Centre,Twic,9071.771,20.956,0.002,2011,2011-01,2676,10
+356,Rup Board Primary Health Care Centre,Primary Health Care Centre,Ulang,11690.587,25371.692,2.17,2012,2012-12,93525,1
+566,Akobo County Hospital,County Hospital,Akobo,60476.881,4986.559,0.082,2012,2012-12,93525,2
+1199,Malakia Primary Health Care Unit,Primary Health Care Unit,Juba,5822.175,3825.587,0.657,2012,2012-12,93525,3
+536,Thokwath Primary Health Care Unit,Primary Health Care Unit,Akobo,9539.028,3782.427,0.397,2012,2012-12,93525,4
+937,Pojur Primary Health Care Unit,Primary Health Care Unit,Terekeka,1543.824,3136.224,2.031,2012,2012-12,93525,5
+117,Pakwar Primary Health Care Unit,Primary Health Care Unit,Panyikang,4147.113,2341.742,0.565,2012,2012-12,93525,6
+279,Lonylok Primary Health Care Unit,Primary Health Care Unit,Luakpiny/Nasir,2598.474,2300.41,0.885,2012,2012-12,93525,7
+946,Marakak Primary Health Care Unit,Primary Health Care Unit,Terekeka,4779.141,2115.146,0.443,2012,2012-12,93525,8
+932,Bori Aringa Primary Health Care Unit,Primary Health Care Unit,Terekeka,4810.876,1590.883,0.331,2012,2012-12,93525,9
+1206,Sacret Heart Primary Health Care Centre,Primary Health Care Centre,Juba,4172.701,1581.906,0.379,2012,2012-12,93525,10
+356,Rup Board Primary Health Care Centre,Primary Health Care Centre,Ulang,11690.587,26109.493,2.233,2013,2013-01,61309,1
+1166,Walang Walang Primary Health Care Unit,Primary Health Care Unit,Juba,3568.453,1303.4,0.365,2013,2013-01,61309,2
+1117,Mobil Primary Health Care Unit,Primary Health Care Unit,Juba,2588.534,656.474,0.254,2013,2013-01,61309,3
+264,Toloar Primary Health Care Unit,Primary Health Care Unit,Luakpiny/Nasir,1838.51,92.132,0.05,2013,2013-01,61309,4
+1142,Belpham Medical Hq Primary Health Care Centre,Primary Health Care Centre,Juba,6218.418,38.137,0.006,2013,2013-01,61309,5
+1197,Monoji Primary Health Care Unit,Primary Health Care Unit,Juba,6419.406,16.437,0.003,2013,2013-01,61309,6
+550,Thkliel Primary Health Care Unit,Primary Health Care Unit,Akobo,6325.188,9.218,0.001,2013,2013-01,61309,7
+862,Health Link Site 3 Primary Health Care Unit,Primary Health Care Unit,Awerial,1756.46,8.729,0.005,2013,2013-01,61309,8
+1184,Good Sheperd Clinic Primary Health Care Centre,Primary Health Care Centre,Juba,15329.733,6.258,0.0,2013,2013-01,61309,9
+1187,Bilinang Primary Health Care Unit,Primary Health Care Unit,Juba,503.504,3.358,0.007,2013,2013-01,61309,10
+374,Kuich Primary Health Care Unit,Primary Health Care Unit,Ulang,17607.831,11093.763,0.63,2014,2014-12,263164,1
+566,Akobo County Hospital,County Hospital,Akobo,60476.881,5644.444,0.093,2014,2014-12,263164,2
+51,Gollo Primary Health Care Unit,Primary Health Care Unit,Fashoda,5111.165,5275.543,1.032,2014,2014-12,263164,3
+830,Pabur Primary Health Care Unit,Primary Health Care Unit,Yirol West,6541.43,4306.006,0.658,2014,2014-12,263164,4
+536,Thokwath Primary Health Care Unit,Primary Health Care Unit,Akobo,9539.028,3916.114,0.411,2014,2014-12,263164,5
+416,Jikmir Primary Health Care Centre,Primary Health Care Centre,Luakpiny/Nasir,15063.062,3882.167,0.258,2014,2014-12,263164,6
+63,Globany Primary Health Care Unit,Primary Health Care Unit,Fashoda,4650.845,3610.367,0.776,2014,2014-12,263164,7
+197,Malou-Hol Primary Health Care Unit,Primary Health Care Unit,Twic,5976.984,3544.95,0.593,2014,2014-12,263164,8
+228,Toch Noon Primary Health Care Unit,Primary Health Care Unit,Twic,7919.634,2942.082,0.371,2014,2014-12,263164,9
+240,Akok Primary Health Care Centre,Primary Health Care Centre,Twic,18362.444,2848.714,0.155,2014,2014-12,263164,10
+263,Nhial Diu Primary Health Care Centre,Primary Health Care Centre,Rubkona,21688.695,20879.394,0.963,2015,2015-01,110733,1
+356,Rup Board Primary Health Care Centre,Primary Health Care Centre,Ulang,11690.587,9868.04,0.844,2015,2015-01,110733,2
+374,Kuich Primary Health Care Unit,Primary Health Care Unit,Ulang,17607.831,5662.878,0.322,2015,2015-01,110733,3
+550,Thkliel Primary Health Care Unit,Primary Health Care Unit,Akobo,6325.188,5400.021,0.854,2015,2015-01,110733,4
+416,Jikmir Primary Health Care Centre,Primary Health Care Centre,Luakpiny/Nasir,15063.062,3882.167,0.258,2015,2015-01,110733,5
+252,Kuer Primary Health Care Unit,Primary Health Care Unit,Mayom,3809.656,2755.481,0.723,2015,2015-01,110733,6
+368,Nassir County Hospital,County Hospital,Luakpiny/Nasir,18391.294,2630.452,0.143,2015,2015-01,110733,7
+380,Luek Primary Health Care Unit,Primary Health Care Unit,Luakpiny/Nasir,1587.39,2462.902,1.552,2015,2015-01,110733,8
+566,Akobo County Hospital,County Hospital,Akobo,60476.881,2038.167,0.034,2015,2015-01,110733,9
+248,Wanam Primary Health Care Unit,Primary Health Care Unit,Mayom,7487.795,1668.587,0.223,2015,2015-01,110733,10
+398,Turu Primary Health Care Unit,Primary Health Care Unit,Maiwut,6245.706,2553.094,0.409,2016,2016-12,54039,1
+99,Waraj Wok Primary Health Care Centre,Primary Health Care Centre,Malakal,1890.048,1941.487,1.027,2016,2016-12,54039,2
+1166,Walang Walang Primary Health Care Unit,Primary Health Care Unit,Juba,3568.453,1283.654,0.36,2016,2016-12,54039,3
+662,Amok Primary Health Care Unit,Primary Health Care Unit,Rumbek North,15483.66,872.733,0.056,2016,2016-12,54039,4
+1117,Mobil Primary Health Care Unit,Primary Health Care Unit,Juba,2588.534,656.675,0.254,2016,2016-12,54039,5
+639,Wun Rieng Primary Health Care Unit,Primary Health Care Unit,Rumbek North,18879.085,562.552,0.03,2016,2016-12,54039,6
+107,Oweci Primary Health Care Centre,Primary Health Care Centre,Panyikang,4147.817,450.026,0.108,2016,2016-12,54039,7
+374,Kuich Primary Health Care Unit,Primary Health Care Unit,Ulang,17607.831,423.18,0.024,2016,2016-12,54039,8
+1142,Belpham Medical Hq Primary Health Care Centre,Primary Health Care Centre,Juba,6218.418,38.137,0.006,2016,2016-12,54039,9
+1197,Monoji Primary Health Care Unit,Primary Health Care Unit,Juba,6419.406,16.437,0.003,2016,2016-12,54039,10
+99,Waraj Wok Primary Health Care Centre,Primary Health Care Centre,Malakal,1890.048,1941.487,1.027,2017,2017-01,54188,1
+1147,Gondokoro Main Land Primary Health Care Unit,Primary Health Care Unit,Juba,468.709,1148.806,2.451,2017,2017-01,54188,2
+107,Oweci Primary Health Care Centre,Primary Health Care Centre,Panyikang,4147.817,450.026,0.108,2017,2017-01,54188,3
+1117,Mobil Primary Health Care Unit,Primary Health Care Unit,Juba,2588.534,224.481,0.087,2017,2017-01,54188,4
+1166,Walang Walang Primary Health Care Unit,Primary Health Care Unit,Juba,3568.453,136.981,0.038,2017,2017-01,54188,5
+643,Burmath Primary Health Care Unit,Primary Health Care Unit,Akobo,4037.907,79.545,0.02,2017,2017-01,54188,6
+620,Kony Primary Health Care Unit,Primary Health Care Unit,Akobo,2129.582,20.569,0.01,2017,2017-01,54188,7
+1142,Belpham Medical Hq Primary Health Care Centre,Primary Health Care Centre,Juba,6218.418,18.29,0.003,2017,2017-01,54188,8
+1197,Monoji Primary Health Care Unit,Primary Health Care Unit,Juba,6419.406,15.537,0.002,2017,2017-01,54188,9
+63,Globany Primary Health Care Unit,Primary Health Care Unit,Fashoda,4650.845,15.472,0.003,2017,2017-01,54188,10
+99,Waraj Wok Primary Health Care Centre,Primary Health Care Centre,Malakal,1890.048,1941.487,1.027,2018,2018-01,55283,1
+1166,Walang Walang Primary Health Care Unit,Primary Health Care Unit,Juba,3568.453,1283.654,0.36,2018,2018-01,55283,2
+1117,Mobil Primary Health Care Unit,Primary Health Care Unit,Juba,2588.534,657.476,0.254,2018,2018-01,55283,3
+107,Oweci Primary Health Care Centre,Primary Health Care Centre,Panyikang,4147.817,450.026,0.108,2018,2018-01,55283,4
+290,Kiech Kuon Primary Health Care Centre,Primary Health Care Centre,Luakpiny/Nasir,10956.956,362.824,0.033,2018,2018-01,55283,5
+550,Thkliel Primary Health Care Unit,Primary Health Care Unit,Akobo,6325.188,81.309,0.013,2018,2018-01,55283,6
+1142,Belpham Medical Hq Primary Health Care Centre,Primary Health Care Centre,Juba,6218.418,38.137,0.006,2018,2018-01,55283,7
+1197,Monoji Primary Health Care Unit,Primary Health Care Unit,Juba,6419.406,15.537,0.002,2018,2018-01,55283,8
+63,Globany Primary Health Care Unit,Primary Health Care Unit,Fashoda,4650.845,15.472,0.003,2018,2018-01,55283,9
+89,Lelo Primary Health Care Unit,Primary Health Care Unit,Malakal,1863.226,14.175,0.008,2018,2018-01,55283,10
+368,Nassir County Hospital,County Hospital,Luakpiny/Nasir,18391.294,20689.874,1.125,2019,2019-12,78983,1
+356,Rup Board Primary Health Care Centre,Primary Health Care Centre,Ulang,11690.587,9877.86,0.845,2019,2019-12,78983,2
+374,Kuich Primary Health Care Unit,Primary Health Care Unit,Ulang,17607.831,5604.515,0.318,2019,2019-12,78983,3
+566,Akobo County Hospital,County Hospital,Akobo,60476.881,5584.044,0.092,2019,2019-12,78983,4
+536,Thokwath Primary Health Care Unit,Primary Health Care Unit,Akobo,9539.028,3916.114,0.411,2019,2019-12,78983,5
+1199,Malakia Primary Health Care Unit,Primary Health Care Unit,Juba,5822.175,3815.784,0.655,2019,2019-12,78983,6
+197,Malou-Hol Primary Health Care Unit,Primary Health Care Unit,Twic,5976.984,3553.689,0.595,2019,2019-12,78983,7
+240,Akok Primary Health Care Centre,Primary Health Care Centre,Twic,18362.444,2874.829,0.157,2019,2019-12,78983,8
+99,Waraj Wok Primary Health Care Centre,Primary Health Care Centre,Malakal,1890.048,1941.487,1.027,2019,2019-12,78983,9
+672,Mabior-Yar Primary Health Care Unit,Primary Health Care Unit,Tonj South,9453.269,1811.118,0.192,2019,2019-12,78983,10
+316,Boaw Primary Health Care Centre,Primary Health Care Centre,Koch,3790.153,11406.7,3.01,2020,2020-12,213718,1
+374,Kuich Primary Health Care Unit,Primary Health Care Unit,Ulang,17607.831,10733.833,0.61,2020,2020-12,213718,2
+707,Panyagor Primary Health Care Centre,Primary Health Care Centre,Twic East,1310.734,9996.669,7.627,2020,2020-12,213718,3
+612,Nyadong Primary Health Care Unit,Primary Health Care Unit,Panyijiar,2631.103,9565.628,3.636,2020,2020-12,213718,4
+709,Pager Primary Health Care Unit,Primary Health Care Unit,Twic East,19548.614,8309.378,0.425,2020,2020-12,213718,5
+333,Kierwan Primary Health Care Unit,Primary Health Care Unit,Luakpiny/Nasir,16640.768,6494.474,0.39,2020,2020-12,213718,6
+749,Payom Primary Health Care Unit,Primary Health Care Unit,Twic East,393.321,6081.947,15.463,2020,2020-12,213718,7
+720,Baping Primary Health Care Unit,Primary Health Care Unit,Twic East,2102.625,6008.291,2.858,2020,2020-12,213718,8
+682,Gayanyliel Primary Health Care Centre,Primary Health Care Centre,Panyijiar,8978.035,5272.998,0.587,2020,2020-12,213718,9
+681,Thoanhuom Primary Health Care Unit,Primary Health Care Unit,Panyijiar,7816.287,5187.641,0.664,2020,2020-12,213718,10
+374,Kuich Primary Health Care Unit,Primary Health Care Unit,Ulang,17607.831,11346.394,0.644,2021,2021-01,261167,1
+316,Boaw Primary Health Care Centre,Primary Health Care Centre,Koch,3790.153,11320.764,2.987,2021,2021-01,261167,2
+635,Pathel Primary Health Care Unit,Primary Health Care Unit,Panyijiar,1732.635,10475.152,6.046,2021,2021-01,261167,3
+749,Payom Primary Health Care Unit,Primary Health Care Unit,Twic East,393.321,7371.653,18.742,2021,2021-01,261167,4
+709,Pager Primary Health Care Unit,Primary Health Care Unit,Twic East,19548.614,7333.715,0.375,2021,2021-01,261167,5
+696,Pachak Primary Health Care Unit,Primary Health Care Unit,Panyijiar,3949.523,6953.08,1.76,2021,2021-01,261167,6
+684,Dhor Manyang Primary Health Care Unit,Primary Health Care Unit,Panyijiar,2908.175,6566.143,2.258,2021,2021-01,261167,7
+100,Tonga Primary Health Care Centre,Primary Health Care Centre,Panyikang,16609.715,5963.634,0.359,2021,2021-01,261167,8
+682,Gayanyliel Primary Health Care Centre,Primary Health Care Centre,Panyijiar,8978.035,5664.618,0.631,2021,2021-01,261167,9
+594,Ayueldit Primary Health Care Unit,Primary Health Care Unit,Duk,26339.962,4693.665,0.178,2021,2021-01,261167,10
+356,Rup Board Primary Health Care Centre,Primary Health Care Centre,Ulang,11690.587,35977.533,3.077,2022,2022-12,386807,1
+90,Ikol Islamic R. Org Primary Health Care Unit,Primary Health Care Unit,Malakal,21815.804,24854.184,1.139,2022,2022-12,386807,2
+368,Nassir County Hospital,County Hospital,Luakpiny/Nasir,18391.294,23165.499,1.26,2022,2022-12,386807,3
+105,Koatnyakoang Primary Health Care Unit,Primary Health Care Unit,Fangak,13413.026,18475.786,1.377,2022,2022-12,386807,4
+83,Ssc Primary Health Care Centre,Primary Health Care Centre,Malakal,28948.486,15576.169,0.538,2022,2022-12,386807,5
+152,Care Bentiu Primary Health Care Centre,Primary Health Care Centre,Rubkona,9178.687,13083.244,1.425,2022,2022-12,386807,6
+316,Boaw Primary Health Care Centre,Primary Health Care Centre,Koch,3790.153,12174.832,3.212,2022,2022-12,386807,7
+80,Natural Health Primary Health Care Centre,Primary Health Care Centre,Malakal,31571.669,11316.453,0.358,2022,2022-12,386807,8
+723,Lual-Ajokbil Primary Health Care Unit,Primary Health Care Unit,Twic East,5024.156,11133.754,2.216,2022,2022-12,386807,9
+63,Globany Primary Health Care Unit,Primary Health Care Unit,Fashoda,4650.845,9859.621,2.12,2022,2022-12,386807,10
+356,Rup Board Primary Health Care Centre,Primary Health Care Centre,Ulang,11690.587,35977.533,3.077,2023,2023-01,332748,1
+90,Ikol Islamic R. Org Primary Health Care Unit,Primary Health Care Unit,Malakal,21815.804,28892.913,1.324,2023,2023-01,332748,2
+368,Nassir County Hospital,County Hospital,Luakpiny/Nasir,18391.294,23170.735,1.26,2023,2023-01,332748,3
+105,Koatnyakoang Primary Health Care Unit,Primary Health Care Unit,Fangak,13413.026,17814.544,1.328,2023,2023-01,332748,4
+152,Care Bentiu Primary Health Care Centre,Primary Health Care Centre,Rubkona,9178.687,16451.607,1.792,2023,2023-01,332748,5
+83,Ssc Primary Health Care Centre,Primary Health Care Centre,Malakal,28948.486,15576.169,0.538,2023,2023-01,332748,6
+80,Natural Health Primary Health Care Centre,Primary Health Care Centre,Malakal,31571.669,11273.148,0.357,2023,2023-01,332748,7
+723,Lual-Ajokbil Primary Health Care Unit,Primary Health Care Unit,Twic East,5024.156,10390.941,2.068,2023,2023-01,332748,8
+63,Globany Primary Health Care Unit,Primary Health Care Unit,Fashoda,4650.845,9364.232,2.013,2023,2023-01,332748,9
+619,Amiel Primary Health Care Unit,Primary Health Care Unit,Duk,10633.052,9325.106,0.877,2023,2023-01,332748,10
+356,Rup Board Primary Health Care Centre,Primary Health Care Centre,Ulang,11690.587,35976.833,3.077,2024,2024-01,241856,1
+90,Ikol Islamic R. Org Primary Health Care Unit,Primary Health Care Unit,Malakal,21815.804,21054.508,0.965,2024,2024-01,241856,2
+94,Nyibod Primary Health Care Unit,Primary Health Care Unit,Panyikang,9451.432,19683.465,2.083,2024,2024-01,241856,3
+740,Maar Pifca Primary Health Care Unit,Primary Health Care Unit,Twic East,5875.99,16778.775,2.855,2024,2024-01,241856,4
+152,Care Bentiu Primary Health Care Centre,Primary Health Care Centre,Rubkona,9178.687,16159.02,1.76,2024,2024-01,241856,5
+696,Pachak Primary Health Care Unit,Primary Health Care Unit,Panyijiar,3949.523,8518.774,2.157,2024,2024-01,241856,6
+712,Kongor Primary Health Care Unit,Primary Health Care Unit,Twic East,20413.301,7254.149,0.355,2024,2024-01,241856,7
+117,Pakwar Primary Health Care Unit,Primary Health Care Unit,Panyikang,4147.113,6963.682,1.679,2024,2024-01,241856,8
+209,Chotbora (Old Fang) Primary Health Care Unit,Primary Health Care Unit,Fangak,5581.245,6458.407,1.157,2024,2024-01,241856,9
+154,Bentiu State Hospital,State Hospital,Rubkona,24960.253,5863.426,0.235,2024,2024-01,241856,10
+356,Rup Board Primary Health Care Centre,Primary Health Care Centre,Ulang,11690.587,35977.533,3.077,2025,2025-01,211304,1
+142,UNMISS PoC 2 Primary Health Care Centre,Primary Health Care Centre,Rubkona,3118.069,23179.131,7.434,2025,2025-01,211304,2
+316,Boaw Primary Health Care Centre,Primary Health Care Centre,Koch,3790.153,11410.082,3.01,2025,2025-01,211304,3
+895,Manyiel Primary Health Care Unit,Primary Health Care Unit,Bor South,5065.927,10870.04,2.146,2025,2025-01,211304,4
+374,Kuich Primary Health Care Unit,Primary Health Care Unit,Ulang,17607.831,5662.902,0.322,2025,2025-01,211304,5
+118,Obei Primary Health Care Centre,Primary Health Care Centre,Panyikang,3265.069,5369.177,1.644,2025,2025-01,211304,6
+130,Kolapach Buom Primary Health Care Unit,Primary Health Care Unit,Fangak,48462.186,5084.756,0.105,2025,2025-01,211304,7
+117,Pakwar Primary Health Care Unit,Primary Health Care Unit,Panyikang,4147.113,5072.701,1.223,2025,2025-01,211304,8
+157,Bentiu PoC 2 Primary Health Care Unit,Primary Health Care Unit,Rubkona,35359.084,4049.191,0.115,2025,2025-01,211304,9
+147,Anyiel Primary Health Care Unit,Primary Health Care Unit,Twic,17498.771,2878.946,0.165,2025,2025-01,211304,10

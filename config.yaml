@@ -71,6 +71,9 @@ prepositioning:
 dashboard:
   output_dir: data/processed/dashboard   # pre-rendered map layers (build_dashboard_layers)
 
+evaluation:
+  output_dir: data/processed/evaluation   # each year's largest flood month (peak_months, evaluate_peak_months)
+
 # Flood scenarios: observed months picked by data_preparation/select_scenarios.py (EDA/outputs/scenarios_block.yaml)
 # flooded = at least flood.min_days_flooded days that month (band "all"); blocked = water | flooded;
 # sites with a flooded cell within facilities.flood_buffer_m are closed

@@ -93,6 +93,25 @@ $env:PYTHONPATH = "."; streamlit run dashboard.py
 
 About 40 minutes from scratch. Always run as `python -m ...` from the repository root.
 
+## 7b. Evaluation over the whole flood record
+
+The four dashboard scenarios were picked as showcases, so the poster's charts use **each year's largest
+observed flood month** (2003-2025, by flooded area; `peak_months.py`). Access loss and the protection
+rankings are run on those 23 months (walking) and summarised by `evaluate_peak_months.py` into
+`data/processed/evaluation/`. Note: the largest observed months are mostly December/January, because
+clouds hide rainy-season flooding. The old `export_rankings.py` (old ranking method) is removed.
+
+Evaluation over the whole flood record (each year's largest observed flood month), for the poster:
+
+```
+python -m data_preparation.peak_months                                                       # ~1.5 min
+python -m data_preparation.build_access_loss --months-file data/processed/evaluation/peak_months.csv --mode walking   # ~10 min
+python -m data_preparation.build_priorities --months-file data/processed/evaluation/peak_months.csv                  # ~1 min
+python -m data_preparation.build_prepositioning --months-file data/processed/evaluation/peak_months.csv --mode walking --skip-protected   # ~1 min
+python -m data_preparation.evaluate_peak_months                                              # seconds
+python poster_figures.py --only peak_access_loss protection_curve protection_per_year protection_4h receiving_concentration recurring_receivers
+```
+
 ## 8. Still open
 
 - **Dashboard:** show the access-loss groups and the pre-positioning list (both precomputed and ready).

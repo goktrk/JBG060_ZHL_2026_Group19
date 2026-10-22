@@ -1,0 +1,19 @@
+{
+  "years": 23,
+  "limit_min": 120,
+  "top_n": 5,
+  "cut_off_range": [
+    2676,
+    386807
+  ],
+  "cut_off_min_since_2020": 211304,
+  "years_with_full_top_n": 13,
+  "mean_shared": 1.23,
+  "years_sharing_at_most_one": 9,
+  "facilities_ever_in_a_top_n": 56,
+  "median_share_brought_back_by_top_n": {
+    "most_saved": 0.929,
+    "worst_off": 0.962
+  },
+  "median_share_taken_in_by_10_receiving": 0.916
+}

@@ -898,7 +898,7 @@ def main():
     walking, motorised = access_summary["modes"]["walking"], access_summary["modes"]["motorised"]
     col1, col2, col3, col4, col5 = st.columns(5)
     col1.metric("Total Facilities", f"{total_facilities:,}")
-    col2.metric(f"Closed (Flood Within {cfg['facilities']['flood_buffer_m'] / 1000:g} km)", f"{flooded_facilities:,}", delta=f"{flooded_facilities/total_facilities*100:.1f}%", delta_color="inverse")
+    col2.metric(f"Closed (Flood Within {cfg['facilities']['flood_buffer_m'] / 1000:g} km)", f"{flooded_facilities:,}")
     col3.metric("Living in Flooded Areas", f"{access_summary['living_in_flooded_cells']:,}",
                 help=f"People whose home cell is flooded in this month (at least "
                      f"{access_summary['settings']['min_days_flooded']} days, precomputed). They are counted "

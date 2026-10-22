@@ -5,8 +5,12 @@ Poster figures for the A0 poster (readers: ZOA and humanitarian staff), drawn fr
     flood_area_per_year         EDA/eda_flood_masks.ipynb     flood_types_per_year.png
     flood_area_per_month        EDA/eda_flood_masks.ipynb     flood_types_per_month.png
     facilities_near_flooding    EDA/EDA_infrastructure.ipynb  facility_exposure_per_year.png
-    scenario_access_loss        EDA/outputs/scenarios_selected.csv (data_preparation/select_scenarios.py)
-    facility_ranking_shift      EDA/outputs/facility_rankings_month10.csv (data_preparation/export_rankings.py)
+    peak_access_loss            data/processed/evaluation/peak_access_loss.csv (data_preparation/evaluate_peak_months.py)
+    protection_curve            data/processed/evaluation/coverage.csv (same)
+    protection_per_year         data/processed/evaluation/coverage.csv (same)
+    protection_4h               data/processed/evaluation/rule_tradeoff.csv (same)
+    receiving_concentration     data/processed/evaluation/receiving_concentration.csv (same)
+    recurring_receivers         data/processed/evaluation/top_receiving.csv (same)
 
 Changes from the EDA versions
 * Flooded area is measured inside South Sudan, in km², from the monthly flood files on the 250 m
@@ -18,12 +22,20 @@ Changes from the EDA versions
 * A cell counts as flooded in a month if the satellite flagged it on at least one day, as in the EDA
   notebook. (The dashboard scenarios use 3 days: config flood.min_days_flooded.)
 * Facility counts are read unchanged from EDA/outputs/facility_flood_exposure_per_year.csv.
-* Scenario access loss is read unchanged from EDA/outputs/scenarios_selected.csv, all four months:
-  people within 120 min walk of care without floods, and beyond 120 min or unreachable in that flood
-  month, split into Bor South and the five Aweil counties (columns *_pop_newly_beyond_120).
-* Facility ranking shift is read unchanged from EDA/outputs/facility_rankings_month10.csv: the top 5
-  flooded facilities in October under the most_saved and worst_off criteria. Facility types are
-  shortened ('health unit', 'health centre') so two columns fit at 22 pt.
+* Peak access loss covers each year's largest observed flood month (2003-2025, peak_months.py): people
+  on dry land cut off from care (beyond a 2-hour walk, or no facility reachable) and people living in
+  flooded cells, from build_access_loss. Months that are dashboard scenarios are marked.
+* Protection curve: share of the people losing access that protecting the first 1-10 facilities (greedy
+  order, build_priorities) brings back, median and range over the large flood years (100,000+ people cut
+  off), per rule. Small years are left out of this one: there the top 5 restore almost everything.
+* Protection per year: the same share for the top 5, every year, per rule.
+* Receiving concentration: share of the extra people (walking, still within 2 hours of care) that the
+  1-20 facilities receiving the most of them take in, median and range over the large and the smaller
+  flood years. From build_prepositioning on each year's largest flood month.
+* Recurring receivers: the facilities most often among each year's 10 busiest receiving facilities
+  (most extra people within 2 hours) over the 23 flood months, split into large and smaller flood
+  years, with their median extra people and load (usual + extra, over usual) in those years. Only
+  facilities with a median of 1,000+ extra people are shown.
 
 Each figure is built at its printed size (see poster_style.py) and saved to figures/poster/ as SVG and
 300 dpi PNG. The plotted numbers are saved next to them in figures/poster/data/.
@@ -31,11 +43,10 @@ Each figure is built at its printed size (see poster_style.py) and saved to figu
 Run from the repository root:
     python poster_figures.py               # reuses figures/poster/data/flood_area_*.csv if present
     python poster_figures.py --recompute   # re-reads the 276 monthly flood files (about a minute)
-    python poster_figures.py --only scenario_access_loss facility_ranking_shift   # just these, SVG + PNG,
-                                                                                  # data tables not rewritten
+    python poster_figures.py --only peak_access_loss protection_curve protection_per_year   # just these,
+                                                                       # SVG + PNG, data tables not rewritten
 """
 import argparse
-import warnings
 
 import matplotlib
 matplotlib.use("Agg")
@@ -43,7 +54,6 @@ import matplotlib.dates as mdates
 import numpy as np
 import pandas as pd
 import rasterio
-from matplotlib.patches import Patch
 from matplotlib.ticker import FuncFormatter, MultipleLocator
 
 from data_preparation.grid import ROOT, data_path, load_config
@@ -57,30 +67,27 @@ SIZES = {
     "flood_area_per_year": (17.5, 10.6),
     "flood_area_per_month": (10.6, 4.1),
     "facilities_near_flooding": (10.6, 4.1),
-    "scenario_access_loss": (10.6, 4.1),
-    "facility_ranking_shift": (10.6, 4.1),
+    "peak_access_loss": (10.6, 4.1),
+    "protection_curve": (10.6, 4.1),
+    "protection_per_year": (10.6, 4.1),
+    "protection_4h": (10.6, 4.1),
+    "receiving_concentration": (10.6, 4.1),
+    "recurring_receivers": (10.6, 4.1),
 }
 
 DATA_DIR = OUT_DIR / "data"
 FACILITIES_PER_YEAR = ROOT / "EDA" / "outputs" / "facility_flood_exposure_per_year.csv"
 FACILITIES = ROOT / "EDA" / "outputs" / "facility_flood_exposure.csv"
-SCENARIOS = ROOT / "EDA" / "outputs" / "scenarios_selected.csv"
-SCENARIO_LABELS = {   # plain-language row labels, by scenario id
-    "2008-11": "Nov 2008 · largest loss",
-    "2020-11": "Nov 2020 · worst for Bor South",
-    "2025-10": "Oct 2025 · typical",
-    "2025-01": "Jan 2025 · small",
-}
-LOSS = "pop_newly_beyond_120"
-# Bar colours for the two areas. BOR_SOUTH_BLUE is lighter than WATER (OKLCH L 0.63 vs 0.48, colour-blind
-# delta E 15.8) but, unlike WATER_LIGHT, still has 3.5:1 contrast on white. Each segment gets a navy outline.
-BOR_SOUTH_BLUE = "#4e8fc2"
+EVALUATION = ROOT / "data" / "processed" / "evaluation"   # evaluation.output_dir in config.yaml
+# Stacked bar colours. LIGHT_BLUE is lighter than WATER (OKLCH L 0.63 vs 0.48, colour-blind delta E 15.8)
+# but, unlike WATER_LIGHT, still has 3.5:1 contrast on white. Each segment gets a navy outline.
+LIGHT_BLUE = "#4e8fc2"
 OUTLINE = "#0d2b52"
-AREAS = {"lol_aweil": ("Aweil counties", WATER), "bor_south": ("Bor South", BOR_SOUTH_BLUE)}   # stacked left to right
-
-RANKINGS = ROOT / "EDA" / "outputs" / "facility_rankings_month10.csv"
-RANKINGS_MONTH = 10
+RULES = {"most_saved": ("Most people regain access", WATER), "worst_off": ("Most isolated first", TUE_RED)}
 TOP_K = 5
+LARGE_FLOOD = 100_000   # people cut off within 2 h: a "large flood year" in protection_curve
+RECEIVER_ROWS = 6       # facilities shown in recurring_receivers
+MIN_EXTRA = 1_000       # recurring_receivers: leave out facilities with a median of fewer extra people
 SHORT_TYPE = {"Primary Health Care Unit": "health unit", "Primary Health Care Centre": "health centre"}
 
 MIN_DAYS = 1        # days flagged in a month for a cell to count as flooded (as in the EDA notebook)
@@ -219,129 +226,174 @@ def plot_facilities_near_flooding(per_year: pd.DataFrame, n_facilities: int, siz
     return fig
 
 
-def area_sum_mismatch(selected: pd.DataFrame) -> pd.Series:
-    """Per scenario id: combined minus the sum of the two areas (the areas don't overlap, so ~0). Warns if not."""
-    parts = sum(selected[f"{area}_{LOSS}"] for area in AREAS)
-    diff = (selected[f"combined_{LOSS}"] - parts).set_axis(selected["id"])
-    off = ~np.isclose(diff, 0, atol=0.01)   # the csv keeps 6 decimals, so allow rounding, not a real gap
-    if off.any():
-        warnings.warn(f"Bor South + Aweil != combined: {diff[off].to_dict()}")
-    return diff
+def plot_peak_access_loss(loss: pd.DataFrame, size: tuple[float, float]):
+    """One stacked bar per year: people cut off from care, and people living in flooded areas, in that
+    year's largest observed flood month; dashboard scenario months marked with a red triangle."""
+    fig, ax = new_poster_fig(*size)
+    fig.get_layout_engine().set(h_pad=0.04, w_pad=0.08)
+    year = loss["year"].to_numpy()
+    cut, flooded = loss["cut_off"] / 1000, loss["living_in_flooded_cells"] / 1000
+    ax.bar(year, cut, width=0.72, color=WATER, edgecolor=OUTLINE, linewidth=1, label="Cut off from care")
+    ax.bar(year, flooded, bottom=cut, width=0.72, color=LIGHT_BLUE, edgecolor=OUTLINE, linewidth=1,
+           label="In flooded areas")
+    top = (cut + flooded).to_numpy()
+    marked = loss["dashboard_scenario"].to_numpy()
+    ax.scatter(year[marked], top[marked] + top.max() * 0.06, marker="v", s=170, color=TUE_RED, zorder=3,
+               label="Dashboard month")
+
+    # a figure-level key, so its width doesn't squeeze the plot
+    fig.legend(loc="outside upper right", ncol=3, frameon=False, borderpad=0, handlelength=1.1, handleheight=0.9,
+               handletextpad=0.5, columnspacing=1.2)   # right-aligned: on the left it runs into the y label
+    ax.set_xticks(range(2004, int(year.max()) + 1, 4))
+    ax.set_xlim(year.min() - 0.7, year.max() + 0.7)
+    ax.set_ylim(0, top.max() * 1.15)
+    ax.yaxis.set_major_formatter(KM2)
+    ax.set_ylabel("People (thousands)")
+    fig.supxlabel("Each year's largest observed flood month. Clouds hide rainy-season floods,\n"
+                  "so these are minimums. Cut off = beyond a 2-hour walk to care.", **NOTE)
+    return fig
 
 
-def plot_scenario_access_loss(selected: pd.DataFrame, size: tuple[float, float]):
-    s = selected.set_index("id").loc[list(SCENARIO_LABELS)].sort_values(f"combined_{LOSS}", ascending=False)
-    total = s[f"combined_{LOSS}"]
-    rows = np.arange(len(s))
+def plot_protection_curve(cover: pd.DataFrame, size: tuple[float, float]):
+    """Share of cut-off people brought back by protecting 1-10 facilities: median (line) and range (band)
+    over the large flood years, per rule. The same years for both rules."""
+    first = cover[(cover["rule"] == "most_saved") & (cover["k"] == 1)]
+    large = set(first.loc[first["people_losing_access"] >= LARGE_FLOOD, "month"])
+    data = cover[cover["month"].isin(large)]
 
     fig, ax = new_poster_fig(*size)
-    fig.get_layout_engine().set(h_pad=0.04, w_pad=0.08)   # four rows, a key, two 2-line texts: little room to spare
-    left = np.zeros(len(s))
-    for area, (_, colour) in AREAS.items():
-        ax.barh(rows, s[f"{area}_{LOSS}"], left=left, height=0.66, color=colour, edgecolor=OUTLINE, linewidth=1)
-        left += s[f"{area}_{LOSS}"].to_numpy()
-    for y, v in zip(rows, total):
-        ax.text(v + 300, y, f"{float(f'{v:.3g}'):,.0f}", va="center", ha="left")   # 3 significant figures
+    fig.get_layout_engine().set(h_pad=0.04, w_pad=0.08)
+    for rule, (name, colour) in RULES.items():
+        share = data[data["rule"] == rule].groupby("k")["share_brought_back"]
+        k = share.median().index
+        ax.fill_between(k, share.min() * 100, share.max() * 100, color=colour, alpha=0.15, lw=0)
+        ax.plot(k, share.median() * 100, color=colour, marker="o", label=name)
+    fig.legend(loc="outside upper right", ncol=2, frameon=False, borderpad=0, handlelength=1.4,
+               handletextpad=0.5, columnspacing=1.2)
+    ax.set_xticks(range(1, 11))
+    ax.set_xlim(0.7, 10.3)
+    ax.set_ylim(0, 100)
+    ax.yaxis.set_major_locator(MultipleLocator(25))
+    ax.set_xlabel("Facilities protected (in ranking order)", labelpad=6)
+    ax.set_ylabel("Brought back (%)")
+    fig.supxlabel(f"Median (line) and range (band) over the {len(large)} large flood years\n"
+                  f"({LARGE_FLOOD:,}+ people cut off within a 2-hour walk).", **NOTE)
+    return fig
 
-    # one-line key above the bars, starting at the left edge of the plot
-    ax.legend(handles=[Patch(facecolor=colour, edgecolor=OUTLINE, linewidth=1, label=name)
-                       for name, colour in AREAS.values()],
-              loc="lower left", bbox_to_anchor=(0, 1), ncol=len(AREAS), frameon=False, borderpad=0,
-              borderaxespad=0.25, handlelength=1.1, handleheight=0.9, handletextpad=0.5, columnspacing=1.6)
 
-    ax.set_yticks(rows, [SCENARIO_LABELS[k] for k in s.index])
+def plot_protection_per_year(cover: pd.DataFrame, size: tuple[float, float]):
+    """Share of cut-off people the top 5 bring back, every year's largest flood month, per rule."""
+    top = cover[cover["k"] == TOP_K].pivot(index="year", columns="rule", values="share_brought_back") * 100
+    year = top.index.to_numpy()
+    width = 0.4
+
+    fig, ax = new_poster_fig(*size)
+    fig.get_layout_engine().set(h_pad=0.04, w_pad=0.08)
+    for offset, (rule, (name, colour)) in zip((-width / 2, width / 2), RULES.items()):
+        ax.bar(year + offset, top[rule], width=width, color=colour, label=name)
+    fig.legend(loc="outside upper right", ncol=2, frameon=False, borderpad=0, handlelength=1.1,
+               handleheight=0.9, handletextpad=0.5, columnspacing=1.2)
+    ax.set_xticks(range(2004, int(year.max()) + 1, 4))
+    ax.set_xlim(year.min() - 0.7, year.max() + 0.7)
+    ax.set_ylim(0, 100)
+    ax.yaxis.set_major_locator(MultipleLocator(25))
+    ax.set_ylabel("Brought back (%)")
+    fig.supxlabel(f"Share of the people cut off that the top {TOP_K} protected facilities bring back,\n"
+                  "in each year's largest observed flood month.", **NOTE)
+    return fig
+
+
+def plot_protection_4h(tradeoff: pd.DataFrame, size: tuple[float, float]):
+    """People more than a 4-hour walk from care, per year: without protection, and with the top 5 of each
+    ranking protected. The 'most isolated first' ranking is built for this goal; the other is not."""
+    goal = tradeoff[tradeoff["goal"] == "worst_off"]
+    left = goal.pivot(index="year", columns="protected", values="brought_back")
+    without = goal.groupby("year")["people_losing_access"].first()
+    year = without.index.to_numpy()
+    without = without.to_numpy() / 1000
+    isolated = without - left["worst_off"].to_numpy() / 1000
+    most = without - left["most_saved"].to_numpy() / 1000
+
+    fig, ax = new_poster_fig(*size)
+    fig.get_layout_engine().set(h_pad=0.04, w_pad=0.08)
+    ax.fill_between(year, isolated, without, color=WATER, alpha=0.12, lw=0)
+    ax.plot(year, without, color=TUE_RED, marker="o", label="No protection")
+    ax.plot(year, most, color=LIGHT_BLUE, marker="o", ls="--", label="Top 5: most people")
+    ax.plot(year, isolated, color=WATER, marker="o", label="Top 5: most isolated")
+    fig.legend(loc="outside upper right", ncol=3, frameon=False, borderpad=0, handlelength=1.6,
+               handletextpad=0.5, columnspacing=1.0)
+    ax.set_xticks(range(2004, int(year.max()) + 1, 4))
+    ax.set_xlim(year.min() - 0.5, year.max() + 0.5)
+    ax.set_ylim(0, without.max() * 1.1)
+    ax.yaxis.set_major_formatter(KM2)
+    ax.set_ylabel("People (thousands)")
+    fig.supxlabel("People more than 4 hours' walk from care, in each year's largest observed flood\n"
+                  f"month, with the top {TOP_K} facilities of each ranking protected.", **NOTE)
+    return fig
+
+
+def plot_receiving_concentration(received: pd.DataFrame, size: tuple[float, float]):
+    """Share of the extra people taken in by the 1-20 busiest receiving facilities: median (line) and
+    range (band) over the large flood years and over the smaller ones."""
+    large = received["cut_off"] >= LARGE_FLOOD
+    groups = {"Large floods": (received[large], WATER), "Smaller floods": (received[~large], LIGHT_BLUE)}
+
+    fig, ax = new_poster_fig(*size)
+    fig.get_layout_engine().set(h_pad=0.04, w_pad=0.08)
+    for name, (data, colour) in groups.items():
+        share = data.groupby("k")["share_taken_in"]
+        k = share.median().index
+        ax.fill_between(k, share.min() * 100, share.max() * 100, color=colour, alpha=0.15, lw=0)
+        n_years = data["year"].nunique()
+        ax.plot(k, share.median() * 100, color=colour, marker="o", markersize=7, label=f"{name} ({n_years} years)")
+    fig.legend(loc="outside upper right", ncol=2, frameon=False, borderpad=0, handlelength=1.4,
+               handletextpad=0.5, columnspacing=1.2)
+    ax.set_xticks([1, 5, 10, 15, 20])
+    ax.set_xlim(0.5, 20.5)
+    ax.set_ylim(0, 100)
+    ax.yaxis.set_major_locator(MultipleLocator(25))
+    ax.set_xlabel("Facilities stocked (busiest first)", labelpad=6)
+    ax.set_ylabel("Reached (%)")
+    ten = received[large & (received["k"] == 10)]["share_taken_in"].median() * 100
+    fig.supxlabel(f"Large floods ({LARGE_FLOOD:,}+ cut off): the 10 busiest reach {ten:.0f}% of displaced patients.\n"
+                  "Displaced: people whose facility closes who can still walk to another within 2 hours.", **NOTE)
+    return fig
+
+
+def plot_recurring_receivers(top: pd.DataFrame, size: tuple[float, float]):
+    """Facilities most often among a year's 10 busiest receiving facilities, years split into large and
+    smaller floods, labelled with their median load and extra people in those years."""
+    top = top.assign(large=top["cut_off"] >= LARGE_FLOOD, load=1 + top["relative_increase_within_limit"])
+    per_site = top.groupby("site_id").agg(
+        name=("rep_facility_name", "first"), county=("adm2_name", "first"), years=("year", "nunique"),
+        large_years=("large", "sum"), extra=("added_within_limit", "median"), load=("load", "median"))
+    shown = (per_site[per_site["extra"] >= MIN_EXTRA].sort_values(["years", "extra"], ascending=False)
+             .head(RECEIVER_ROWS))
+    label = (shown["name"].str.replace(r"\s*Primary Health Care (Unit|Centre)", "", regex=True)
+             .str.replace(" County Hospital", " hospital") + " · " + shown["county"])
+    rows = np.arange(len(shown))
+    n_years = top["year"].nunique()
+
+    fig, ax = new_poster_fig(*size)
+    fig.get_layout_engine().set(h_pad=0.04, w_pad=0.08)
+    ax.barh(rows, shown["large_years"], height=0.7, color=WATER, label="Large floods")
+    ax.barh(rows, shown["years"] - shown["large_years"], left=shown["large_years"], height=0.7, color=LIGHT_BLUE,
+            label="Smaller floods")
+    for y, row in zip(rows, shown.itertuples()):
+        ax.text(row.years + 0.2, y, f"×{row.load:.1f} · {row.extra / 1000:.0f}k extra", va="center", ha="left",
+                fontsize=20, color=INK_SOFT)
+    fig.legend(loc="outside upper right", ncol=2, frameon=False, borderpad=0, handlelength=1.1,
+               handleheight=0.9, handletextpad=0.5, columnspacing=1.2)
+    ax.set_yticks(rows, label.to_list())
     ax.invert_yaxis()
     ax.tick_params(axis="y", length=0)
     ax.grid(axis="y", visible=False)
     ax.grid(axis="x", visible=True)
-    ax.set_xlim(0, total.max() * 1.22)
-    ax.xaxis.set_major_locator(MultipleLocator(5_000))
-    ax.xaxis.set_major_formatter(KM2)
-    # on one line it is wider than the plot (the row labels take 4.2 in), so two lines, centred under the plot
-    ax.set_xlabel("People pushed beyond\na 2-hour walk to care", labelpad=6)
-    fig.supxlabel("Aweil counties stand in for the Lol river area.\n"
-                  "Numbers are minimums because of cloud cover.", **NOTE)
-    return fig
-
-
-def facility_labels(shown: pd.DataFrame) -> pd.Series:
-    """'County · type' per site_id, with (a), (b) ... where two facilities would get the same label."""
-    label = shown["county"] + " · " + shown["facility_type"].map(lambda t: SHORT_TYPE.get(t, t.lower()))
-    twins = label.duplicated(keep=False)
-    order = label[twins].groupby(label[twins]).cumcount()
-    label[twins] = label[twins] + order.map(lambda i: f" ({chr(ord('a') + i)})")
-    return pd.Series(label.to_numpy(), index=shown["site_id"].to_numpy())
-
-
-def plot_facility_ranking_shift(ranking: pd.DataFrame, size: tuple[float, float]):
-    """
-    Top 5 flooded facilities under each criterion, side by side; a grey line joins a facility that is in both.
-    Placed in inches (no layout engine), so the columns can be sized to the widest label.
-    """
-    columns = {"most_saved": "Most people covered", "worst_off": "Most isolated first"}
-    top = {c: ranking.nsmallest(TOP_K, f"rank_{c}") for c in columns}
-    shown = pd.concat(top.values()).drop_duplicates("site_id")   # left column first, then the ones moving in
-    label = facility_labels(shown)
-    left, right = (set(t["site_id"]) for t in top.values())
-    colour = {sid: GREY if sid in left and sid in right else TUE_RED if sid in left else WATER for sid in label.index}
-
-    w, h = size
-    fig, ax = new_poster_fig(w, h)
-    fig.set_layout_engine("none")
-    ax.set_position([0, 0, 1, 1])
-    ax.set_xlim(0, w)
-    ax.set_ylim(0, h)
-    ax.set_axis_off()
-    renderer = fig.canvas.get_renderer()
-
-    def width(text, **kw) -> float:
-        t = ax.text(0, 0, text, **kw)
-        inches = t.get_window_extent(renderer).width / fig.dpi
-        t.remove()
-        return inches
-
-    margin, pad = 0.15, 0.12
-    left_w = max([width(label[sid]) for sid in top["most_saved"]["site_id"]]
-                 + [width(columns["most_saved"], fontweight="bold")])
-    right_w = max([width(label[sid]) for sid in top["worst_off"]["site_id"]]
-                  + [width(columns["worst_off"], fontweight="bold")])
-    x_left, x_right = margin + left_w, w - margin - right_w   # left column ends here, right column starts here
-
-    y_header = h - margin - 0.72
-    pitch = (y_header - 0.55 - margin - 0.2) / (TOP_K - 1)
-    y = {c: dict(zip(top[c]["site_id"], y_header - 0.55 - pitch * np.arange(TOP_K))) for c in columns}
-    # explain each colour once, next to one example, on different rows so the two phrases don't run together
-    drops = [sid for sid in top["most_saved"]["site_id"] if sid not in right]
-    moves = [sid for sid in top["worst_off"]["site_id"] if sid not in left]
-    drop_label = drops[0] if drops else None
-    move_label = next((sid for sid in moves if drop_label is None or y["worst_off"][sid] != y["most_saved"][drop_label]),
-                      moves[0] if moves else None)
-    same_row = drop_label is not None and move_label is not None and \
-        y["worst_off"][move_label] == y["most_saved"][drop_label]
-    needed = (width("drops out") + width("moves in") + 3 * pad if same_row
-              else max(width("drops out"), width("moves in")) + 2 * pad)
-    if x_right - x_left < needed:
-        raise ValueError(f"facility_ranking_shift: {x_right - x_left:.2f} in between the columns, need {needed:.2f} in")
-
-    n_facilities = int(ranking["n_facilities_in_cell"].sum())
-    month = pd.Timestamp(2000, RANKINGS_MONTH, 1).strftime("%B")
-    ax.text(margin, h - margin, f"{month} · top {TOP_K} of {n_facilities} flooded facilities in South Sudan",
-            ha="left", va="top")
-    ax.text(x_left, y_header, columns["most_saved"], ha="right", va="center", fontweight="bold")
-    ax.text(x_right, y_header, columns["worst_off"], ha="left", va="center", fontweight="bold")
-    ax.text((x_left + x_right) / 2, y_header, "in both", ha="center", va="center", color=GREY)
-
-    for sid, y0 in y["most_saved"].items():
-        ax.text(x_left, y0, label[sid], ha="right", va="center", color=colour[sid])
-        if sid in right:
-            ax.plot([x_left + pad, x_right - pad], [y0, y["worst_off"][sid]], color=GREY, lw=3,
-                    solid_capstyle="round")
-        elif sid == drop_label:
-            ax.text(x_left + pad, y0, "drops out", ha="left", va="center", color=TUE_RED)
-    for sid, y0 in y["worst_off"].items():
-        ax.text(x_right, y0, label[sid], ha="left", va="center", color=colour[sid])
-        if sid == move_label:
-            ax.text(x_right - pad, y0, "moves in", ha="right", va="center", color=WATER)
+    ax.set_xlim(0, n_years)
+    ax.xaxis.set_major_locator(MultipleLocator(5))
+    ax.set_xlabel(f"Years among the 10 busiest (of {n_years})", labelpad=6)
+    fig.supxlabel("×: typical load in those years compared with normal; extra: typical number of\n"
+                  "displaced patients (within a 2-hour walk). Facilities with 1,000+ extra people.", **NOTE)
     return fig
 
 
@@ -371,20 +423,34 @@ def main() -> None:
             per_year.to_csv(DATA_DIR / "facilities_near_flooding.csv", index=False)
         figures["facilities_near_flooding"] = plot_facilities_near_flooding(per_year, n_facilities,
                                                                             SIZES["facilities_near_flooding"])
-    if "scenario_access_loss" in names:
-        selected = pd.read_csv(SCENARIOS)
-        mismatch = area_sum_mismatch(selected)
+    if "peak_access_loss" in names:
+        loss = pd.read_csv(EVALUATION / "peak_access_loss.csv")
         if tables:
-            selected[["id", "tier"] + [f"{area}_{LOSS}" for area in AREAS] + [f"combined_{LOSS}"]] \
-                .assign(combined_minus_areas=mismatch.to_numpy()) \
-                .to_csv(DATA_DIR / "scenario_access_loss.csv", index=False)
-        figures["scenario_access_loss"] = plot_scenario_access_loss(selected, SIZES["scenario_access_loss"])
-    if "facility_ranking_shift" in names:
-        ranking = pd.read_csv(RANKINGS)
+            loss.to_csv(DATA_DIR / "peak_access_loss.csv", index=False)
+        figures["peak_access_loss"] = plot_peak_access_loss(loss, SIZES["peak_access_loss"])
+    if {"protection_curve", "protection_per_year"} & set(names):
+        cover = pd.read_csv(EVALUATION / "coverage.csv")
         if tables:
-            ranking[[c for c in ranking.columns if c not in ("facility_name", "lon", "lat")]] \
-                .to_csv(DATA_DIR / "facility_ranking_shift.csv", index=False)
-        figures["facility_ranking_shift"] = plot_facility_ranking_shift(ranking, SIZES["facility_ranking_shift"])
+            cover.to_csv(DATA_DIR / "protection_coverage.csv", index=False)
+        if "protection_curve" in names:
+            figures["protection_curve"] = plot_protection_curve(cover, SIZES["protection_curve"])
+        if "protection_per_year" in names:
+            figures["protection_per_year"] = plot_protection_per_year(cover, SIZES["protection_per_year"])
+    if "protection_4h" in names:
+        tradeoff = pd.read_csv(EVALUATION / "rule_tradeoff.csv")
+        if tables:
+            tradeoff.to_csv(DATA_DIR / "rule_tradeoff.csv", index=False)
+        figures["protection_4h"] = plot_protection_4h(tradeoff, SIZES["protection_4h"])
+    if "receiving_concentration" in names:
+        received = pd.read_csv(EVALUATION / "receiving_concentration.csv")
+        if tables:
+            received.to_csv(DATA_DIR / "receiving_concentration.csv", index=False)
+        figures["receiving_concentration"] = plot_receiving_concentration(received, SIZES["receiving_concentration"])
+    if "recurring_receivers" in names:
+        top = pd.read_csv(EVALUATION / "top_receiving.csv")
+        if tables:
+            top.to_csv(DATA_DIR / "recurring_receivers.csv", index=False)
+        figures["recurring_receivers"] = plot_recurring_receivers(top, SIZES["recurring_receivers"])
 
     for name in names:
         fig = figures[name]

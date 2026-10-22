@@ -15,6 +15,8 @@ Outputs in prepositioning.output_dir (data/processed/prepositioning/), per scena
 
 Chain: build_baseline -> build_access_loss -> build_priorities -> build_prepositioning.
 Run from the repository root:  python -m data_preparation.build_prepositioning [--scenario 2020-11] [--skip-protected]
+Other months (e.g. each year's largest flood month, for the poster evaluation; needs build_access_loss on them):
+    python -m data_preparation.build_prepositioning --months-file data/processed/evaluation/peak_months.csv         --mode walking --skip-protected
 """
 import argparse
 import json
@@ -23,7 +25,7 @@ import time
 import numpy as np
 import pandas as pd
 
-from data_preparation.build_access_loss import settings_used
+from data_preparation.build_access_loss import months_from_file, settings_used
 from data_preparation.build_priorities import check_access_loss
 from data_preparation.grid import ROOT, data_path, load_config, make_grid
 from data_preparation.loading import (load_access_loss, load_baseline, load_permanent_water, load_priorities,
@@ -64,9 +66,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--scenario", help="only this scenario id (default: all in config.yaml)")
     parser.add_argument("--skip-protected", action="store_true", help="leave out the protected Top N variants")
+    parser.add_argument("--months-file", help="csv with an `id` column: run these months (dashboard scenarios skipped)")
+    parser.add_argument("--mode", choices=["walking", "motorised"], help="only this travel mode")
     args = parser.parse_args()
 
     cfg = load_config()
+    if args.mode:
+        cfg["access_loss"]["modes"] = [args.mode]
     grid = make_grid(cfg)
     pcfg = cfg["prepositioning"]
     limit, small = cfg["travel"]["max_time_min"], pcfg["small_delay_min"]
@@ -81,8 +87,11 @@ def main():
     out_dir = ROOT / pcfg["output_dir"]
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    scenarios = [s for s in cfg["scenarios"] if args.scenario in (None, s["id"])]
-    if not scenarios:
+    if args.months_file:
+        scenarios = months_from_file(ROOT / args.months_file, cfg)
+    else:
+        scenarios = [s for s in cfg["scenarios"] if args.scenario in (None, s["id"])]
+    if not scenarios and not args.months_file:
         raise SystemExit(f"scenario {args.scenario} is not in config.yaml")
     for scenario in scenarios:
         t0 = time.perf_counter()

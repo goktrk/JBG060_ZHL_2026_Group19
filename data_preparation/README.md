@@ -50,6 +50,18 @@ python -m data_preparation.build_dashboard_layers  # pre-rendered 1 km map layer
 They write to `data/processed/`. The flood rules they share (flooded cell, closed facility, cut off)
 are in `scenarios.py`.
 
+Evaluation over the whole flood record (each year's largest observed flood month), for the poster:
+
+```
+python -m data_preparation.peak_months                                                       # ~1.5 min
+python -m data_preparation.build_access_loss --months-file data/processed/evaluation/peak_months.csv --mode walking   # ~10 min
+python -m data_preparation.build_priorities --months-file data/processed/evaluation/peak_months.csv                  # ~1 min
+python -m data_preparation.build_prepositioning --months-file data/processed/evaluation/peak_months.csv --mode walking --skip-protected   # ~1 min
+python -m data_preparation.evaluate_peak_months                                              # seconds
+python poster_figures.py --only peak_access_loss protection_curve protection_per_year protection_4h receiving_concentration recurring_receivers
+```
+
+
 | File | Content |
 |---|---|
 | `static_250m.tif` | 4 bands: population, walking travel cost, motorised travel cost, county id |

@@ -11,6 +11,7 @@ Outputs in priorities.output_dir (data/processed/priorities/), per scenario id:
 
 Chain: build_baseline -> build_access_loss -> build_priorities. Needs both earlier steps.
 Run from the repository root:  python -m data_preparation.build_priorities [--scenario 2020-11]
+    --months-file data/processed/evaluation/peak_months.csv   # other months (needs build_access_loss on them)
 """
 import argparse
 import json
@@ -19,7 +20,7 @@ import time
 import numpy as np
 import pandas as pd
 
-from data_preparation.build_access_loss import settings_used
+from data_preparation.build_access_loss import months_from_file, settings_used
 from data_preparation.grid import ROOT, data_path, load_config, make_grid
 from data_preparation.loading import (load_access_loss, load_baseline, load_permanent_water,
                                       load_scenario_travel, load_sites, load_static)
@@ -96,6 +97,7 @@ def build_scenario(scenario: dict, cfg, grid, static, water, sites, base_minutes
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--scenario", help="only this scenario id (default: all in config.yaml)")
+    parser.add_argument("--months-file", help="csv with an `id` column: run these months (dashboard scenarios skipped)")
     args = parser.parse_args()
 
     cfg = load_config()
@@ -106,8 +108,11 @@ def main():
     out_dir = ROOT / cfg["priorities"]["output_dir"]
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    scenarios = [s for s in cfg["scenarios"] if args.scenario in (None, s["id"])]
-    if not scenarios:
+    if args.months_file:
+        scenarios = months_from_file(ROOT / args.months_file, cfg)
+    else:
+        scenarios = [s for s in cfg["scenarios"] if args.scenario in (None, s["id"])]
+    if not scenarios and not args.months_file:
         raise SystemExit(f"scenario {args.scenario} is not in config.yaml")
     for scenario in scenarios:
         table, summary = build_scenario(scenario, cfg, grid, static, water, sites, base_minutes)
