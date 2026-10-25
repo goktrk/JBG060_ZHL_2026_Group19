@@ -49,5 +49,81 @@
         "usual_population": 16
       }
     }
+  },
+  "large_flood_years": {
+    "years": [
+      "2008-11",
+      "2014-12",
+      "2015-01",
+      "2020-12",
+      "2021-01",
+      "2022-12",
+      "2023-01",
+      "2024-01",
+      "2025-01"
+    ],
+    "share_brought_back_by_top_n": {
+      "most_saved": {
+        "median": 0.58,
+        "min": 0.36,
+        "max": 0.821
+      },
+      "worst_off": {
+        "median": 0.69,
+        "min": 0.475,
+        "max": 0.926
+      }
+    },
+    "naive_comparison": {
+      "most_saved": {
+        "median_share_brought_back": {
+          "greedy": 0.58,
+          "own_gain": 0.46,
+          "usual_population": 0.398
+        },
+        "median_greedy_times": {
+          "own_gain": 1.21,
+          "usual_population": 1.41
+        }
+      },
+      "worst_off": {
+        "median_share_brought_back": {
+          "greedy": 0.69,
+          "own_gain": 0.455,
+          "usual_population": 0.43
+        },
+        "median_greedy_times": {
+          "own_gain": 1.5,
+          "usual_population": 1.6
+        }
+      }
+    },
+    "rule_tradeoff_median_share": {
+      "most_saved": {
+        "top_n_most_saved": 0.58,
+        "top_n_worst_off": 0.503
+      },
+      "worst_off": {
+        "top_n_most_saved": 0.431,
+        "top_n_worst_off": 0.69
+      }
+    },
+    "top_n_shared": {
+      "median": 1.0,
+      "max": 2
+    },
+    "receiving": {
+      "share_taken_in_by_1": {
+        "median": 0.146,
+        "min": 0.061,
+        "max": 0.334
+      },
+      "share_taken_in_by_10": {
+        "median": 0.618,
+        "min": 0.421,
+        "max": 0.916
+      },
+      "median_receiving_facilities": 78.0
+    }
   }
 }

@@ -16,6 +16,8 @@ Outputs in evaluation.output_dir (data/processed/evaluation/):
                            2 h, and people more than 4 h from care brought back within 4 h)
     naive_comparison.csv   per year and goal: the greedy Top N against two simple ways to pick N sites
                            (largest gain on its own; most people usually served), all scored the same way
+    large_years_summary.csv
+                           the headline numbers over the large flood years only (evaluation.large_flood_cut_off)
     evaluation.json        the headline numbers
 
 Needs peak_months, then build_access_loss, build_priorities and build_prepositioning with --months-file.
@@ -108,6 +110,46 @@ def naive_summary(naive: pd.DataFrame, n: int) -> dict:
     return out
 
 
+def spread(values: pd.Series) -> dict:
+    """Median, min and max of a series, rounded."""
+    return {"median": round(float(values.median()), 3), "min": round(float(values.min()), 3),
+            "max": round(float(values.max()), 3)}
+
+
+def large_years_summary(large: set[str], cover: pd.DataFrame, naive: pd.DataFrame, tradeoff: pd.DataFrame,
+                        received: pd.DataFrame, overlaps: pd.DataFrame, n: int) -> dict:
+    """
+    The headline numbers over the large flood years only. In smaller years one or two protected
+    facilities bring nearly everyone back, which flatters medians taken over all years.
+    """
+    def picked(table):
+        return table[table["month"].isin(large)]
+
+    top = picked(cover).query("k == @n")
+    out = {"years": sorted(large),
+           "share_brought_back_by_top_n": {rule: spread(rows["share_brought_back"])
+                                           for rule, rows in top.groupby("rule")},
+           "naive_comparison": {}}
+    for goal, rows in picked(naive).groupby("goal"):
+        wide = rows.pivot(index="month", columns="picked_by", values="brought_back")
+        losing = rows.groupby("month")["people_losing_access"].first()
+        out["naive_comparison"][goal] = {
+            "median_share_brought_back": {p: round(float((wide[p] / losing).median()), 3) for p in wide},
+            "median_greedy_times": {p: round(float((wide["greedy"] / wide[p]).median()), 2)
+                                    for p in wide if p != "greedy"}}
+    trade = picked(tradeoff).assign(share=lambda d: d["brought_back"] / d["people_losing_access"])
+    out["rule_tradeoff_median_share"] = {goal: {f"top_n_{p}": round(float(s), 3)
+                                                for p, s in rows.groupby("protected")["share"].median().items()}
+                                         for goal, rows in trade.groupby("goal")}
+    shared = picked(overlaps)["shared"]
+    out["top_n_shared"] = {"median": float(shared.median()), "max": int(shared.max())}
+    rec = picked(received)
+    out["receiving"] = {"share_taken_in_by_1": spread(rec.loc[rec["k"] == 1, "share_taken_in"]),
+                        "share_taken_in_by_10": spread(rec.loc[rec["k"] == 10, "share_taken_in"]),
+                        "median_receiving_facilities": float(rec.loc[rec["k"] == 10, "receiving_facilities"].median())}
+    return out
+
+
 def people_brought_back(regained: dict[int, np.ndarray], protected: list[int], pop) -> float:
     """People brought back when all `protected` sites reopen together: everyone in a cell that any of
     them brings back on its own (reopening sites only adds sources, so the gains combine as a union)."""
@@ -194,9 +236,15 @@ def main():
     received = pd.DataFrame(receiving_rows)
     received.round(4).to_csv(folder / "receiving_concentration.csv", index=False)
     pd.concat(busiest, ignore_index=True).round(3).to_csv(folder / "top_receiving.csv", index=False)
-    pd.DataFrame(tradeoff_rows).to_csv(folder / "rule_tradeoff.csv", index=False)
+    tradeoff = pd.DataFrame(tradeoff_rows)
+    tradeoff.to_csv(folder / "rule_tradeoff.csv", index=False)
     naive = pd.DataFrame(naive_rows)
     naive.to_csv(folder / "naive_comparison.csv", index=False)
+    large = set(loss.loc[loss["cut_off"] >= cfg["evaluation"]["large_flood_cut_off"], "month"])
+    big = large_years_summary(large, cover, naive, tradeoff, received, overlaps, n)
+    flat = pd.json_normalize({k: v for k, v in big.items() if k != "years"}, sep=".").T.reset_index()
+    flat.columns = ["measure", "value"]
+    flat.to_csv(folder / "large_years_summary.csv", index=False)
 
     full = overlaps[overlaps["top_size"] == n]       # years where both rules have a full Top N
     since = loss[loss["year"] >= 2020]
@@ -214,6 +262,7 @@ def main():
         "median_share_taken_in_by_10_receiving": round(float(
             received.loc[received["k"] == 10, "share_taken_in"].median()), 3),
         "naive_comparison": naive_summary(naive, n),
+        "large_flood_years": big,
     }
     with open(folder / "evaluation.json", "w", encoding="utf-8") as f:
         json.dump(summary, f, indent=2)

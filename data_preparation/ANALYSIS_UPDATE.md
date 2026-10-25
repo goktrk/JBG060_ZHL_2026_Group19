@@ -108,8 +108,8 @@ python -m data_preparation.peak_months                                          
 python -m data_preparation.build_access_loss --months-file data/processed/evaluation/peak_months.csv --mode walking   # ~10 min
 python -m data_preparation.build_priorities --months-file data/processed/evaluation/peak_months.csv                  # ~1 min
 python -m data_preparation.build_prepositioning --months-file data/processed/evaluation/peak_months.csv --mode walking --skip-protected   # ~1 min
-python -m data_preparation.evaluate_peak_months                                              # seconds
-python poster_figures.py --only peak_access_loss protection_curve protection_per_year protection_4h receiving_concentration recurring_receivers
+python -m data_preparation.evaluate_peak_months                                              # ~2 min; also large_years_summary.csv
+python -m data_preparation.poster_figures --only peak_access_loss protection_curve protection_per_year protection_4h receiving_concentration recurring_receivers
 ```
 
 `naive_comparison.csv` scores the greedy Top 5 against two simple ways to pick 5 closed sites (largest gain on
@@ -122,7 +122,7 @@ once from the start of the flooding (June for 2025, as reported; otherwise April
 season) up to it. The reported figures and sources are in the script:
 
 ```
-python -m data_preparation.external_check     # ~1 min, writes data/processed/evaluation/external_check.csv
+python -m data_preparation.external_check     # ~1 min, writes external_check.csv and external_check_monthly.csv
 ```
 Result: 67-70 closed vs "over 60" (2021), 36-42 vs ~148 affected / 58 submerged (2024), 24-26 vs 143
 affected / 44 damaged (2025). The window hardly matters; detected flooding keeps growing until December

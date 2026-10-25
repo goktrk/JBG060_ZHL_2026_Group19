@@ -11,7 +11,9 @@ Facilities are closed and own-cell-flooded by the same rules as everywhere else 
 No travel times are needed.
 
 Output in evaluation.output_dir (data/processed/evaluation/):
-    external_check.csv   per report: the reported figures, the window used, and our counts
+    external_check.csv           per report: the reported figures, the window used, and our counts
+    external_check_monthly.csv   per month from the start of the window to December: flooded area and
+                                 facilities closed, showing detected flooding still growing after the rains
 
 Needs build_flood_monthly and build_baseline (the sites).
 Run from the repository root:  python -m data_preparation.external_check
@@ -61,27 +63,36 @@ def main():
     flagged = set(load_flood_months(cfg).assign(id=lambda d: [f"{y}-{m:02d}" for y, m in zip(d["year"], d["month"])])
                   .query("flagged")["id"])
 
-    rows = []
+    km2 = (grid.cell_size / 1000) ** 2
+    rows, monthly = [], []
     for report in REPORTS:
         window = season_window(report["report_month"], report["start_month"])
+        year_end = season_window(f"{report['report_month'][:4]}-12", report["start_month"])
         closed_any, own_any = np.zeros(len(sites), bool), np.zeros(len(sites), bool)
-        for month in window:
+        for month in year_end:
             flooded, _ = scenario_flood(month, cfg)
             closed = closed_sites(sites_rc, flooded, cfg["facilities"]["flood_buffer_m"], grid.cell_size)
+            monthly.append({"report_month": report["report_month"], "month": month,
+                            "in_report_window": month in window, "flooded_km2": round(float(flooded.sum() * km2)),
+                            "facilities_closed": facilities_in(closed, n_fac)})
+            if month not in window:
+                continue
             own = flooded[sites_rc[:, 0], sites_rc[:, 1]]
             closed_any |= closed
             own_any |= own
-        # closed and own are still those of the last month in the window: the report month
+            if month == report["report_month"]:
+                closed_report, own_report = closed, own
         rows.append({**report, "window": f"{window[0]} to {window[-1]}",
                      "months_with_data_gaps": ";".join(m for m in window if m in flagged),
-                     "closed_report_month": facilities_in(closed, n_fac),
+                     "closed_report_month": facilities_in(closed_report, n_fac),
                      "closed_any_month": facilities_in(closed_any, n_fac),
-                     "own_cell_flooded_report_month": facilities_in(own, n_fac),
+                     "own_cell_flooded_report_month": facilities_in(own_report, n_fac),
                      "own_cell_flooded_any_month": facilities_in(own_any, n_fac)})
 
     out = pd.DataFrame(rows)
     folder = ROOT / cfg["evaluation"]["output_dir"]
     out.to_csv(folder / "external_check.csv", index=False)
+    pd.DataFrame(monthly).to_csv(folder / "external_check_monthly.csv", index=False)
     print(out[["report_month", "window", "reported_affected", "reported_submerged", "closed_report_month",
                "closed_any_month", "own_cell_flooded_report_month", "own_cell_flooded_any_month",
                "months_with_data_gaps"]].to_string(index=False))

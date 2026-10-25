@@ -57,8 +57,8 @@ python -m data_preparation.peak_months                                          
 python -m data_preparation.build_access_loss --months-file data/processed/evaluation/peak_months.csv --mode walking   # ~10 min
 python -m data_preparation.build_priorities --months-file data/processed/evaluation/peak_months.csv                  # ~1 min
 python -m data_preparation.build_prepositioning --months-file data/processed/evaluation/peak_months.csv --mode walking --skip-protected   # ~1 min
-python -m data_preparation.evaluate_peak_months                                              # seconds
-python poster_figures.py --only peak_access_loss protection_curve protection_per_year protection_4h receiving_concentration recurring_receivers
+python -m data_preparation.evaluate_peak_months                                              # ~2 min; also large_years_summary.csv
+python -m data_preparation.poster_figures --only peak_access_loss protection_curve protection_per_year protection_4h receiving_concentration recurring_receivers
 ```
 
 

@@ -24,7 +24,7 @@ from cycler import cycler
 from matplotlib.text import Text
 from PIL import Image
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent      # repository root (this file is in data_preparation/)
 OUT_DIR = ROOT / "figures" / "poster"
 
 # Data colours, at most four. WATER and TUE_RED are the two series colours: checked with a

@@ -73,6 +73,7 @@ dashboard:
 
 evaluation:
   output_dir: data/processed/evaluation   # each year's largest flood month (peak_months, evaluate_peak_months)
+  large_flood_cut_off: 100000    # a "large flood year": at least this many people cut off within 2 h (report, poster)
 
 # Flood scenarios: observed months picked by data_preparation/select_scenarios.py (EDA/outputs/scenarios_block.yaml)
 # flooded = at least flood.min_days_flooded days that month (band "all"); blocked = water | flooded;
