@@ -1,0 +1,42 @@
+{
+  "scenario": {
+    "id": "2023-01",
+    "label": "2023-01 (peak month)"
+  },
+  "flooded_cells_inside_south_sudan": 108392,
+  "people_living_in_flooded_cells": 269651,
+  "sites": 1674,
+  "sites_closed": 89,
+  "sites_without_flood_data": 49,
+  "top_n": 5,
+  "rankings": {
+    "most_saved": {
+      "limit_min": 120,
+      "people_losing_access": 332748,
+      "brought_back_by_top_n": 138523,
+      "not_covered_by_top_n": 194225
+    },
+    "worst_off": {
+      "limit_min": 240,
+      "people_losing_access": 108684,
+      "brought_back_by_top_n": 55219,
+      "not_covered_by_top_n": 53465
+    }
+  },
+  "settings": {
+    "min_days_flooded": 3,
+    "flood_buffer_m": 1000,
+    "population_year": 2020,
+    "permanent_water": {
+      "min_occurrence": 75,
+      "keep_populated_cells_open": true,
+      "close_gaps": true
+    },
+    "thresholds_min": [
+      60,
+      120
+    ],
+    "mode": "walking"
+  },
+  "runtime_seconds": 3.5
+}

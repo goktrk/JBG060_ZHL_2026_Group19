@@ -1,0 +1,18 @@
+site_id,usual_population,moved,lost_all_access,living_in_flooded_cells,rep_facility_name,rep_facility_type,n_facilities,admin2_pcode,adm2_name,mode,variant
+59,11743.197,11743.197,0.0,0.0,Kodok Hospital Primary Health Care Centre,Primary Health Care Centre,2,SS0702,Fashoda,walking,as_is
+151,2973.426,2971.783,0.0,1.643,Molbang Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,as_is
+171,6169.762,6056.315,0.0,113.447,Majok Noon Primary Health Care Centre,Primary Health Care Centre,1,SS0806,Twic,walking,as_is
+181,8154.493,7922.383,0.0,232.111,Marial Maper Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,as_is
+272,10814.976,9569.563,0.0,1245.413,Pandit Twic Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,as_is
+278,14533.839,13605.388,0.427,928.024,Wunrok Primary Health Care Centre,Primary Health Care Centre,1,SS0806,Twic,walking,as_is
+368,18391.294,18388.608,0.0,2.686,Nassir County Hospital,County Hospital,1,SS0704,Luakpiny/Nasir,walking,as_is
+369,23464.618,23463.51,0.0,1.108,MSF- Holland Hosp. Primary Health Care Centre,Primary Health Care Centre,1,SS0704,Luakpiny/Nasir,walking,as_is
+374,17607.831,17607.831,0.0,0.0,Kuich Primary Health Care Unit,Primary Health Care Unit,1,SS0712,Ulang,walking,as_is
+550,6325.188,6323.563,0.0,1.625,Thkliel Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,walking,as_is
+553,7768.434,7369.469,0.0,398.965,Dilule Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,walking,as_is
+712,20413.301,18551.631,0.0,1861.67,Kongor Primary Health Care Unit,Primary Health Care Unit,1,SS0310,Twic East,walking,as_is
+717,2528.747,2386.585,0.0,142.162,Shambe Primary Health Care Centre,Primary Health Care Centre,1,SS0407,Yirol East,walking,as_is
+867,2672.921,2672.921,0.0,0.0,IMC Site 2 _Paluk Primary Health Care Unit,Primary Health Care Unit,1,SS0401,Awerial,walking,as_is
+889,19481.597,19481.597,0.0,0.0,SMC _Awerial Primary Health Care Centre,Primary Health Care Centre,1,SS0401,Awerial,walking,as_is
+891,35272.671,35272.671,0.0,0.0,IMC Site 2 _Awerial Primary Health Care Unit,Primary Health Care Unit,2,SS0401,Awerial,walking,as_is
+1143,1536.52,1535.948,0.0,0.572,Gondokoro Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,walking,as_is

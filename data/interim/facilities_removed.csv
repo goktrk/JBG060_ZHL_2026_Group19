@@ -1,0 +1,33 @@
+FID,Facility_n,reason,kept_FID,kept_name,distance_m,name_similarity
+54870,Jurtong Primary Health Care Centre,no coordinates,,,,
+55017,Mogiri Lainya Primary Health Care Unit,no coordinates,,,,
+55168,Emedu Primary Health Care Unit,no coordinates,,,,
+55316,Nakware Primary Health Care Unit,no coordinates,,,,
+55347,Offiriha Primary Health Care Unit,no coordinates,,,,
+55348,Offiriha Primary Health Care Unit,no coordinates,,,,
+55366,Orphan Primary Health Care Unit,no coordinates,,,,
+56084,Aloor Primary Health Care Unit,no coordinates,,,,
+56105,Indeed Truth Primary Health Care Unit,no coordinates,,,,
+56176,Rumabuth Primary Health Care Unit,no coordinates,,,,
+56206,Aljazira Primary Health Care Unit,no coordinates,,,,
+56334,Bariabande Primary Health Care Unit,no coordinates,,,,
+56432,Mariba Primary Health Care Unit,no coordinates,,,,
+54990,Luri Somba Primary Health Care Unit,duplicate,54989,Luri Somba Primary Health Care Unit,0,1.0
+55150,Aromu Primary Health Care Unit,duplicate,55149,Aromo Primary Health Care Unit,0,0.8
+55188,Ibele Primary Health Care Unit,duplicate,55187,Ibele Primary Health Care Unit,39,1.0
+55190,Ibonni Primary Health Care Unit,duplicate,55189,Iboni Primary Health Care Unit,0,0.91
+55230,Lacharok Primary Health Care Unit,duplicate,55246,Locharok Primary Health Care Unit,31,0.88
+55234,Lalanga Primary Health Care Unit,duplicate,55233,lalanga Primary Health Care Unit,24,1.0
+55267,Lomwoo Primary Health Care Unit,duplicate,55266,lomwoo Primary Health Care Unit,0,1.0
+55394,ugwi/malnyang Primary Health Care Unit,duplicate,55293,Malnyang Primary Health Care Unit,0,0.8
+55307,Mura Lopit Primary Health Care Unit,duplicate,55306,Mura Lopit Primary Health Care Unit,0,1.0
+55356,Ohila Primary Health Care Unit,duplicate,55355,Ohila Primary Health Care Unit,0,1.0
+55370,Owinykibul Primary Health Care Unit,duplicate,55369,Owinykibul Primary Health Care Unit,0,1.0
+55398,Ungebe Primary Health Care Unit,duplicate,55397,Ungebe Primary Health Care Unit,0,1.0
+55404,Wipuboy Primary Health Care Unit,duplicate,55403,Wipuboy Primary Health Care Unit,0,1.0
+55711,Bakou Primary Health Care Unit,duplicate,55710,Bakon Primary Health Care Unit,0,0.8
+55746,Malekalel Primary Health Care Unit,duplicate,55743,Malek Alel 2 Primary Health Care Unit,0,0.95
+56275,Momoi Primary Health Care Unit,duplicate,56261,Mamoi Primary Health Care Unit,35,0.8
+56374,Gangura Primary Health Care Centre,duplicate,56372,Gagura Primary Health Care Centre,0,0.92
+56442,Mbirangburu Primary Health Care Unit,duplicate,56427,Mangburu Primary Health Care Unit,0,0.84
+55786,Rupaker Primary Health Care Unit,"25,566 m outside South Sudan",,,,

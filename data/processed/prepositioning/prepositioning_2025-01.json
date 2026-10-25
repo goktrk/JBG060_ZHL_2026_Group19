@@ -1,0 +1,113 @@
+{
+  "scenario": {
+    "id": "2025-01",
+    "label": "2025-01 (Jan 2025 - small)",
+    "tier": "mild"
+  },
+  "sites_closed": 43,
+  "protected_sites": {
+    "most_saved": [
+      891,
+      105,
+      112,
+      114,
+      302
+    ],
+    "worst_off": [
+      94,
+      263,
+      302,
+      187,
+      325
+    ]
+  },
+  "groups": {
+    "walking": {
+      "as_is": {
+        "same_facility": 10035265,
+        "moved_facility_closed": 378987,
+        "moved_path_blocked": 12279,
+        "lost_all_access": 16435,
+        "living_in_flooded_cells": 117746,
+        "moved_within_limit": 135792,
+        "moved_path_blocked_small_delay": 5199,
+        "receiving_facilities": 154,
+        "moved_total": 391266
+      },
+      "top5_most_saved": {
+        "same_facility": 10136914,
+        "moved_facility_closed": 276961,
+        "moved_path_blocked": 12656,
+        "lost_all_access": 16435,
+        "living_in_flooded_cells": 117746,
+        "moved_within_limit": 173083,
+        "moved_path_blocked_small_delay": 5416,
+        "receiving_facilities": 157,
+        "moved_total": 289617
+      },
+      "top5_worst_off": {
+        "same_facility": 10065470,
+        "moved_facility_closed": 344677,
+        "moved_path_blocked": 16383,
+        "lost_all_access": 16435,
+        "living_in_flooded_cells": 117746,
+        "moved_within_limit": 162874,
+        "moved_path_blocked_small_delay": 5823,
+        "receiving_facilities": 155,
+        "moved_total": 361060
+      }
+    },
+    "motorised": {
+      "as_is": {
+        "same_facility": 10013941,
+        "moved_facility_closed": 393961,
+        "moved_path_blocked": 18629,
+        "lost_all_access": 16435,
+        "living_in_flooded_cells": 117746,
+        "moved_within_limit": 361961,
+        "moved_path_blocked_small_delay": 13937,
+        "receiving_facilities": 141,
+        "moved_total": 412589
+      },
+      "top5_most_saved": {
+        "same_facility": 10155064,
+        "moved_facility_closed": 251434,
+        "moved_path_blocked": 20032,
+        "lost_all_access": 16435,
+        "living_in_flooded_cells": 117746,
+        "moved_within_limit": 229101,
+        "moved_path_blocked_small_delay": 14675,
+        "receiving_facilities": 146,
+        "moved_total": 271466
+      },
+      "top5_worst_off": {
+        "same_facility": 10043059,
+        "moved_facility_closed": 351184,
+        "moved_path_blocked": 32288,
+        "lost_all_access": 16435,
+        "living_in_flooded_cells": 117746,
+        "moved_within_limit": 349412,
+        "moved_path_blocked_small_delay": 14171,
+        "receiving_facilities": 142,
+        "moved_total": 383472
+      }
+    }
+  },
+  "settings": {
+    "min_days_flooded": 3,
+    "flood_buffer_m": 1000,
+    "population_year": 2020,
+    "permanent_water": {
+      "min_occurrence": 75,
+      "keep_populated_cells_open": true,
+      "close_gaps": true
+    },
+    "thresholds_min": [
+      60,
+      120
+    ],
+    "limit_min": 120,
+    "small_delay_min": 15
+  },
+  "runtime_seconds": 142.2
+}

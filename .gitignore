@@ -7,7 +7,6 @@ desktop.ini
 .venv
 *.pyc
 raw_data
-data/interim
 cache
 .idea
 .git
@@ -15,7 +14,5 @@ cache
 *.npy
 data/processed/baseline
 data/processed/access_loss
-data/processed/prepositioning
-data/processed/priorities
 for_tomorrow/*
 for_tomorrow

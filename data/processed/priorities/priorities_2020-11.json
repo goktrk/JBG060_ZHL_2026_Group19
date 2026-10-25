@@ -1,0 +1,43 @@
+{
+  "scenario": {
+    "id": "2020-11",
+    "label": "2020-11 (Nov 2020 - worst for Bor South)",
+    "tier": "worst_bor_south"
+  },
+  "flooded_cells_inside_south_sudan": 29823,
+  "people_living_in_flooded_cells": 103845,
+  "sites": 1674,
+  "sites_closed": 77,
+  "sites_without_flood_data": 49,
+  "top_n": 5,
+  "rankings": {
+    "most_saved": {
+      "limit_min": 120,
+      "people_losing_access": 279079,
+      "brought_back_by_top_n": 149121,
+      "not_covered_by_top_n": 129958
+    },
+    "worst_off": {
+      "limit_min": 240,
+      "people_losing_access": 114579,
+      "brought_back_by_top_n": 89244,
+      "not_covered_by_top_n": 25335
+    }
+  },
+  "settings": {
+    "min_days_flooded": 3,
+    "flood_buffer_m": 1000,
+    "population_year": 2020,
+    "permanent_water": {
+      "min_occurrence": 75,
+      "keep_populated_cells_open": true,
+      "close_gaps": true
+    },
+    "thresholds_min": [
+      60,
+      120
+    ],
+    "mode": "walking"
+  },
+  "runtime_seconds": 2.0
+}

@@ -1,0 +1,40 @@
+{
+  "scenario": {
+    "id": "2012-12",
+    "label": "2012-12 (peak month)"
+  },
+  "sites_closed": 16,
+  "protected_sites": {},
+  "groups": {
+    "walking": {
+      "as_is": {
+        "same_facility": 10387723,
+        "moved_facility_closed": 166749,
+        "moved_path_blocked": 222,
+        "lost_all_access": 440,
+        "living_in_flooded_cells": 5578,
+        "moved_within_limit": 56027,
+        "moved_path_blocked_small_delay": 219,
+        "receiving_facilities": 71,
+        "moved_total": 166971
+      }
+    }
+  },
+  "settings": {
+    "min_days_flooded": 3,
+    "flood_buffer_m": 1000,
+    "population_year": 2020,
+    "permanent_water": {
+      "min_occurrence": 75,
+      "keep_populated_cells_open": true,
+      "close_gaps": true
+    },
+    "thresholds_min": [
+      60,
+      120
+    ],
+    "limit_min": 120,
+    "small_delay_min": 15
+  },
+  "runtime_seconds": 2.2
+}

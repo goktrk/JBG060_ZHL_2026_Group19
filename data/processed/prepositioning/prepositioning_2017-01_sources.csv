@@ -1,0 +1,6 @@
+site_id,usual_population,moved,lost_all_access,living_in_flooded_cells,rep_facility_name,rep_facility_type,n_facilities,admin2_pcode,adm2_name,mode,variant
+101,2406.662,2406.662,0.0,0.0,Alel Primary Health Care Unit,Primary Health Care Unit,1,SS0710,Panyikang,walking,as_is
+641,886.643,808.023,0.0,78.62,Chiban Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,walking,as_is
+889,19481.597,19481.597,0.0,0.0,SMC _Awerial Primary Health Care Centre,Primary Health Care Centre,1,SS0401,Awerial,walking,as_is
+891,35272.671,35272.671,0.0,0.0,IMC Site 2 _Awerial Primary Health Care Unit,Primary Health Care Unit,2,SS0401,Awerial,walking,as_is
+1143,1536.52,1528.559,0.0,7.961,Gondokoro Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,walking,as_is

@@ -1,0 +1,52 @@
+site_id,usual_population,added,added_within_limit,added_from_closed,added_from_blocked_path,added_blocked_small_delay,extra_min,from_facilities,sent_away_path_blocked,relative_increase,relative_increase_within_limit,rep_facility_name,rep_facility_type,n_facilities,admin2_pcode,adm2_name,mode,variant
+364,16639.013,14625.941,12863.091,14625.941,0.0,0.0,55.65,1,0.0,0.879,0.773,Yomding Primary Health Care Unit,Primary Health Care Unit,1,SS0712,Ulang,walking,as_is
+1166,3568.453,1305.209,1305.209,1305.209,0.0,0.0,34.456,2,0.0,0.366,0.366,Walang Walang Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,walking,as_is
+1117,2588.534,657.3,657.3,657.3,0.0,0.0,24.567,2,0.0,0.254,0.254,Mobil Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,walking,as_is
+236,9598.667,207.191,207.191,0.0,207.191,158.218,9.75,3,4.641,0.022,0.022,Ajong Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,as_is
+180,13529.882,95.648,67.963,0.0,95.648,95.648,3.518,2,9.797,0.007,0.005,Majak Pagai Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,as_is
+1142,6218.418,38.137,38.137,38.137,0.0,0.0,12.602,1,0.0,0.006,0.006,Belpham Medical Hq Primary Health Care Centre,Primary Health Care Centre,1,SS0101,Juba,walking,as_is
+278,14533.839,36.535,36.535,0.0,36.535,36.535,1.077,2,10.24,0.003,0.003,Wunrok Primary Health Care Centre,Primary Health Care Centre,1,SS0806,Twic,walking,as_is
+276,8183.886,26.572,26.572,0.0,26.572,26.572,2.449,1,0.0,0.003,0.003,Tuele Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,as_is
+369,23464.618,2966.281,23.993,2966.281,0.0,0.0,41.051,1,0.0,0.126,0.001,MSF- Holland Hosp. Primary Health Care Centre,Primary Health Care Centre,1,SS0704,Luakpiny/Nasir,walking,as_is
+301,9071.771,20.956,20.956,0.0,20.956,20.956,0.486,1,0.0,0.002,0.002,Magak Primary Health Care Centre,Primary Health Care Centre,1,SS0806,Twic,walking,as_is
+1197,6419.406,20.376,20.376,0.0,20.376,20.376,1.959,1,0.0,0.003,0.003,Monoji Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,walking,as_is
+1152,3805.742,16.112,16.112,0.0,16.112,16.112,0.0,1,0.0,0.004,0.004,Tombur Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,walking,as_is
+63,4650.845,15.472,15.472,0.0,15.472,15.472,0.0,1,0.0,0.003,0.003,Globany Primary Health Care Unit,Primary Health Care Unit,1,SS0702,Fashoda,walking,as_is
+500,15450.69,13.186,13.186,0.0,13.186,13.186,0.0,1,0.0,0.001,0.001,Magat Primary Health Care Unit,Primary Health Care Unit,1,SS0802,Gogrial West,walking,as_is
+462,5499.677,10.419,10.419,0.0,10.419,10.419,0.0,1,0.0,0.002,0.002,Warap State Hospital,State Hospital,1,SS0802,Gogrial West,walking,as_is
+223,8552.926,4.641,4.641,0.0,4.641,4.641,2.498,1,0.0,0.001,0.001,Mother Teresa County Hospital,County Hospital,1,SS0806,Twic,walking,as_is
+197,5976.984,4.519,4.519,0.0,4.519,4.519,1.331,1,11.428,0.001,0.001,Malou-Hol Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,as_is
+1187,503.504,3.358,3.358,3.358,0.0,0.0,0.559,1,0.0,0.007,0.007,Bilinang Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,walking,as_is
+544,3686.266,3.159,3.159,0.0,3.159,3.159,0.0,1,1.357,0.001,0.001,Marial Abook Primary Health Care Unit,Primary Health Care Unit,1,SS0804,Tonj North,walking,as_is
+231,10988.658,2.962,2.962,0.0,2.962,2.962,1.012,1,67.963,0.0,0.0,Pannyok Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,as_is
+172,7945.126,2.56,2.56,0.0,2.56,2.56,0.0,1,0.0,0.0,0.0,Roingut Primary Health Care Unit,Primary Health Care Unit,1,SS0503,Aweil North,walking,as_is
+558,7616.753,1.357,1.357,0.0,1.357,1.357,0.0,1,32.657,0.0,0.0,Lurchuk Primary Health Care Unit,Primary Health Care Unit,1,SS0804,Tonj North,walking,as_is
+318,9451.928,0.97,0.97,0.0,0.97,0.97,2.109,1,0.0,0.0,0.0,Mangol Primary Health Care Unit,Primary Health Care Unit,1,SS0801,Gogrial East,walking,as_is
+240,18362.444,5.269,0.0,0.0,5.269,5.269,1.061,1,26.572,0.0,0.0,Akok Primary Health Care Centre,Primary Health Care Centre,1,SS0806,Twic,walking,as_is
+212,1085.465,0.156,0.0,0.0,0.156,0.156,1.891,1,0.0,0.0,0.0,Bolyom Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,as_is
+247,21760.995,11.313,0.0,0.0,11.313,11.313,1.236,1,0.0,0.001,0.0,Mankien Primary Health Care Centre,Primary Health Care Centre,1,SS0606,Mayom,walking,as_is
+160,12629.582,0.009,0.0,0.0,0.009,0.009,0.842,1,0.0,0.0,0.0,Yiik Thon Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,as_is
+358,33519.662,8.253,0.0,8.253,0.0,0.0,4.377,1,0.0,0.0,0.0,Ulang Primary Health Care Centre,Primary Health Care Centre,1,SS0712,Ulang,walking,as_is
+339,729.388,1.055,0.0,0.0,1.055,1.055,4.256,1,0.0,0.001,0.0,Nyany Mayenjur Primary Health Care Unit,Primary Health Care Unit,1,SS0801,Gogrial East,walking,as_is
+310,22507.406,2.274,0.0,0.0,2.274,2.274,3.397,1,0.0,0.0,0.0,Dome Primary Health Care Unit,Primary Health Care Unit,1,SS0712,Ulang,walking,as_is
+307,16835.372,8.268,0.0,0.0,8.268,8.268,0.0,1,0.0,0.0,0.0,Akon Primary Health Care Unit,Primary Health Care Unit,1,SS0802,Gogrial West,walking,as_is
+468,5641.226,0.275,0.0,0.0,0.275,0.275,1.051,1,0.0,0.0,0.0,Wan Machar Primary Health Care Centre,Primary Health Care Centre,1,SS0302,Ayod,walking,as_is
+557,13069.025,29.498,0.0,0.0,29.498,29.498,6.444,1,0.0,0.002,0.0,Pabukchak Primary Health Care Unit,Primary Health Care Unit,1,SS0804,Tonj North,walking,as_is
+483,13724.069,1.075,0.0,1.075,0.0,0.0,4.762,1,0.0,0.0,0.0,Buong Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,walking,as_is
+389,25820.384,6.281,0.0,6.281,0.0,0.0,51.099,1,0.0,0.0,0.0,Mandeng Nasir Primary Health Care Unit,Primary Health Care Unit,1,SS0704,Luakpiny/Nasir,walking,as_is
+703,11912.626,7.693,0.0,0.0,7.693,7.693,1.705,1,0.0,0.001,0.0,Don Bosco Primary Health Care Centre,Primary Health Care Centre,1,SS0805,Tonj South,walking,as_is
+698,968.759,0.019,0.0,0.0,0.019,0.019,1.385,1,0.0,0.0,0.0,Mabior Primary Health Care Unit,Primary Health Care Unit,1,SS0310,Twic East,walking,as_is
+697,1728.302,547.694,0.0,547.694,0.0,0.0,350.943,1,0.0,0.317,0.0,Pakam Primary Health Care Unit,Primary Health Care Unit,1,SS0607,Panyijiar,walking,as_is
+682,8978.035,193.587,0.0,193.587,0.0,0.0,13.834,1,0.0,0.022,0.0,Gayanyliel Primary Health Care Centre,Primary Health Care Centre,1,SS0607,Panyijiar,walking,as_is
+677,33070.706,23.949,0.0,0.0,23.949,23.949,0.503,1,0.0,0.001,0.0,Poktap Primary Health Care Centre,Primary Health Care Centre,1,SS0305,Duk,walking,as_is
+559,13132.158,0.048,0.0,0.0,0.048,0.0,22.226,1,0.0,0.0,0.0,Akeer (Ascom) Primary Health Care Unit,Primary Health Care Unit,1,SS0302,Ayod,walking,as_is
+704,12603.72,28.981,0.0,28.981,0.0,0.0,82.904,1,0.0,0.002,0.0,Morkngok Primary Health Care Unit,Primary Health Care Unit,1,SS0607,Panyijiar,walking,as_is
+705,1734.881,54.314,0.0,54.314,0.0,0.0,261.597,1,23.969,0.031,0.0,Kiir Primary Health Care Unit,Primary Health Care Unit,1,SS0310,Twic East,walking,as_is
+836,1363.922,0.022,0.0,0.0,0.022,0.022,1.432,1,0.0,0.0,0.0,Makolcuei Primary Health Care Unit,Primary Health Care Unit,1,SS0303,Bor South,walking,as_is
+831,4467.647,0.272,0.0,0.0,0.272,0.272,2.659,1,0.0,0.0,0.0,Baidit Primary Health Care Centre,Primary Health Care Centre,1,SS0303,Bor South,walking,as_is
+756,13096.093,1029.181,0.0,1029.181,0.0,0.0,404.354,1,0.0,0.079,0.0,Adior Primary Health Care Centre,Primary Health Care Centre,1,SS0407,Yirol East,walking,as_is
+736,11442.066,0.879,0.0,0.879,0.0,0.0,25.439,1,0.0,0.0,0.0,Paliau Primary Health Care Centre,Primary Health Care Centre,1,SS0310,Twic East,walking,as_is
+721,3250.039,5.432,0.0,0.0,5.432,5.432,3.734,2,0.0,0.002,0.0,Obudi Primary Health Care Unit,Primary Health Care Unit,1,SS0309,Pochalla,walking,as_is
+712,20413.301,532.869,0.0,532.869,0.0,0.0,285.944,1,0.0,0.026,0.0,Kongor Primary Health Care Unit,Primary Health Care Unit,1,SS0310,Twic East,walking,as_is
+891,35272.671,0.808,0.0,0.0,0.808,0.808,0.0,1,0.0,0.0,0.0,IMC Site 2 _Awerial Primary Health Care Unit,Primary Health Care Unit,2,SS0401,Awerial,walking,as_is
+1091,2191.126,0.446,0.0,0.446,0.0,0.0,3.877,1,0.0,0.0,0.0,Logo (Tibari) Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,walking,as_is

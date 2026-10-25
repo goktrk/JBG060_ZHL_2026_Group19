@@ -1,0 +1,19 @@
+site_id,usual_population,moved,lost_all_access,living_in_flooded_cells,rep_facility_name,rep_facility_type,n_facilities,admin2_pcode,adm2_name,mode,variant
+249,39881.237,39665.762,0.0,215.475,Biel Chir Primary Health Care Unit,Primary Health Care Unit,1,SS0609,Rubkona,walking,as_is
+256,6834.254,6764.442,0.0,69.811,Ruath Nyibol Primary Health Care Unit,Primary Health Care Unit,1,SS0606,Mayom,walking,as_is
+292,6266.209,5121.922,0.424,1143.862,Waak Primary Health Care Centre,Primary Health Care Centre,1,SS0609,Rubkona,walking,as_is
+296,13011.022,9057.77,95.075,3858.177,Reik Primary Health Care Unit,Primary Health Care Unit,1,SS0606,Mayom,walking,as_is
+324,1153.791,781.913,0.0,371.878,Turkey Primary Health Care Unit,Primary Health Care Unit,1,SS0606,Mayom,walking,as_is
+325,5005.504,4760.496,0.0,245.008,Nyadiu Primary Health Care Centre,Primary Health Care Centre,1,SS0306,Fangak,walking,as_is
+364,16639.013,16638.989,0.0,0.024,Yomding Primary Health Care Unit,Primary Health Care Unit,1,SS0712,Ulang,walking,as_is
+367,17272.069,14371.198,0.0,2900.871,Menime Primary Health Care Centre,Primary Health Care Centre,1,SS0302,Ayod,walking,as_is
+389,25820.384,25790.263,0.0,30.122,Mandeng Nasir Primary Health Care Unit,Primary Health Care Unit,1,SS0704,Luakpiny/Nasir,walking,as_is
+553,7768.434,7438.188,0.0,330.246,Dilule Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,walking,as_is
+559,13132.158,12906.362,0.0,225.797,Akeer (Ascom) Primary Health Care Unit,Primary Health Care Unit,1,SS0302,Ayod,walking,as_is
+601,985.01,982.319,0.0,2.691,Nyawit Outreach Primary Health Care Unit,Primary Health Care Unit,1,SS0302,Ayod,walking,as_is
+705,1734.881,1311.64,0.0,423.241,Kiir Primary Health Care Unit,Primary Health Care Unit,1,SS0310,Twic East,walking,as_is
+717,2528.747,2387.506,0.0,141.241,Shambe Primary Health Care Centre,Primary Health Care Centre,1,SS0407,Yirol East,walking,as_is
+867,2672.921,2672.921,0.0,0.0,IMC Site 2 _Paluk Primary Health Care Unit,Primary Health Care Unit,1,SS0401,Awerial,walking,as_is
+889,19481.597,19481.597,0.0,0.0,SMC _Awerial Primary Health Care Centre,Primary Health Care Centre,1,SS0401,Awerial,walking,as_is
+891,35272.671,35272.671,0.0,0.0,IMC Site 2 _Awerial Primary Health Care Unit,Primary Health Care Unit,2,SS0401,Awerial,walking,as_is
+1143,1536.52,1528.063,0.0,8.457,Gondokoro Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,walking,as_is

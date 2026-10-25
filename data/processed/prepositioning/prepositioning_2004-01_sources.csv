@@ -1,0 +1,5 @@
+site_id,usual_population,moved,lost_all_access,living_in_flooded_cells,rep_facility_name,rep_facility_type,n_facilities,admin2_pcode,adm2_name,mode,variant
+601,985.01,984.944,0,0.066,Nyawit Outreach Primary Health Care Unit,Primary Health Care Unit,1,SS0302,Ayod,walking,as_is
+867,2672.921,2672.921,0,0.0,IMC Site 2 _Paluk Primary Health Care Unit,Primary Health Care Unit,1,SS0401,Awerial,walking,as_is
+889,19481.597,19431.065,0,50.533,SMC _Awerial Primary Health Care Centre,Primary Health Care Centre,1,SS0401,Awerial,walking,as_is
+891,35272.671,35207.642,0,65.03,IMC Site 2 _Awerial Primary Health Care Unit,Primary Health Care Unit,2,SS0401,Awerial,walking,as_is

@@ -1,0 +1,52 @@
+site_id,usual_population,added,added_within_limit,added_from_closed,added_from_blocked_path,added_blocked_small_delay,extra_min,from_facilities,sent_away_path_blocked,relative_increase,relative_increase_within_limit,rep_facility_name,rep_facility_type,n_facilities,admin2_pcode,adm2_name,mode,variant
+398,6245.706,2572.192,2553.094,2572.192,0.0,0.0,14.995,1,0.0,0.412,0.409,Turu Primary Health Care Unit,Primary Health Care Unit,1,SS0706,Maiwut,walking,as_is
+99,1890.048,1941.487,1941.487,1941.487,0.0,0.0,16.008,1,0.0,1.027,1.027,Waraj Wok Primary Health Care Centre,Primary Health Care Centre,1,SS0707,Malakal,walking,as_is
+1166,3568.453,1283.654,1283.654,1283.654,0.0,0.0,34.637,2,22.695,0.36,0.36,Walang Walang Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,walking,as_is
+662,15483.66,1160.107,872.733,1160.107,0.0,0.0,16.213,1,0.0,0.075,0.056,Amok Primary Health Care Unit,Primary Health Care Unit,1,SS0405,Rumbek North,walking,as_is
+1117,2588.534,656.675,656.675,656.675,0.0,0.0,24.559,2,0.0,0.254,0.254,Mobil Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,walking,as_is
+639,18879.085,593.361,562.552,593.361,0.0,0.0,15.088,1,0.0,0.031,0.03,Wun Rieng Primary Health Care Unit,Primary Health Care Unit,1,SS0405,Rumbek North,walking,as_is
+107,4147.817,450.026,450.026,450.026,0.0,0.0,18.665,1,0.0,0.108,0.108,Oweci Primary Health Care Centre,Primary Health Care Centre,1,SS0710,Panyikang,walking,as_is
+374,17607.831,423.18,423.18,0.0,423.18,423.18,5.132,1,0.0,0.024,0.024,Kuich Primary Health Care Unit,Primary Health Care Unit,1,SS0712,Ulang,walking,as_is
+1142,6218.418,38.137,38.137,38.137,0.0,0.0,12.602,1,0.0,0.006,0.006,Belpham Medical Hq Primary Health Care Centre,Primary Health Care Centre,1,SS0101,Juba,walking,as_is
+1197,6419.406,16.437,16.437,0.0,16.437,16.437,0.974,1,0.0,0.003,0.003,Monoji Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,walking,as_is
+272,10814.976,16.13,16.13,0.0,16.13,16.13,0.0,1,0.0,0.001,0.001,Pandit Twic Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,as_is
+89,1863.226,14.175,14.175,14.175,0.0,0.0,7.037,1,0.0,0.008,0.008,Lelo Primary Health Care Unit,Primary Health Care Unit,1,SS0707,Malakal,walking,as_is
+862,1756.46,8.729,8.729,0.0,8.729,8.729,0.0,1,0.0,0.005,0.005,Health Link Site 3 Primary Health Care Unit,Primary Health Care Unit,1,SS0401,Awerial,walking,as_is
+1091,2191.126,8.275,7.829,0.446,7.829,7.829,2.862,2,0.0,0.004,0.004,Logo (Tibari) Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,walking,as_is
+1184,15329.733,6.258,6.258,0.0,6.258,6.258,5.787,1,0.0,0.0,0.0,Good Sheperd Clinic Primary Health Care Centre,Primary Health Care Centre,1,SS0101,Juba,walking,as_is
+830,6541.43,3.63,3.63,0.0,3.63,3.63,1.099,1,0.0,0.001,0.001,Pabur Primary Health Care Unit,Primary Health Care Unit,1,SS0408,Yirol West,walking,as_is
+1187,503.504,3.358,3.358,3.358,0.0,0.0,0.559,1,0.0,0.007,0.007,Bilinang Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,walking,as_is
+492,1882.586,2.615,2.615,0.0,2.615,2.615,8.261,1,0.0,0.001,0.001,Dhor Thier Primary Health Care Unit,Primary Health Care Unit,1,SS0605,Mayendit,walking,as_is
+923,1618.174,2.184,2.184,0.0,2.184,2.184,0.0,1,0.0,0.001,0.001,Mijiki Primary Health Care Unit,Primary Health Care Unit,1,SS0105,Terekeka,walking,as_is
+558,7616.753,1.357,1.357,0.0,1.357,1.357,0.0,1,0.0,0.0,0.0,Lurchuk Primary Health Care Unit,Primary Health Care Unit,1,SS0804,Tonj North,walking,as_is
+318,9451.928,1.258,1.258,0.0,1.258,1.258,2.112,1,0.0,0.0,0.0,Mangol Primary Health Care Unit,Primary Health Care Unit,1,SS0801,Gogrial East,walking,as_is
+118,3265.069,0.974,0.974,0.974,0.0,0.0,0.161,1,0.0,0.0,0.0,Obei Primary Health Care Centre,Primary Health Care Centre,1,SS0710,Panyikang,walking,as_is
+116,6331.638,0.517,0.517,0.0,0.517,0.517,4.366,1,0.0,0.0,0.0,Alela Primary Health Care Unit,Primary Health Care Unit,1,SS0304,Canal/Pigi,walking,as_is
+197,5976.984,0.035,0.035,0.0,0.035,0.035,2.278,1,0.0,0.0,0.0,Malou-Hol Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,as_is
+383,21053.247,3.733,0.0,0.0,3.733,0.0,181.096,1,0.0,0.0,0.0,Alabek Primary Health Care Centre,Primary Health Care Centre,1,SS0804,Tonj North,walking,as_is
+260,8349.084,0.296,0.0,0.0,0.296,0.296,3.333,1,0.0,0.0,0.0,Dhoreak Primary Health Care Unit,Primary Health Care Unit,1,SS0306,Fangak,walking,as_is
+264,1838.51,56.17,0.0,0.0,56.17,41.01,13.269,1,0.0,0.031,0.0,Toloar Primary Health Care Unit,Primary Health Care Unit,1,SS0704,Luakpiny/Nasir,walking,as_is
+74,864.776,0.721,0.0,0.0,0.721,0.721,9.477,1,0.0,0.001,0.0,Beneshawa Primary Health Care Unit,Primary Health Care Unit,1,SS0705,Maban,walking,as_is
+375,52138.81,12.721,0.0,12.721,0.0,0.0,45.289,1,0.0,0.0,0.0,Maiwut Primary Health Care Centre,Primary Health Care Centre,1,SS0706,Maiwut,walking,as_is
+269,9283.55,28.743,0.0,0.0,28.743,28.743,5.344,2,0.0,0.003,0.0,Longuchuk County Hospital,County Hospital,1,SS0703,Longochuk,walking,as_is
+297,2244.002,0.672,0.0,0.0,0.672,0.672,3.821,1,0.0,0.0,0.0,Pamac Primary Health Care Unit,Primary Health Care Unit,1,SS0703,Longochuk,walking,as_is
+134,19096.92,0.443,0.0,0.0,0.443,0.443,3.046,1,0.0,0.0,0.0,Ugier Primary Health Care Unit,Primary Health Care Unit,1,SS0703,Longochuk,walking,as_is
+212,1085.465,0.156,0.0,0.0,0.156,0.156,3.053,1,0.0,0.0,0.0,Bolyom Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,as_is
+498,19363.388,0.09,0.0,0.0,0.09,0.09,2.621,1,0.0,0.0,0.0,Diror Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,walking,as_is
+570,402.812,23.773,0.0,0.0,23.773,23.773,3.158,1,0.0,0.059,0.0,Meek Island Primary Health Care Unit,Primary Health Care Unit,1,SS0607,Panyijiar,walking,as_is
+721,3250.039,43.381,0.0,0.0,43.381,43.381,1.675,1,0.252,0.013,0.0,Obudi Primary Health Care Unit,Primary Health Care Unit,1,SS0309,Pochalla,walking,as_is
+711,24363.379,0.252,0.0,0.0,0.252,0.252,0.154,1,1775.336,0.0,0.0,Pochalla Primary Health Care Centre,Primary Health Care Centre,1,SS0309,Pochalla,walking,as_is
+706,3199.778,59.764,0.0,59.764,0.0,0.0,13.625,1,0.0,0.019,0.0,Malek _Rumbek Primary Health Care Unit,Primary Health Care Unit,1,SS0403,Rumbek Centre,walking,as_is
+681,7816.287,0.152,0.0,0.0,0.152,0.152,5.956,1,0.0,0.0,0.0,Thoanhuom Primary Health Care Unit,Primary Health Care Unit,1,SS0607,Panyijiar,walking,as_is
+641,886.643,1732.795,0.0,0.0,1732.795,1732.795,2.961,2,0.0,1.954,0.0,Chiban Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,walking,as_is
+571,3323.783,210.376,0.0,0.0,210.376,210.376,1.425,1,0.0,0.063,0.0,Old Akobo Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,walking,as_is
+611,144.23,10.845,0.0,10.845,0.0,0.0,30.341,1,0.0,0.075,0.0,Mayom Pannyjir Primary Health Care Unit,Primary Health Care Unit,1,SS0607,Panyijiar,walking,as_is
+620,2129.582,3.696,0.0,0.0,3.696,3.696,0.473,1,0.126,0.002,0.0,Kony Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,walking,as_is
+566,60476.881,0.037,0.0,0.0,0.037,0.037,2.98,1,3.696,0.0,0.0,Akobo County Hospital,County Hospital,1,SS0301,Akobo,walking,as_is
+906,21536.232,6239.863,0.0,6239.863,0.0,0.0,78.809,1,0.0,0.29,0.0,Kalthok Primary Health Care Unit,Primary Health Care Unit,1,SS0401,Awerial,walking,as_is
+890,10638.53,579.007,0.0,579.007,0.0,0.0,96.521,2,0.0,0.054,0.0,IMC Site 1 _1 Primary Health Care Unit,Primary Health Care Unit,1,SS0401,Awerial,walking,as_is
+892,11086.42,12364.38,0.0,12364.38,0.0,0.0,190.638,1,0.0,1.115,0.0,Pan-Pandiar Primary Health Care Unit,Primary Health Care Unit,1,SS0303,Bor South,walking,as_is
+883,8939.144,9.456,0.0,9.456,0.0,0.0,8.809,1,0.0,0.001,0.0,Malual Agor Baar Primary Health Care Centre,Primary Health Care Centre,1,SS0303,Bor South,walking,as_is
+867,2672.921,35554.707,0.0,35554.707,0.0,0.0,190.114,2,0.0,13.302,0.0,IMC Site 2 _Paluk Primary Health Care Unit,Primary Health Care Unit,1,SS0401,Awerial,walking,as_is
+831,4467.647,0.272,0.0,0.0,0.272,0.272,2.659,1,0.0,0.0,0.0,Baidit Primary Health Care Centre,Primary Health Care Centre,1,SS0303,Bor South,walking,as_is
+886,6001.984,6.856,0.0,6.856,0.0,0.0,130.77,2,0.0,0.001,0.0,Malek (Kolnyang) Primary Health Care Unit,Primary Health Care Unit,1,SS0303,Bor South,walking,as_is

@@ -1,0 +1,80 @@
+county_id,adm2_pcode,adm2_name,adm1_name
+1,SS0001,Abyei Region,Abyei Region
+2,SS0101,Juba,Central Equatoria
+3,SS0102,Kajo-keji,Central Equatoria
+4,SS0103,Lainya,Central Equatoria
+5,SS0104,Morobo,Central Equatoria
+6,SS0105,Terekeka,Central Equatoria
+7,SS0106,Yei,Central Equatoria
+8,SS0201,Budi,Eastern Equatoria
+9,SS0202,Ikotos,Eastern Equatoria
+10,SS0203,Kapoeta East,Eastern Equatoria
+11,SS0204,Kapoeta North,Eastern Equatoria
+12,SS0205,Kapoeta South,Eastern Equatoria
+13,SS0206,Lafon,Eastern Equatoria
+14,SS0207,Magwi,Eastern Equatoria
+15,SS0208,Torit,Eastern Equatoria
+16,SS0301,Akobo,Jonglei
+17,SS0302,Ayod,Jonglei
+18,SS0303,Bor South,Jonglei
+19,SS0304,Canal/Pigi,Jonglei
+20,SS0305,Duk,Jonglei
+21,SS0306,Fangak,Jonglei
+22,SS0307,Nyirol,Jonglei
+23,SS0308,Pibor,Jonglei
+24,SS0309,Pochalla,Jonglei
+25,SS0310,Twic East,Jonglei
+26,SS0311,Uror,Jonglei
+27,SS0401,Awerial,Lakes
+28,SS0402,Cueibet,Lakes
+29,SS0403,Rumbek Centre,Lakes
+30,SS0404,Rumbek East,Lakes
+31,SS0405,Rumbek North,Lakes
+32,SS0406,Wulu,Lakes
+33,SS0407,Yirol East,Lakes
+34,SS0408,Yirol West,Lakes
+35,SS0501,Aweil Centre,Northern Bahr el Ghazal
+36,SS0502,Aweil East,Northern Bahr el Ghazal
+37,SS0503,Aweil North,Northern Bahr el Ghazal
+38,SS0504,Aweil South,Northern Bahr el Ghazal
+39,SS0505,Aweil West,Northern Bahr el Ghazal
+40,SS0601,Abiemnhom,Unity
+41,SS0602,Guit,Unity
+42,SS0603,Koch,Unity
+43,SS0604,Leer,Unity
+44,SS0605,Mayendit,Unity
+45,SS0606,Mayom,Unity
+46,SS0607,Panyijiar,Unity
+47,SS0608,Pariang,Unity
+48,SS0609,Rubkona,Unity
+49,SS0701,Baliet,Upper Nile
+50,SS0702,Fashoda,Upper Nile
+51,SS0703,Longochuk,Upper Nile
+52,SS0704,Luakpiny/Nasir,Upper Nile
+53,SS0705,Maban,Upper Nile
+54,SS0706,Maiwut,Upper Nile
+55,SS0707,Malakal,Upper Nile
+56,SS0708,Manyo,Upper Nile
+57,SS0709,Melut,Upper Nile
+58,SS0710,Panyikang,Upper Nile
+59,SS0711,Renk,Upper Nile
+60,SS0712,Ulang,Upper Nile
+61,SS0801,Gogrial East,Warrap
+62,SS0802,Gogrial West,Warrap
+63,SS0803,Tonj East,Warrap
+64,SS0804,Tonj North,Warrap
+65,SS0805,Tonj South,Warrap
+66,SS0806,Twic,Warrap
+67,SS0901,Jur River,Western Bahr el Ghazal
+68,SS0902,Raja,Western Bahr el Ghazal
+69,SS0903,Wau,Western Bahr el Ghazal
+70,SS1001,Ezo,Western Equatoria
+71,SS1002,Ibba,Western Equatoria
+72,SS1003,Maridi,Western Equatoria
+73,SS1004,Mundri East,Western Equatoria
+74,SS1005,Mundri West,Western Equatoria
+75,SS1006,Mvolo,Western Equatoria
+76,SS1007,Nagero,Western Equatoria
+77,SS1008,Nzara,Western Equatoria
+78,SS1009,Tambura,Western Equatoria
+79,SS1010,Yambio,Western Equatoria

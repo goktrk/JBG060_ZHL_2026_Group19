@@ -41,9 +41,9 @@ Each figure is built at its printed size (see poster_style.py) and saved to figu
 300 dpi PNG. The plotted numbers are saved next to them in figures/poster/data/.
 
 Run from the repository root:
-    python poster_figures.py               # reuses figures/poster/data/flood_area_*.csv if present
-    python poster_figures.py --recompute   # re-reads the 276 monthly flood files (about a minute)
-    python poster_figures.py --only peak_access_loss protection_curve protection_per_year   # just these,
+    python -m data_preparation.poster_figures               # reuses figures/poster/data/flood_area_*.csv if present
+    python -m data_preparation.poster_figures --recompute   # re-reads the 276 monthly flood files (about a minute)
+    python -m data_preparation.poster_figures --only peak_access_loss protection_curve protection_per_year   # just these,
                                                                        # SVG + PNG, data tables not rewritten
 """
 import argparse

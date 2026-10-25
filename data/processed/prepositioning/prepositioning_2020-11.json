@@ -1,0 +1,113 @@
+{
+  "scenario": {
+    "id": "2020-11",
+    "label": "2020-11 (Nov 2020 - worst for Bor South)",
+    "tier": "worst_bor_south"
+  },
+  "sites_closed": 77,
+  "protected_sites": {
+    "most_saved": [
+      891,
+      358,
+      677,
+      114,
+      389
+    ],
+    "worst_off": [
+      889,
+      327,
+      472,
+      559,
+      438
+    ]
+  },
+  "groups": {
+    "walking": {
+      "as_is": {
+        "same_facility": 9606502,
+        "moved_facility_closed": 840374,
+        "moved_path_blocked": 8544,
+        "lost_all_access": 1447,
+        "living_in_flooded_cells": 103844,
+        "moved_within_limit": 391512,
+        "moved_path_blocked_small_delay": 3757,
+        "receiving_facilities": 229,
+        "moved_total": 848917
+      },
+      "top5_most_saved": {
+        "same_facility": 9744101,
+        "moved_facility_closed": 702836,
+        "moved_path_blocked": 8482,
+        "lost_all_access": 1447,
+        "living_in_flooded_cells": 103844,
+        "moved_within_limit": 409818,
+        "moved_path_blocked_small_delay": 3694,
+        "receiving_facilities": 224,
+        "moved_total": 711318
+      },
+      "top5_worst_off": {
+        "same_facility": 9683160,
+        "moved_facility_closed": 763753,
+        "moved_path_blocked": 8507,
+        "lost_all_access": 1447,
+        "living_in_flooded_cells": 103844,
+        "moved_within_limit": 426203,
+        "moved_path_blocked_small_delay": 3720,
+        "receiving_facilities": 230,
+        "moved_total": 772260
+      }
+    },
+    "motorised": {
+      "as_is": {
+        "same_facility": 9554832,
+        "moved_facility_closed": 882203,
+        "moved_path_blocked": 18385,
+        "lost_all_access": 1447,
+        "living_in_flooded_cells": 103844,
+        "moved_within_limit": 792636,
+        "moved_path_blocked_small_delay": 13907,
+        "receiving_facilities": 218,
+        "moved_total": 900588
+      },
+      "top5_most_saved": {
+        "same_facility": 9687647,
+        "moved_facility_closed": 749388,
+        "moved_path_blocked": 18385,
+        "lost_all_access": 1447,
+        "living_in_flooded_cells": 103844,
+        "moved_within_limit": 666166,
+        "moved_path_blocked_small_delay": 13908,
+        "receiving_facilities": 214,
+        "moved_total": 767773
+      },
+      "top5_worst_off": {
+        "same_facility": 9621839,
+        "moved_facility_closed": 815185,
+        "moved_path_blocked": 18396,
+        "lost_all_access": 1447,
+        "living_in_flooded_cells": 103844,
+        "moved_within_limit": 740607,
+        "moved_path_blocked_small_delay": 13919,
+        "receiving_facilities": 217,
+        "moved_total": 833581
+      }
+    }
+  },
+  "settings": {
+    "min_days_flooded": 3,
+    "flood_buffer_m": 1000,
+    "population_year": 2020,
+    "permanent_water": {
+      "min_occurrence": 75,
+      "keep_populated_cells_open": true,
+      "close_gaps": true
+    },
+    "thresholds_min": [
+      60,
+      120
+    ],
+    "limit_min": 120,
+    "small_delay_min": 15
+  },
+  "runtime_seconds": 114.8
+}

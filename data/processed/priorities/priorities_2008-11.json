@@ -1,0 +1,43 @@
+{
+  "scenario": {
+    "id": "2008-11",
+    "label": "2008-11 (Nov 2008 - largest loss)",
+    "tier": "severe"
+  },
+  "flooded_cells_inside_south_sudan": 28405,
+  "people_living_in_flooded_cells": 57691,
+  "sites": 1674,
+  "sites_closed": 42,
+  "sites_without_flood_data": 49,
+  "top_n": 5,
+  "rankings": {
+    "most_saved": {
+      "limit_min": 120,
+      "people_losing_access": 188470,
+      "brought_back_by_top_n": 105258,
+      "not_covered_by_top_n": 83212
+    },
+    "worst_off": {
+      "limit_min": 240,
+      "people_losing_access": 18795,
+      "brought_back_by_top_n": 12966,
+      "not_covered_by_top_n": 5829
+    }
+  },
+  "settings": {
+    "min_days_flooded": 3,
+    "flood_buffer_m": 1000,
+    "population_year": 2020,
+    "permanent_water": {
+      "min_occurrence": 75,
+      "keep_populated_cells_open": true,
+      "close_gaps": true
+    },
+    "thresholds_min": [
+      60,
+      120
+    ],
+    "mode": "walking"
+  },
+  "runtime_seconds": 1.6
+}

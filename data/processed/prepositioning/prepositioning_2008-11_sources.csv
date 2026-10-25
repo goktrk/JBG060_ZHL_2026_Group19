@@ -1,0 +1,233 @@
+site_id,usual_population,moved,lost_all_access,living_in_flooded_cells,rep_facility_name,rep_facility_type,n_facilities,admin2_pcode,adm2_name,mode,variant
+171,6169.762,5644.924,0.0,524.838,Majok Noon Primary Health Care Centre,Primary Health Care Centre,1,SS0806,Twic,walking,as_is
+181,8154.493,7185.015,0.0,969.479,Marial Maper Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,as_is
+183,12055.402,11394.432,0.0,660.97,Dhiau Agaal Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,as_is
+188,2427.162,2414.91,0.0,12.252,Angol Primary Health Care Unit,Primary Health Care Unit,1,SS0505,Aweil West,walking,as_is
+193,3843.681,3778.613,0.0,65.068,Nyamlel Primary Health Care Centre,Primary Health Care Centre,1,SS0505,Aweil West,walking,as_is
+198,5971.869,5890.957,0.0,80.912,Anyopjang Primary Health Care Unit,Primary Health Care Unit,1,SS0505,Aweil West,walking,as_is
+230,5971.916,5814.767,0.0,157.148,Ameth Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,walking,as_is
+236,9598.667,7704.578,62.288,1831.802,Ajong Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,as_is
+239,6588.366,6047.204,130.374,410.788,Rumwel Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,walking,as_is
+259,1973.552,1786.6,0.0,186.952,Angui Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,walking,as_is
+272,10814.976,8298.41,1.968,2514.598,Pandit Twic Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,as_is
+277,6818.215,5476.591,6.58,1335.044,Atuct Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,walking,as_is
+278,14533.839,9302.435,153.199,5078.205,Wunrok Primary Health Care Centre,Primary Health Care Centre,1,SS0806,Twic,walking,as_is
+282,6887.351,6884.253,0.0,3.097,Chelcou Primary Health Care Centre,Primary Health Care Centre,1,SS0505,Aweil West,walking,as_is
+284,11976.942,8347.871,100.905,3528.166,Peth East Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,walking,as_is
+289,10671.239,6057.405,0.497,4613.337,Titcok Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,as_is
+307,16835.372,10301.674,2452.382,4081.316,Akon Primary Health Care Unit,Primary Health Care Unit,1,SS0802,Gogrial West,walking,as_is
+310,22507.406,21237.312,0.0,1270.094,Dome Primary Health Care Unit,Primary Health Care Unit,1,SS0712,Ulang,walking,as_is
+314,4776.879,4717.647,0.0,59.232,Awilic Primary Health Care Unit,Primary Health Care Unit,1,SS0505,Aweil West,walking,as_is
+319,16749.326,9493.44,1848.174,5407.711,Keet Primary Health Care Unit,Primary Health Care Unit,1,SS0802,Gogrial West,walking,as_is
+328,8879.806,5966.288,781.84,2131.678,Agaat Dit Primary Health Care Unit,Primary Health Care Unit,1,SS0802,Gogrial West,walking,as_is
+364,16639.013,16580.186,0.0,58.827,Yomding Primary Health Care Unit,Primary Health Care Unit,1,SS0712,Ulang,walking,as_is
+368,18391.294,18388.608,0.0,2.686,Nassir County Hospital,County Hospital,1,SS0704,Luakpiny/Nasir,walking,as_is
+369,23464.618,23170.877,0.0,293.742,MSF- Holland Hosp. Primary Health Care Centre,Primary Health Care Centre,1,SS0704,Luakpiny/Nasir,walking,as_is
+374,17607.831,17179.284,0.0,428.547,Kuich Primary Health Care Unit,Primary Health Care Unit,1,SS0712,Ulang,walking,as_is
+386,12399.005,12176.843,0.0,222.162,Gogrial Primary Health Care Centre,Primary Health Care Centre,1,SS0802,Gogrial West,walking,as_is
+387,3511.684,3477.005,0.0,34.679,Agaigai Primary Health Care Unit,Primary Health Care Unit,1,SS0801,Gogrial East,walking,as_is
+415,9273.547,9216.636,0.0,56.911,Alok Primary Health Care Unit,Primary Health Care Unit,1,SS0501,Aweil Centre,walking,as_is
+520,11901.423,11846.997,0.0,54.426,Tharqueny Primary Health Care Unit,Primary Health Care Unit,1,SS0901,Jur River,walking,as_is
+550,6325.188,6253.614,0.0,71.574,Thkliel Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,walking,as_is
+553,7768.434,5812.846,0.0,1955.588,Dilule Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,walking,as_is
+561,2876.559,2827.291,0.0,49.268,Madil Primary Health Care Unit,Primary Health Care Unit,1,SS0901,Jur River,walking,as_is
+620,2129.582,2119.37,0.0,10.213,Kony Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,walking,as_is
+641,886.643,886.643,0.0,0.0,Chiban Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,walking,as_is
+675,3842.534,3761.641,0.0,80.893,Lae Diit Primary Health Care Unit,Primary Health Care Unit,1,SS0607,Panyijiar,walking,as_is
+889,19481.597,19481.597,0.0,0.0,SMC _Awerial Primary Health Care Centre,Primary Health Care Centre,1,SS0401,Awerial,walking,as_is
+891,35272.671,35272.671,0.0,0.0,IMC Site 2 _Awerial Primary Health Care Unit,Primary Health Care Unit,2,SS0401,Awerial,walking,as_is
+938,7138.054,7137.915,0.0,0.14,Muni Primary Health Care Centre,Primary Health Care Centre,1,SS0105,Terekeka,walking,as_is
+968,9868.592,9868.592,0.0,0.0,Wujugani Primary Health Care Unit,Primary Health Care Unit,1,SS0105,Terekeka,walking,as_is
+1143,1536.52,1524.551,0.0,11.969,Gondokoro Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,walking,as_is
+1147,468.709,468.709,0.0,0.0,Gondokoro Main Land Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,walking,as_is
+1205,7213.483,7181.068,0.0,32.415,Mahad Primary Sch. Primary Health Care Centre,Primary Health Care Centre,1,SS0101,Juba,walking,as_is
+171,6169.762,5644.924,0.0,524.838,Majok Noon Primary Health Care Centre,Primary Health Care Centre,1,SS0806,Twic,walking,top5_most_saved
+181,8154.493,7185.015,0.0,969.479,Marial Maper Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,top5_most_saved
+183,12055.402,11394.432,0.0,660.97,Dhiau Agaal Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,top5_most_saved
+188,2427.162,2414.91,0.0,12.252,Angol Primary Health Care Unit,Primary Health Care Unit,1,SS0505,Aweil West,walking,top5_most_saved
+193,3843.681,3778.613,0.0,65.068,Nyamlel Primary Health Care Centre,Primary Health Care Centre,1,SS0505,Aweil West,walking,top5_most_saved
+198,5971.869,5890.957,0.0,80.912,Anyopjang Primary Health Care Unit,Primary Health Care Unit,1,SS0505,Aweil West,walking,top5_most_saved
+230,5971.916,5814.767,0.0,157.148,Ameth Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,walking,top5_most_saved
+236,9598.667,7704.578,62.288,1831.802,Ajong Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,top5_most_saved
+239,6588.366,6047.204,130.374,410.788,Rumwel Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,walking,top5_most_saved
+259,1973.552,1786.6,0.0,186.952,Angui Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,walking,top5_most_saved
+272,10814.976,8298.41,1.968,2514.598,Pandit Twic Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,top5_most_saved
+277,6818.215,5476.591,6.58,1335.044,Atuct Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,walking,top5_most_saved
+282,6887.351,6884.253,0.0,3.097,Chelcou Primary Health Care Centre,Primary Health Care Centre,1,SS0505,Aweil West,walking,top5_most_saved
+284,11976.942,8347.871,100.905,3528.166,Peth East Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,walking,top5_most_saved
+289,10671.239,6057.405,0.497,4613.337,Titcok Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,top5_most_saved
+307,16835.372,10301.674,2452.382,4081.316,Akon Primary Health Care Unit,Primary Health Care Unit,1,SS0802,Gogrial West,walking,top5_most_saved
+314,4776.879,4717.647,0.0,59.232,Awilic Primary Health Care Unit,Primary Health Care Unit,1,SS0505,Aweil West,walking,top5_most_saved
+319,16749.326,9493.44,1848.174,5407.711,Keet Primary Health Care Unit,Primary Health Care Unit,1,SS0802,Gogrial West,walking,top5_most_saved
+328,8879.806,5966.288,781.84,2131.678,Agaat Dit Primary Health Care Unit,Primary Health Care Unit,1,SS0802,Gogrial West,walking,top5_most_saved
+364,16639.013,16580.186,0.0,58.827,Yomding Primary Health Care Unit,Primary Health Care Unit,1,SS0712,Ulang,walking,top5_most_saved
+368,18391.294,18388.608,0.0,2.686,Nassir County Hospital,County Hospital,1,SS0704,Luakpiny/Nasir,walking,top5_most_saved
+369,23464.618,23170.877,0.0,293.742,MSF- Holland Hosp. Primary Health Care Centre,Primary Health Care Centre,1,SS0704,Luakpiny/Nasir,walking,top5_most_saved
+386,12399.005,12176.843,0.0,222.162,Gogrial Primary Health Care Centre,Primary Health Care Centre,1,SS0802,Gogrial West,walking,top5_most_saved
+387,3511.684,3477.005,0.0,34.679,Agaigai Primary Health Care Unit,Primary Health Care Unit,1,SS0801,Gogrial East,walking,top5_most_saved
+415,9273.547,9216.636,0.0,56.911,Alok Primary Health Care Unit,Primary Health Care Unit,1,SS0501,Aweil Centre,walking,top5_most_saved
+550,6325.188,6253.614,0.0,71.574,Thkliel Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,walking,top5_most_saved
+553,7768.434,5812.846,0.0,1955.588,Dilule Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,walking,top5_most_saved
+561,2876.559,2827.291,0.0,49.268,Madil Primary Health Care Unit,Primary Health Care Unit,1,SS0901,Jur River,walking,top5_most_saved
+620,2129.582,2119.37,0.0,10.213,Kony Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,walking,top5_most_saved
+641,886.643,886.643,0.0,0.0,Chiban Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,walking,top5_most_saved
+675,3842.534,3761.641,0.0,80.893,Lae Diit Primary Health Care Unit,Primary Health Care Unit,1,SS0607,Panyijiar,walking,top5_most_saved
+889,19481.597,19481.597,0.0,0.0,SMC _Awerial Primary Health Care Centre,Primary Health Care Centre,1,SS0401,Awerial,walking,top5_most_saved
+938,7138.054,7137.915,0.0,0.14,Muni Primary Health Care Centre,Primary Health Care Centre,1,SS0105,Terekeka,walking,top5_most_saved
+968,9868.592,9868.592,0.0,0.0,Wujugani Primary Health Care Unit,Primary Health Care Unit,1,SS0105,Terekeka,walking,top5_most_saved
+1143,1536.52,1524.551,0.0,11.969,Gondokoro Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,walking,top5_most_saved
+1147,468.709,468.709,0.0,0.0,Gondokoro Main Land Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,walking,top5_most_saved
+1205,7213.483,7181.068,0.0,32.415,Mahad Primary Sch. Primary Health Care Centre,Primary Health Care Centre,1,SS0101,Juba,walking,top5_most_saved
+171,6169.762,5644.924,0.0,524.838,Majok Noon Primary Health Care Centre,Primary Health Care Centre,1,SS0806,Twic,walking,top5_worst_off
+181,8154.493,7185.015,0.0,969.479,Marial Maper Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,top5_worst_off
+183,12055.402,11394.432,0.0,660.97,Dhiau Agaal Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,top5_worst_off
+188,2427.162,2414.91,0.0,12.252,Angol Primary Health Care Unit,Primary Health Care Unit,1,SS0505,Aweil West,walking,top5_worst_off
+193,3843.681,3778.613,0.0,65.068,Nyamlel Primary Health Care Centre,Primary Health Care Centre,1,SS0505,Aweil West,walking,top5_worst_off
+198,5971.869,5890.957,0.0,80.912,Anyopjang Primary Health Care Unit,Primary Health Care Unit,1,SS0505,Aweil West,walking,top5_worst_off
+230,5971.916,5814.767,0.0,157.148,Ameth Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,walking,top5_worst_off
+236,9598.667,7704.578,62.288,1831.802,Ajong Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,top5_worst_off
+239,6588.366,6047.204,130.374,410.788,Rumwel Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,walking,top5_worst_off
+259,1973.552,1786.6,0.0,186.952,Angui Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,walking,top5_worst_off
+272,10814.976,8298.41,1.968,2514.598,Pandit Twic Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,top5_worst_off
+277,6818.215,5476.591,6.58,1335.044,Atuct Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,walking,top5_worst_off
+278,14533.839,9302.435,153.199,5078.205,Wunrok Primary Health Care Centre,Primary Health Care Centre,1,SS0806,Twic,walking,top5_worst_off
+282,6887.351,6884.253,0.0,3.097,Chelcou Primary Health Care Centre,Primary Health Care Centre,1,SS0505,Aweil West,walking,top5_worst_off
+289,10671.239,6057.405,0.497,4613.337,Titcok Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,walking,top5_worst_off
+307,16835.372,10626.304,2127.751,4081.316,Akon Primary Health Care Unit,Primary Health Care Unit,1,SS0802,Gogrial West,walking,top5_worst_off
+314,4776.879,4717.647,0.0,59.232,Awilic Primary Health Care Unit,Primary Health Care Unit,1,SS0505,Aweil West,walking,top5_worst_off
+328,8879.806,6748.127,0.0,2131.678,Agaat Dit Primary Health Care Unit,Primary Health Care Unit,1,SS0802,Gogrial West,walking,top5_worst_off
+364,16639.013,16580.186,0.0,58.827,Yomding Primary Health Care Unit,Primary Health Care Unit,1,SS0712,Ulang,walking,top5_worst_off
+368,18391.294,18388.608,0.0,2.686,Nassir County Hospital,County Hospital,1,SS0704,Luakpiny/Nasir,walking,top5_worst_off
+369,23464.618,23170.877,0.0,293.742,MSF- Holland Hosp. Primary Health Care Centre,Primary Health Care Centre,1,SS0704,Luakpiny/Nasir,walking,top5_worst_off
+386,12399.005,12176.843,0.0,222.162,Gogrial Primary Health Care Centre,Primary Health Care Centre,1,SS0802,Gogrial West,walking,top5_worst_off
+387,3511.684,3477.005,0.0,34.679,Agaigai Primary Health Care Unit,Primary Health Care Unit,1,SS0801,Gogrial East,walking,top5_worst_off
+415,9273.547,9216.636,0.0,56.911,Alok Primary Health Care Unit,Primary Health Care Unit,1,SS0501,Aweil Centre,walking,top5_worst_off
+520,11901.423,11846.997,0.0,54.426,Tharqueny Primary Health Care Unit,Primary Health Care Unit,1,SS0901,Jur River,walking,top5_worst_off
+550,6325.188,6253.614,0.0,71.574,Thkliel Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,walking,top5_worst_off
+553,7768.434,5812.846,0.0,1955.588,Dilule Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,walking,top5_worst_off
+561,2876.559,2827.291,0.0,49.268,Madil Primary Health Care Unit,Primary Health Care Unit,1,SS0901,Jur River,walking,top5_worst_off
+620,2129.582,2119.37,0.0,10.213,Kony Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,walking,top5_worst_off
+641,886.643,886.643,0.0,0.0,Chiban Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,walking,top5_worst_off
+675,3842.534,3761.641,0.0,80.893,Lae Diit Primary Health Care Unit,Primary Health Care Unit,1,SS0607,Panyijiar,walking,top5_worst_off
+891,35272.671,35272.671,0.0,0.0,IMC Site 2 _Awerial Primary Health Care Unit,Primary Health Care Unit,2,SS0401,Awerial,walking,top5_worst_off
+938,7138.054,7137.915,0.0,0.14,Muni Primary Health Care Centre,Primary Health Care Centre,1,SS0105,Terekeka,walking,top5_worst_off
+968,9868.592,9868.592,0.0,0.0,Wujugani Primary Health Care Unit,Primary Health Care Unit,1,SS0105,Terekeka,walking,top5_worst_off
+1143,1536.52,1524.551,0.0,11.969,Gondokoro Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,walking,top5_worst_off
+1147,468.709,468.709,0.0,0.0,Gondokoro Main Land Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,walking,top5_worst_off
+1205,7213.483,7181.068,0.0,32.415,Mahad Primary Sch. Primary Health Care Centre,Primary Health Care Centre,1,SS0101,Juba,walking,top5_worst_off
+171,6712.605,6148.249,0.0,564.356,Majok Noon Primary Health Care Centre,Primary Health Care Centre,1,SS0806,Twic,motorised,as_is
+181,1724.85,1700.328,0.0,24.522,Marial Maper Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,motorised,as_is
+183,2294.568,1848.111,0.0,446.456,Dhiau Agaal Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,motorised,as_is
+188,483.923,483.923,0.0,0.0,Angol Primary Health Care Unit,Primary Health Care Unit,1,SS0505,Aweil West,motorised,as_is
+193,3238.079,3177.239,0.0,60.84,Nyamlel Primary Health Care Centre,Primary Health Care Centre,1,SS0505,Aweil West,motorised,as_is
+198,8014.006,7937.453,0.0,76.553,Anyopjang Primary Health Care Unit,Primary Health Care Unit,1,SS0505,Aweil West,motorised,as_is
+230,8017.8,7893.037,0.0,124.763,Ameth Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,motorised,as_is
+236,8895.192,7080.592,58.393,1756.207,Ajong Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,motorised,as_is
+239,20849.632,20244.875,130.374,474.383,Rumwel Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,motorised,as_is
+259,156.104,137.667,0.0,18.437,Angui Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,motorised,as_is
+272,11106.231,8960.013,0.288,2145.93,Pandit Twic Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,motorised,as_is
+277,3591.161,2867.801,0.0,723.36,Atuct Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,motorised,as_is
+278,15706.853,9548.036,153.199,6005.618,Wunrok Primary Health Care Centre,Primary Health Care Centre,1,SS0806,Twic,motorised,as_is
+282,7882.034,7878.936,0.0,3.097,Chelcou Primary Health Care Centre,Primary Health Care Centre,1,SS0505,Aweil West,motorised,as_is
+284,12727.05,10344.716,84.985,2297.349,Peth East Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,motorised,as_is
+289,11723.082,7183.074,0.497,4539.51,Titcok Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,motorised,as_is
+307,18620.837,11102.598,2134.343,5383.895,Akon Primary Health Care Unit,Primary Health Care Unit,1,SS0802,Gogrial West,motorised,as_is
+310,20985.867,19712.587,0.0,1273.28,Dome Primary Health Care Unit,Primary Health Care Unit,1,SS0712,Ulang,motorised,as_is
+314,4066.824,4016.751,0.0,50.074,Awilic Primary Health Care Unit,Primary Health Care Unit,1,SS0505,Aweil West,motorised,as_is
+319,21421.685,13817.348,2332.138,5272.199,Keet Primary Health Care Unit,Primary Health Care Unit,1,SS0802,Gogrial West,motorised,as_is
+328,540.687,195.252,0.0,345.435,Agaat Dit Primary Health Care Unit,Primary Health Care Unit,1,SS0802,Gogrial West,motorised,as_is
+364,14927.905,14869.078,0.0,58.827,Yomding Primary Health Care Unit,Primary Health Care Unit,1,SS0712,Ulang,motorised,as_is
+368,24983.256,24980.57,0.0,2.686,Nassir County Hospital,County Hospital,1,SS0704,Luakpiny/Nasir,motorised,as_is
+369,21446.123,21152.381,0.0,293.742,MSF- Holland Hosp. Primary Health Care Centre,Primary Health Care Centre,1,SS0704,Luakpiny/Nasir,motorised,as_is
+374,18419.999,17991.452,0.0,428.547,Kuich Primary Health Care Unit,Primary Health Care Unit,1,SS0712,Ulang,motorised,as_is
+386,27471.548,27166.687,0.0,304.861,Gogrial Primary Health Care Centre,Primary Health Care Centre,1,SS0802,Gogrial West,motorised,as_is
+387,3119.02,3084.341,0.0,34.679,Agaigai Primary Health Care Unit,Primary Health Care Unit,1,SS0801,Gogrial East,motorised,as_is
+415,7181.64,7124.955,0.0,56.685,Alok Primary Health Care Unit,Primary Health Care Unit,1,SS0501,Aweil Centre,motorised,as_is
+520,16206.521,15797.916,0.0,408.605,Tharqueny Primary Health Care Unit,Primary Health Care Unit,1,SS0901,Jur River,motorised,as_is
+550,10200.629,8050.523,0.0,2150.107,Thkliel Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,motorised,as_is
+553,1751.359,1751.359,0.0,0.0,Dilule Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,motorised,as_is
+561,2139.6,2126.562,0.0,13.038,Madil Primary Health Care Unit,Primary Health Care Unit,1,SS0901,Jur River,motorised,as_is
+620,1534.528,1524.315,0.0,10.213,Kony Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,motorised,as_is
+641,168.037,168.037,0.0,0.0,Chiban Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,motorised,as_is
+675,3404.013,3323.12,0.0,80.893,Lae Diit Primary Health Care Unit,Primary Health Care Unit,1,SS0607,Panyijiar,motorised,as_is
+889,19209.965,19209.965,0.0,0.0,SMC _Awerial Primary Health Care Centre,Primary Health Care Centre,1,SS0401,Awerial,motorised,as_is
+891,35606.687,35606.687,0.0,0.0,IMC Site 2 _Awerial Primary Health Care Unit,Primary Health Care Unit,2,SS0401,Awerial,motorised,as_is
+938,10096.687,10096.548,0.0,0.14,Muni Primary Health Care Centre,Primary Health Care Centre,1,SS0105,Terekeka,motorised,as_is
+968,13438.547,13438.547,0.0,0.0,Wujugani Primary Health Care Unit,Primary Health Care Unit,1,SS0105,Terekeka,motorised,as_is
+1143,652.812,640.919,0.0,11.892,Gondokoro Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,motorised,as_is
+1147,810.512,810.512,0.0,0.0,Gondokoro Main Land Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,motorised,as_is
+1205,8233.254,8200.838,0.0,32.415,Mahad Primary Sch. Primary Health Care Centre,Primary Health Care Centre,1,SS0101,Juba,motorised,as_is
+171,6712.605,6148.249,0.0,564.356,Majok Noon Primary Health Care Centre,Primary Health Care Centre,1,SS0806,Twic,motorised,top5_most_saved
+181,1724.85,1700.328,0.0,24.522,Marial Maper Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,motorised,top5_most_saved
+183,2294.568,1848.111,0.0,446.456,Dhiau Agaal Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,motorised,top5_most_saved
+188,483.923,483.923,0.0,0.0,Angol Primary Health Care Unit,Primary Health Care Unit,1,SS0505,Aweil West,motorised,top5_most_saved
+193,3238.079,3177.239,0.0,60.84,Nyamlel Primary Health Care Centre,Primary Health Care Centre,1,SS0505,Aweil West,motorised,top5_most_saved
+198,8014.006,7937.453,0.0,76.553,Anyopjang Primary Health Care Unit,Primary Health Care Unit,1,SS0505,Aweil West,motorised,top5_most_saved
+230,8017.8,7893.037,0.0,124.763,Ameth Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,motorised,top5_most_saved
+236,8895.192,7080.592,58.393,1756.207,Ajong Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,motorised,top5_most_saved
+239,20849.632,20244.875,130.374,474.383,Rumwel Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,motorised,top5_most_saved
+259,156.104,137.667,0.0,18.437,Angui Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,motorised,top5_most_saved
+272,11106.231,8960.013,0.288,2145.93,Pandit Twic Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,motorised,top5_most_saved
+277,3591.161,2867.801,0.0,723.36,Atuct Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,motorised,top5_most_saved
+282,7882.034,7878.936,0.0,3.097,Chelcou Primary Health Care Centre,Primary Health Care Centre,1,SS0505,Aweil West,motorised,top5_most_saved
+284,12727.05,10344.716,84.985,2297.349,Peth East Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,motorised,top5_most_saved
+289,11723.082,7183.074,0.497,4539.51,Titcok Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,motorised,top5_most_saved
+307,18620.837,11102.598,2134.343,5383.895,Akon Primary Health Care Unit,Primary Health Care Unit,1,SS0802,Gogrial West,motorised,top5_most_saved
+314,4066.824,4016.751,0.0,50.074,Awilic Primary Health Care Unit,Primary Health Care Unit,1,SS0505,Aweil West,motorised,top5_most_saved
+319,21421.685,13817.348,2332.138,5272.199,Keet Primary Health Care Unit,Primary Health Care Unit,1,SS0802,Gogrial West,motorised,top5_most_saved
+328,540.687,195.252,0.0,345.435,Agaat Dit Primary Health Care Unit,Primary Health Care Unit,1,SS0802,Gogrial West,motorised,top5_most_saved
+364,14927.905,14869.078,0.0,58.827,Yomding Primary Health Care Unit,Primary Health Care Unit,1,SS0712,Ulang,motorised,top5_most_saved
+368,24983.256,24980.57,0.0,2.686,Nassir County Hospital,County Hospital,1,SS0704,Luakpiny/Nasir,motorised,top5_most_saved
+369,21446.123,21152.381,0.0,293.742,MSF- Holland Hosp. Primary Health Care Centre,Primary Health Care Centre,1,SS0704,Luakpiny/Nasir,motorised,top5_most_saved
+386,27471.548,27166.687,0.0,304.861,Gogrial Primary Health Care Centre,Primary Health Care Centre,1,SS0802,Gogrial West,motorised,top5_most_saved
+387,3119.02,3084.341,0.0,34.679,Agaigai Primary Health Care Unit,Primary Health Care Unit,1,SS0801,Gogrial East,motorised,top5_most_saved
+415,7181.64,7124.955,0.0,56.685,Alok Primary Health Care Unit,Primary Health Care Unit,1,SS0501,Aweil Centre,motorised,top5_most_saved
+550,10200.629,8050.523,0.0,2150.107,Thkliel Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,motorised,top5_most_saved
+553,1751.359,1751.359,0.0,0.0,Dilule Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,motorised,top5_most_saved
+561,2139.6,2126.562,0.0,13.038,Madil Primary Health Care Unit,Primary Health Care Unit,1,SS0901,Jur River,motorised,top5_most_saved
+620,1534.528,1524.315,0.0,10.213,Kony Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,motorised,top5_most_saved
+641,168.037,168.037,0.0,0.0,Chiban Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,motorised,top5_most_saved
+675,3404.013,3323.12,0.0,80.893,Lae Diit Primary Health Care Unit,Primary Health Care Unit,1,SS0607,Panyijiar,motorised,top5_most_saved
+889,19209.965,19209.965,0.0,0.0,SMC _Awerial Primary Health Care Centre,Primary Health Care Centre,1,SS0401,Awerial,motorised,top5_most_saved
+938,10096.687,10096.548,0.0,0.14,Muni Primary Health Care Centre,Primary Health Care Centre,1,SS0105,Terekeka,motorised,top5_most_saved
+968,13438.547,13438.547,0.0,0.0,Wujugani Primary Health Care Unit,Primary Health Care Unit,1,SS0105,Terekeka,motorised,top5_most_saved
+1143,652.812,640.919,0.0,11.892,Gondokoro Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,motorised,top5_most_saved
+1147,810.512,810.512,0.0,0.0,Gondokoro Main Land Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,motorised,top5_most_saved
+1205,8233.254,8200.838,0.0,32.415,Mahad Primary Sch. Primary Health Care Centre,Primary Health Care Centre,1,SS0101,Juba,motorised,top5_most_saved
+171,6712.605,6148.249,0.0,564.356,Majok Noon Primary Health Care Centre,Primary Health Care Centre,1,SS0806,Twic,motorised,top5_worst_off
+181,1724.85,1700.328,0.0,24.522,Marial Maper Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,motorised,top5_worst_off
+183,2294.568,1848.111,0.0,446.456,Dhiau Agaal Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,motorised,top5_worst_off
+188,483.923,483.923,0.0,0.0,Angol Primary Health Care Unit,Primary Health Care Unit,1,SS0505,Aweil West,motorised,top5_worst_off
+193,3238.079,3177.239,0.0,60.84,Nyamlel Primary Health Care Centre,Primary Health Care Centre,1,SS0505,Aweil West,motorised,top5_worst_off
+198,8014.006,7937.453,0.0,76.553,Anyopjang Primary Health Care Unit,Primary Health Care Unit,1,SS0505,Aweil West,motorised,top5_worst_off
+230,8017.8,7893.037,0.0,124.763,Ameth Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,motorised,top5_worst_off
+236,8895.192,7080.592,58.393,1756.207,Ajong Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,motorised,top5_worst_off
+239,20849.632,20244.875,130.374,474.383,Rumwel Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,motorised,top5_worst_off
+259,156.104,137.667,0.0,18.437,Angui Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,motorised,top5_worst_off
+272,11106.231,8960.013,0.288,2145.93,Pandit Twic Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,motorised,top5_worst_off
+277,3591.161,2867.801,0.0,723.36,Atuct Primary Health Care Unit,Primary Health Care Unit,1,SS0502,Aweil East,motorised,top5_worst_off
+278,15706.853,9548.036,153.199,6005.618,Wunrok Primary Health Care Centre,Primary Health Care Centre,1,SS0806,Twic,motorised,top5_worst_off
+282,7882.034,7878.936,0.0,3.097,Chelcou Primary Health Care Centre,Primary Health Care Centre,1,SS0505,Aweil West,motorised,top5_worst_off
+289,11723.082,7183.074,0.497,4539.51,Titcok Primary Health Care Unit,Primary Health Care Unit,1,SS0806,Twic,motorised,top5_worst_off
+307,18620.837,11720.328,1516.613,5383.895,Akon Primary Health Care Unit,Primary Health Care Unit,1,SS0802,Gogrial West,motorised,top5_worst_off
+314,4066.824,4016.751,0.0,50.074,Awilic Primary Health Care Unit,Primary Health Care Unit,1,SS0505,Aweil West,motorised,top5_worst_off
+328,540.687,195.252,0.0,345.435,Agaat Dit Primary Health Care Unit,Primary Health Care Unit,1,SS0802,Gogrial West,motorised,top5_worst_off
+364,14927.905,14869.078,0.0,58.827,Yomding Primary Health Care Unit,Primary Health Care Unit,1,SS0712,Ulang,motorised,top5_worst_off
+368,24983.256,24980.57,0.0,2.686,Nassir County Hospital,County Hospital,1,SS0704,Luakpiny/Nasir,motorised,top5_worst_off
+369,21446.123,21152.381,0.0,293.742,MSF- Holland Hosp. Primary Health Care Centre,Primary Health Care Centre,1,SS0704,Luakpiny/Nasir,motorised,top5_worst_off
+386,27471.548,27166.687,0.0,304.861,Gogrial Primary Health Care Centre,Primary Health Care Centre,1,SS0802,Gogrial West,motorised,top5_worst_off
+387,3119.02,3084.341,0.0,34.679,Agaigai Primary Health Care Unit,Primary Health Care Unit,1,SS0801,Gogrial East,motorised,top5_worst_off
+415,7181.64,7124.955,0.0,56.685,Alok Primary Health Care Unit,Primary Health Care Unit,1,SS0501,Aweil Centre,motorised,top5_worst_off
+520,16206.521,15797.916,0.0,408.605,Tharqueny Primary Health Care Unit,Primary Health Care Unit,1,SS0901,Jur River,motorised,top5_worst_off
+550,10200.629,8050.523,0.0,2150.107,Thkliel Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,motorised,top5_worst_off
+553,1751.359,1751.359,0.0,0.0,Dilule Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,motorised,top5_worst_off
+561,2139.6,2126.562,0.0,13.038,Madil Primary Health Care Unit,Primary Health Care Unit,1,SS0901,Jur River,motorised,top5_worst_off
+620,1534.528,1524.315,0.0,10.213,Kony Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,motorised,top5_worst_off
+641,168.037,168.037,0.0,0.0,Chiban Primary Health Care Unit,Primary Health Care Unit,1,SS0301,Akobo,motorised,top5_worst_off
+675,3404.013,3323.12,0.0,80.893,Lae Diit Primary Health Care Unit,Primary Health Care Unit,1,SS0607,Panyijiar,motorised,top5_worst_off
+891,35606.687,35606.687,0.0,0.0,IMC Site 2 _Awerial Primary Health Care Unit,Primary Health Care Unit,2,SS0401,Awerial,motorised,top5_worst_off
+938,10096.687,10096.548,0.0,0.14,Muni Primary Health Care Centre,Primary Health Care Centre,1,SS0105,Terekeka,motorised,top5_worst_off
+968,13438.547,13438.547,0.0,0.0,Wujugani Primary Health Care Unit,Primary Health Care Unit,1,SS0105,Terekeka,motorised,top5_worst_off
+1143,652.812,640.919,0.0,11.892,Gondokoro Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,motorised,top5_worst_off
+1147,810.512,810.512,0.0,0.0,Gondokoro Main Land Primary Health Care Unit,Primary Health Care Unit,1,SS0101,Juba,motorised,top5_worst_off
+1205,8233.254,8200.838,0.0,32.415,Mahad Primary Sch. Primary Health Care Centre,Primary Health Care Centre,1,SS0101,Juba,motorised,top5_worst_off
