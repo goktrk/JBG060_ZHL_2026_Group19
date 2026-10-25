@@ -14,6 +14,8 @@ Outputs in evaluation.output_dir (data/processed/evaluation/):
     top_receiving.csv      per year: the facilities receiving the most extra people (within the limit)
     rule_tradeoff.csv      per year: each ranking's Top N scored on both goals (people brought back within
                            2 h, and people more than 4 h from care brought back within 4 h)
+    naive_comparison.csv   per year and goal: the greedy Top N against two simple ways to pick N sites
+                           (largest gain on its own; most people usually served), all scored the same way
     evaluation.json        the headline numbers
 
 Needs peak_months, then build_access_loss, build_priorities and build_prepositioning with --months-file.
@@ -79,6 +81,33 @@ def concentration(added: pd.Series, max_k: int) -> list[float]:
     return [float(cumulative[min(k, len(ordered)) - 1]) for k in range(1, max_k + 1)]
 
 
+def naive_tops(table: pd.DataFrame, usual: np.ndarray, rule: str, n: int) -> dict[str, list[int]]:
+    """
+    Two simple ways to pick n closed sites, to compare the greedy Top n against:
+    own_gain:         the n sites that bring back the most people on their own (no correction for
+                      two sites bringing back the same people);
+    usual_population: the n sites with the most people living closest to them before the flood.
+    """
+    by_gain = table.sort_values([f"gain_{rule}", "site_id"], ascending=[False, True])
+    by_size = table.assign(usual=usual[table["site_id"]]).sort_values(["usual", "site_id"], ascending=[False, True])
+    return {"own_gain": by_gain["site_id"].head(n).astype(int).tolist(),
+            "usual_population": by_size["site_id"].head(n).astype(int).tolist()}
+
+
+def naive_summary(naive: pd.DataFrame, n: int) -> dict:
+    """Per goal, over the years with more than n closed sites (otherwise every way protects all of them):
+    the median share brought back by each way of picking, and in how many years greedy beats or ties each."""
+    out = {}
+    for goal, rows in naive[naive["sites_closed"] > n].groupby("goal"):
+        wide = rows.pivot(index="month", columns="picked_by", values="brought_back")
+        losing = rows.groupby("month")["people_losing_access"].first()
+        out[goal] = {"years": len(wide),
+                     "median_share_brought_back": {p: round(float((wide[p] / losing).median()), 3) for p in wide},
+                     "years_greedy_at_least": {p: int((wide["greedy"] >= wide[p]).sum()) for p in wide if p != "greedy"},
+                     "years_greedy_better": {p: int((wide["greedy"] > wide[p]).sum()) for p in wide if p != "greedy"}}
+    return out
+
+
 def people_brought_back(regained: dict[int, np.ndarray], protected: list[int], pop) -> float:
     """People brought back when all `protected` sites reopen together: everyone in a cell that any of
     them brings back on its own (reopening sites only adds sources, so the gains combine as a union)."""
@@ -99,8 +128,10 @@ def main():
     grid, static, water, sites = make_grid(cfg), load_static(cfg), load_permanent_water(cfg), load_sites(cfg)
     pop, friction = static["population"], static[f"friction_{mode}"]
     sites_rc = sites[["row", "col"]].to_numpy()
-    base_minutes = load_baseline(mode, cfg)[0]
-    tradeoff_rows = []
+    base_minutes, base_nearest, _ = load_baseline(mode, cfg)
+    served = base_nearest >= 0
+    usual = np.bincount(base_nearest[served], weights=pop[served].astype("float64"), minlength=len(sites))
+    tradeoff_rows, naive_rows = [], []
 
     loss_rows, overlap_rows, coverage_rows, receiving_rows, busiest, tops_per_year, info = [], [], [], [], [], {}, []
     for peak in peaks.itertuples():
@@ -121,15 +152,20 @@ def main():
         tops_per_year[peak.id] = tops
         flood_minutes, _ = load_scenario_travel(peak.id, mode, cfg)
         flooded, _ = scenario_flood(peak.id, cfg)
-        both = sorted({sid for top in tops.values() for sid in top})
         for goal, goal_limit in goals.items():
+            naive = naive_tops(table, usual, goal, n)
+            needed = sorted({sid for top in [*tops.values(), *naive.values()] for sid in top})
             regained, lost = regained_cells(pop, base_minutes, flood_minutes, flooded, friction, water | flooded,
-                                            sites_rc, np.array(both, dtype=np.int64), goal_limit, grid.cell_size)
+                                            sites_rc, np.array(needed, dtype=np.int64), goal_limit, grid.cell_size)
             losing = float(pop[lost].sum(dtype="float64"))
             for rule in RULES:
                 tradeoff_rows.append({"year": peak.year, "month": peak.id, "goal": goal, "limit_min": goal_limit,
                                       "protected": rule, "people_losing_access": round(losing),
                                       "brought_back": round(people_brought_back(regained, tops[rule], pop))})
+            for picked_by, top in {"greedy": tops[goal], **naive}.items():
+                naive_rows.append({"year": peak.year, "month": peak.id, "goal": goal, "picked_by": picked_by,
+                                   "sites_closed": access["sites_closed"], "people_losing_access": round(losing),
+                                   "brought_back": round(people_brought_back(regained, top, pop))})
         receiving = load_prepositioning(peak.id, cfg)[1]
         walking_as_is = receiving[(receiving["mode"] == "walking") & (receiving["variant"] == "as_is")]
         added = walking_as_is["added_within_limit"]
@@ -159,6 +195,8 @@ def main():
     received.round(4).to_csv(folder / "receiving_concentration.csv", index=False)
     pd.concat(busiest, ignore_index=True).round(3).to_csv(folder / "top_receiving.csv", index=False)
     pd.DataFrame(tradeoff_rows).to_csv(folder / "rule_tradeoff.csv", index=False)
+    naive = pd.DataFrame(naive_rows)
+    naive.to_csv(folder / "naive_comparison.csv", index=False)
 
     full = overlaps[overlaps["top_size"] == n]       # years where both rules have a full Top N
     since = loss[loss["year"] >= 2020]
@@ -175,6 +213,7 @@ def main():
             for rule in RULES},
         "median_share_taken_in_by_10_receiving": round(float(
             received.loc[received["k"] == 10, "share_taken_in"].median()), 3),
+        "naive_comparison": naive_summary(naive, n),
     }
     with open(folder / "evaluation.json", "w", encoding="utf-8") as f:
         json.dump(summary, f, indent=2)

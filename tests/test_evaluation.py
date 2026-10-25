@@ -5,8 +5,9 @@ import pandas as pd
 
 import numpy as np
 
-from data_preparation.evaluate_peak_months import (concentration, coverage, overlap, people_brought_back,
-                                               top_frequency, top_sites)
+from data_preparation.evaluate_peak_months import (concentration, coverage, naive_summary, naive_tops, overlap,
+                                               people_brought_back, top_frequency, top_sites)
+from data_preparation.external_check import season_window
 from data_preparation.peak_months import largest_per_year
 
 
@@ -26,6 +27,31 @@ def test_top_sites_follow_the_greedy_rank_and_skip_sites_adding_nobody():
                           "rank_most_saved": [2, 1, 3, 4], "added_most_saved": [50, 90, 0, 5]})
     assert top_sites(table, "most_saved", 5) == [11, 10, 13]
     assert top_sites(table, "most_saved", 1) == [11]
+
+
+def test_season_window_runs_from_season_start_to_report_month():
+    assert season_window("2024-10", 7) == ["2024-07", "2024-08", "2024-09", "2024-10"]
+    assert season_window("2024-07", 7) == ["2024-07"]
+
+
+def test_naive_tops_pick_by_own_gain_and_by_usual_population():
+    table = pd.DataFrame({"site_id": [0, 1, 2, 3], "gain_most_saved": [10.0, 40.0, 40.0, 5.0]})
+    usual = np.array([900.0, 100.0, 50.0, 500.0])
+    tops = naive_tops(table, usual, "most_saved", 2)
+    assert tops["own_gain"] == [1, 2]               # ties -> lower site id
+    assert tops["usual_population"] == [0, 3]
+
+
+def test_naive_summary_skips_years_with_few_closed_sites():
+    rows = [(m, closed, p, b) for m, closed, picks in [("2020-12", 8, {"greedy": 90, "own_gain": 70, "usual_population": 90}),
+                                                        ("2021-01", 3, {"greedy": 50, "own_gain": 50, "usual_population": 50})]
+            for p, b in picks.items()]
+    naive = pd.DataFrame(rows, columns=["month", "sites_closed", "picked_by", "brought_back"]).assign(
+        goal="most_saved", people_losing_access=100)
+    out = naive_summary(naive, 5)["most_saved"]
+    assert out["years"] == 1
+    assert out["median_share_brought_back"] == {"greedy": 0.9, "own_gain": 0.7, "usual_population": 0.9}
+    assert out["years_greedy_better"] == {"own_gain": 1, "usual_population": 0}
 
 
 def test_overlap_and_frequency():

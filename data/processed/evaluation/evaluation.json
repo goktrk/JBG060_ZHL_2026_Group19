@@ -15,5 +15,39 @@
     "most_saved": 0.929,
     "worst_off": 0.962
   },
-  "median_share_taken_in_by_10_receiving": 0.916
+  "median_share_taken_in_by_10_receiving": 0.916,
+  "naive_comparison": {
+    "most_saved": {
+      "years": 18,
+      "median_share_brought_back": {
+        "greedy": 0.845,
+        "own_gain": 0.791,
+        "usual_population": 0.751
+      },
+      "years_greedy_at_least": {
+        "own_gain": 18,
+        "usual_population": 18
+      },
+      "years_greedy_better": {
+        "own_gain": 15,
+        "usual_population": 16
+      }
+    },
+    "worst_off": {
+      "years": 18,
+      "median_share_brought_back": {
+        "greedy": 0.872,
+        "own_gain": 0.767,
+        "usual_population": 0.678
+      },
+      "years_greedy_at_least": {
+        "own_gain": 18,
+        "usual_population": 18
+      },
+      "years_greedy_better": {
+        "own_gain": 13,
+        "usual_population": 16
+      }
+    }
+  }
 }

@@ -112,6 +112,22 @@ python -m data_preparation.evaluate_peak_months                                 
 python poster_figures.py --only peak_access_loss protection_curve protection_per_year protection_4h receiving_concentration recurring_receivers
 ```
 
+`naive_comparison.csv` scores the greedy Top 5 against two simple ways to pick 5 closed sites (largest gain on
+its own; most people usually served), on both goals. Years with 5 or fewer closed sites are left out of the
+summary in `evaluation.json`, since every way of picking then protects all of them.
+
+External check against reported facility counts (WHO, Oct 2021, 2024 and 2025). The reports count
+facilities affected so far that season, so we give a range: closed in the report month, and closed at least
+once from the start of the flooding (June for 2025, as reported; otherwise April, the start of the rainy
+season) up to it. The reported figures and sources are in the script:
+
+```
+python -m data_preparation.external_check     # ~1 min, writes data/processed/evaluation/external_check.csv
+```
+Result: 67-70 closed vs "over 60" (2021), 36-42 vs ~148 affected / 58 submerged (2024), 24-26 vs 143
+affected / 44 damaged (2025). The window hardly matters; detected flooding keeps growing until December
+(clouds), so recent seasons are undercounted.
+
 ## 8. Still open
 
 - **Dashboard:** show the access-loss groups and the pre-positioning list (both precomputed and ready).
