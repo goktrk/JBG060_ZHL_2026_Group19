@@ -57,7 +57,7 @@ import rasterio
 from matplotlib.ticker import FuncFormatter, MultipleLocator
 
 from data_preparation.grid import ROOT, data_path, load_config
-from poster_style import (GREY, INK_SOFT, OUT_DIR, TUE_RED, WATER, WATER_LIGHT, apply_poster_style,
+from data_preparation.poster_style import (GREY, INK_SOFT, OUT_DIR, TUE_RED, WATER, WATER_LIGHT, apply_poster_style,
                           new_poster_fig, save_poster_fig)
 
 # Printed size of each figure in inches (width, height), from the poster layout. The layouts below are
